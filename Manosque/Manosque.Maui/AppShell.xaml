@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="Manosque.Maui.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:Manosque.Maui.Pages"
+    Shell.FlyoutBehavior="Disabled" BackgroundColor="Gray"
+    Title="Manosque.Maui">
+    <!--https://learn.microsoft.com/en-us/dotnet/maui/fundamentals/shell/?view=net-maui-9.0-->
+    <FlyoutItem Title="Login" Icon="home.png" Route="root">
+        <ShellContent Route="login" ContentTemplate="{DataTemplate local:LoginPage}" />
+        <Tab Route="pages">
+            <ShellContent Route="sites" ContentTemplate="{DataTemplate local:SitesPage}" />
+        </Tab>
+    </FlyoutItem>
+</Shell>

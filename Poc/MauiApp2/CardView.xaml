@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp2.CardView">
+    <Frame CornerRadius="10" Padding="10" BackgroundColor="White" BorderColor="Gray">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Image -->
+            <Image Grid.RowSpan="3" Source="deuxpi.png" Aspect="AspectFill" HeightRequest="100" WidthRequest="100"/>
+
+            <!-- Title -->
+            <Label Grid.Column="1" Text="Ali Makri" FontAttributes="Bold" FontSize="Medium" VerticalOptions="Start"/>
+
+            <!-- Subtitle -->
+            <Label Grid.Row="1" Grid.Column="1" Text="Développeur .Net" FontSize="Small" VerticalOptions="Start"/>
+
+            <!-- Banner -->
+            <BoxView Grid.Row="2" Grid.Column="1" BackgroundColor="LightGray" HeightRequest="20" WidthRequest="100" HorizontalOptions="End" VerticalOptions="End"/>
+        </Grid>
+    </Frame>
+</ContentView>

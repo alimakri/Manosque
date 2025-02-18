@@ -1,0 +1,49 @@
+﻿@page "/personne"
+@inject CoreComline MonComline
+
+<h1>Liste des personnes</h1>
+
+<p>Premier essai.</p>
+
+@if (personnes == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Prenom</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var p in personnes)
+            {
+                <tr>
+                    <td>@p.Nom</td>
+                    <td>@p.Prenom</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Personna>? personnes = new();
+    protected override async Task OnInitializedAsync()
+    {
+        MonComline.Execute(new List<string> { "Get-Personne" });
+        foreach (DataRow row in MonComline.Results.Tables["Personne"].Rows)
+        {
+            personnes.Add(new Personna { Nom = row["Nom"].ToString(), Prenom = row["Prenom"].ToString() });
+        }
+    }
+
+    private class Personna
+    {
+        public string Nom;
+        public string Prenom;
+    }
+}

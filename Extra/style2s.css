@@ -1,0 +1,90 @@
+body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(to bottom right, #6F418C, #432855);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+h1 {
+    margin: 20px;
+    font-family: 'Trebuchet MS', sans-serif;
+    font-weight: bold;
+    font-size: 30px;
+}
+
+img {
+    width: 150px;
+    height: auto;
+}
+
+.div2 {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 66.67vh; /* Deux tiers de la hauteur de la page */
+    background-color: white;
+    color: indigo;
+    padding: 20px;
+    border-radius: 15px 15px 0 0;
+    text-align: center;
+}
+.div1{
+text-align: center;
+}
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.input-container {
+    display: flex;
+    align-items: center;
+    width: 80%;
+    margin-bottom: 10px;
+}
+
+.icon {
+    padding: 10px;
+    background: #6F418C;
+    color: white;
+    min-width: 50px;
+    text-align: center;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-bottom: 2px solid #ccc;
+    border-radius: 0;
+    outline: none;
+}
+
+input::placeholder {
+    color: #999;
+}
+
+input:focus {
+    border-bottom: 2px solid #6F418C;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #432855;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #6F418C;
+}

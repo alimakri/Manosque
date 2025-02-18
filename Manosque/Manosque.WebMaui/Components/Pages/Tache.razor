@@ -1,0 +1,49 @@
+﻿@page "/tache"
+@inject CoreComline MonComline
+
+<h1>Liste des tâches</h1>
+
+<p>Deuxième essai</p>
+
+@if (Taches == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Référence</th>
+                <th>Fréquence</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var p in Taches)
+            {
+                <tr>
+                    <td>@p.Reference</td>
+                    <td>@p.Frequence</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Tacha>? Taches = new();
+    protected override async Task OnInitializedAsync()
+    {
+        MonComline.Execute(new List<string> { "Get-Tache" });
+        foreach (DataRow row in MonComline.Results.Tables["Tache"].Rows)
+        {
+            Taches.Add(new Tacha { Reference = row["Reference"].ToString(), Frequence = row["Frequence"].ToString() });
+        }
+    }
+
+    private class Tacha
+    {
+        public string Reference;
+        public string Frequence;
+    }
+}
