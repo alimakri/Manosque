@@ -2,6 +2,7 @@
 using System.Text;
 using ComlineApp.Manager;
 using ComlineApp.Services;
+using ComLineCommon;
 
 namespace ComLineConsoleApp
 {
@@ -61,10 +62,13 @@ namespace ComLineConsoleApp
                             {
                                 foreach (DataTable table in Comline.Command.Results.Tables) DisplayResults(table.TableName);
                             }
-                            if (!string.IsNullOrEmpty(Comline.Command.DisplayQuery))
+                            if (!string.IsNullOrEmpty(Comline.Command.ModeDebug))
                             {
                                 Console.ForegroundColor = ConsoleColor.DarkCyan;
-                                Console.WriteLine(string.Join('\n', Comline.Command.DisplayQuery.Split('\n').Select(x => x.TrimStart())));
+                                Console.WriteLine(string.Join('\n', Comline.Command.ModeDebug.Split('\n').Select(x => x.TrimStart())));
+                                Console.ForegroundColor = ConsoleColor.Cyan;
+                                var path = Path.Combine(Global.WorkingDirectory, Comline.Command.TableName + ".xml");
+                                Console.WriteLine($"-- --> Un fichier {path} a été généré.");
                             }
                         }
                         break;

@@ -12,23 +12,27 @@ namespace Manosque.Maui.Pages
 
         private async void OnSites(object sender, EventArgs e)
         {
-            var command = App.MonServiceAPi.Command;
-            command.Prompt = $@"Get-Personne -Reference ""{UserNom.Text}"" -Password ""{UserPassword.Text}"" -Return ""OnlyCount""";
-            App.MonServiceAPi.Execute();
+            await Shell.Current.GoToAsync($"//root/pages/sites?user={App.User}");
 
-            try
-            {
-                if (int.TryParse(command.Results.Tables["Personne"]?.Rows[0][0].ToString(), out int n) && n == 1)
-                {
-                    App.User = UserNom.Text;
-                    await Shell.Current.GoToAsync($"//root/pages/sites?user={App.User}");
-                    return;
-                }
-}
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Erreur de connexion : {ex.Message}");
-            }
+            //var command = App.MonServiceAPi.Command;
+            //command.Prompt = $@"Get-Personne -Reference ""{UserNom.Text}"" -Password ""{UserPassword.Text}"" -Return ""OnlyCount""";
+            //App.MonServiceAPi.Execute(EnumDataSimulation.Password);
+
+            //try
+            //{
+            //    var table = command.Results.Tables["Personne"];
+            //    int? n = table?.Rows[0][0] as int?;
+            //    if (n == 1)
+            //    {
+            //        App.User = UserNom.Text;
+            //        await Shell.Current.GoToAsync($"//root/pages/sites?user={App.User}");
+            //        return;
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine($"Erreur de connexion : {ex.Message}");
+            //}
 
         }
     }

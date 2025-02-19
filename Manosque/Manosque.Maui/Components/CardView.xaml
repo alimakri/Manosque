@@ -85,12 +85,14 @@
                              AbsoluteLayout.LayoutBounds="0,0,1,1"
                              Background="{StaticResource BackgroundCard}">
                     </BoxView>
-                    <Label Text="→"
+                    <Button Text="→" x:Name="CardViewButton"
                            FontSize="Large"
-                           VerticalOptions="Center"
+                           VerticalOptions="Center" BackgroundColor="Transparent"
                            HorizontalOptions="Center" TextColor="White"
                            AbsoluteLayout.LayoutBounds="0.5,0.5,AutoSize,AutoSize"
-                           AbsoluteLayout.LayoutFlags="PositionProportional" />
-                </AbsoluteLayout>
+                           AbsoluteLayout.LayoutFlags="PositionProportional" 
+                           Clicked="OnTacheClicked" CommandParameter="{Binding CardNumber}"/>
+            <Label Text="{Binding CardNumber}"/>
+        </AbsoluteLayout>
             </Grid>
 </Frame>

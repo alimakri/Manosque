@@ -1,13 +1,12 @@
-using System.Globalization;
-
 namespace MauiApp1.Components;
 
 public partial class CardView : Frame
 {
+    #region CardNumber
     public static readonly BindableProperty CardNumberProperty = BindableProperty.Create(
         nameof(CardNumber),
-        typeof(string), 
-        typeof(CardView), 
+        typeof(string),
+        typeof(CardView),
         null,
         propertyChanged: OnCardNumberChanged);
 
@@ -20,8 +19,11 @@ public partial class CardView : Frame
     {
         if (bindable is not CardView cardView) return;
 
-        cardView.CardNumberLabel.Text = (string) newValue;
+        cardView.CardNumberLabel.Text = (string)newValue;
     }
+    #endregion
+
+
 
     public static readonly BindableProperty ExpirationDateProperty
         = BindableProperty.Create(nameof(ExpirationDate),
@@ -44,7 +46,6 @@ public partial class CardView : Frame
         get => (string)GetValue(CardValidationCodeProperty);
         set => SetValue(CardValidationCodeProperty, value);
     }
-    private string cardImage;
 
     public string CardImage
     {
@@ -52,10 +53,12 @@ public partial class CardView : Frame
         set
         {
             cardImage = value;
-            CreditCardImageLabel.Text =value;
+            CreditCardImageLabel.Text = value;
             CreditCardImageLabel.FontFamily = "FA6Brands";
         }
     }
+    private string cardImage;
+
     private bool bandeauEnabled;
 
     public bool BandeauEnabled
@@ -104,5 +107,10 @@ public partial class CardView : Frame
     private void SetCardValidationCode()
     {
         CardValidationCodeLabel.Text = CardValidationCode;
+    }
+
+    private async void OnTacheClicked(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync($"//root/pages/tache?tache={CardNumberLabel.Text}");
     }
 }

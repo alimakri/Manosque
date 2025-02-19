@@ -13,6 +13,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Comline\ComLineConsoleApp\ComLineConsoleApp.csproj" />
+    <ProjectReference Include="..\..\Comline\ComlineManager\ComLineManager.csproj" />
+    <ProjectReference Include="..\..\Services\ComlineServiceSystem\ServiceSystem.csproj" />
     <ProjectReference Include="..\Manosque.ServiceData\Manosque.ServiceData.csproj" />
   </ItemGroup>
 

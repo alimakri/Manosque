@@ -12,7 +12,6 @@ namespace Manosque.Maui
         public App()
         {
             InitializeComponent();
-
             MainPage = new AppShell();
         }
     }

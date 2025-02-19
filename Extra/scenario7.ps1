@@ -52,7 +52,7 @@ New-Tache -Id "89A16088-0355-4602-B777-0E49B7B10000" -Reference "Remise en état
 # New-Tache -Id "89A16088-0355-4602-B777-0E49B7B11130" -Reference "Temps par unité"				-Tache "89A16088-0355-4602-B777-0E49B7B11100"
 # 
 # # Action 
-# Get-Tache -Reference "Reprise béton" -Display Query
+# Get-Tache -Reference "Reprise béton" -Mode Debug
 # New-Action -Id "003663BB-287B-484E-9E1A-ECD8A0C70001" -Question "Reprise de la planéité du sol. réagréage du sol"       -Tache ^ -Type @Texte
 # New-Action -Id "003663BB-287B-484E-9E1A-ECD8A0C70002" -Question "Fourniture & pose moquette"							-Tache ^ -Type @Texte
 # 
@@ -79,7 +79,7 @@ New-Execution -Id "50FE19B9-0F82-4ED5-8961-0E49B7B00001" -Tache ^ -Emplacement ^
 # New-Execution -Id "50FE19B9-0F82-4ED5-8961-0E49B7B00003" -Tache ^ -Emplacement ^ -DateDebut "11/02/2025 08:00" -Personne ^
 # 
 # # Présentation des sous tâches -----------------------------------------------------------------------------------------------------
-# Get-Execution -Filter SousTaches -Personne ^ -Emplacement ^ -Tache ^ -Select "Execution.Id, Tache.Id as Tache, Tache.Reference" -Display Query
+# Get-Execution -Filter SousTaches -Personne ^ -Emplacement ^ -Tache ^ -Select "Execution.Id, Tache.Id as Tache, Tache.Reference" -Mode Debug
 # 
 # 
 # # Execute Tache -----------------------------------------------------------------------------------------------------

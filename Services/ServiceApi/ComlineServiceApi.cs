@@ -1,20 +1,46 @@
 ﻿using ComlineApp.Manager;
+using ComLineCommon;
 using Newtonsoft.Json;
 using System.Data;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Xml.Serialization;
 
 namespace ComlineApp.Services
 {
+    public enum EnumDataSimulation
+    {
+        None, ListeSites,
+        Password
+    }
     public class ServiceApi : IServiceApi
     {
-        public ComlineData Command { get; set; } 
+        public ComlineData Command { get; set; }
         public ServiceApi(ComlineData command)
         {
             Command = command;
         }
-        public void Execute()
+        public void Execute(EnumDataSimulation simul = EnumDataSimulation.None)
+        {
+            Command.Results.Tables.Clear();
+            if (simul == EnumDataSimulation.None)
+                ExecuteWithoutSimul();
+            else
+            {
+                string path = Path.Combine(Global.WorkingDirectory, $"{simul.ToString()}.xml");
+                if (File.Exists(path))
+                {
+                    XmlSerializer serializer = new XmlSerializer(typeof(DataTable));
+                    using (StreamReader reader = new StreamReader(path))
+                    {
+                        var dt = (DataTable?)serializer.Deserialize(reader);
+                        if (dt != null) Command.Results.Tables.Add(dt);
+                    }
+            }
+        }
+        }
+        private void ExecuteWithoutSimul()
         {
             using var client = new HttpClient();
             client.BaseAddress = new Uri("https://localhost:7040/");
@@ -47,12 +73,11 @@ namespace ComlineApp.Services
                 Command.Results.AddError($"Erreur de connexion au service Web : {ex.Message}", ErrorCodeEnum.AppelApi);
             }
         }
-
     }
     public interface IServiceApi
-    {
-        void Execute();
-        ComlineData Command { get; set; }
+{
+    void Execute(EnumDataSimulation simul = EnumDataSimulation.None);
+    ComlineData Command { get; set; }
 
-    }
+}
 }
