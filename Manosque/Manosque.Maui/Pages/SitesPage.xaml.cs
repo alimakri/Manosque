@@ -25,7 +25,7 @@ namespace Manosque.Maui.Pages
                 var today = DateTime.Now.AddDays(-1).ToString("dd/MM/yyyy");
                 App.MonServiceAPi.Command.Prompt = $@"Get-Execution -Personne ""{user}"" -DateDebut ""{today}"" -Filter ""ListeSites""";
                 App.MonServiceAPi.Command.Results.Tables.Clear();
-                App.MonServiceAPi.Execute();
+                App.MonServiceAPi.Execute(EnumDataSimulation.ListeSites);
                 DataTable tableSites;
                 try
                 {
@@ -49,6 +49,7 @@ namespace Manosque.Maui.Pages
                             Sites.Add(new Site { Id = id, Tache = (string)row["Tache"], Libelle = (string)row["Reference"], Statut = (long)row["Statut"] });
                     }
                 }
+                this.SitesCollectionView.ItemsSource = Sites;
             }
         }
 

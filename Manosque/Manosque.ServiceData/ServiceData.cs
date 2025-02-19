@@ -3,6 +3,7 @@ using ComlineApp.Services;
 using ComLineCommon;
 using System.Data;
 using System.Diagnostics;
+using System.Xml.Serialization;
 
 namespace Manosque.ServiceData
 {
@@ -38,6 +39,7 @@ namespace Manosque.ServiceData
                 try
                 {
                     Adapter.Fill(Command.Results, Command.TableName);
+                    SerializeResults();
                 }
                 catch (Exception ex)
                 {
@@ -47,6 +49,19 @@ namespace Manosque.ServiceData
                 }
             // Post Process
             //After();
+        }
+
+        private void SerializeResults()
+        {
+            if (!string.IsNullOrEmpty(Command.ModeDebug) && Command.Results.Tables.Count > 0)
+            {
+                var dt = Command.Results.Tables[0]; var path = Path.Combine(Global.WorkingDirectory, $"{dt.TableName}.xml");
+                XmlSerializer serializer = new XmlSerializer(typeof(DataTable));
+                using (StreamWriter writer = new StreamWriter(path))
+                {
+                    serializer.Serialize(writer, dt);
+                }
+            }
         }
 
         //private void After()

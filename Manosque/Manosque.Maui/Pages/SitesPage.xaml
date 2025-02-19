@@ -5,21 +5,20 @@
              x:Class="Manosque.Maui.Pages.SitesPage">
     <StackLayout>
         <ScrollView>
-            <CollectionView>
+            <CollectionView x:Name="SitesCollectionView">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <VerticalStackLayout >
+                        <VerticalStackLayout>
                             <views:CardView
-                            CardNumber="{Binding Libelle}"                                  
-                            ExpirationDate="{Binding Tache}"
-                            CardValidationCode="{Binding Statut}"
-                            BandeauEnabled="True"
-                            CardImage="&#xf1f1;"/>
+                                CardNumber="{Binding Libelle}"                                  
+                                ExpirationDate="{Binding Tache}"
+                                CardValidationCode="{Binding Statut}"                                
+                                BandeauEnabled="True"
+                                CardImage="&#xf1f1;"/>
                         </VerticalStackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
         </ScrollView>
-        <Button Text="Retour" x:Name="RetourButton" Clicked="OnRetour"/>
     </StackLayout>
 </ContentPage>

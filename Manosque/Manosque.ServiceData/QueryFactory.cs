@@ -39,7 +39,7 @@ namespace ComlineApp.Services
 
             // Résult
             var s = Result.ToString();
-            if (command.DisplayQuery == "DisplayQuery") command.DisplayQuery = s;
+            if (command.ModeDebug == "ModeDebug") command.ModeDebug = s;
 
             return s;
         }
@@ -93,8 +93,8 @@ namespace ComlineApp.Services
                     case "Return":
                         if (dico[cle].Trim('"') == "OnlyCount") SelectClause = "Count(*) as count";
                         break;
-                    case "Display":
-                        if (dico[cle].Trim('"') == "Query") Command.DisplayQuery = "DisplayQuery";
+                    case "Mode":
+                        if (dico[cle].Trim('"') == "Debug") Command.ModeDebug = "ModeDebug";
                         break;
                     case "Compute":
                         AvgClause = $@"

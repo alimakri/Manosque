@@ -54,7 +54,7 @@ New-Tache -Id "89A16088-0355-4602-B777-0E49B7B10001" -Reference "Deuxième tâch
 # New-Tache -Id "89A16088-0355-4602-B777-0E49B7B11130" -Reference "Temps par unité"				-Tache "89A16088-0355-4602-B777-0E49B7B11100"
 # 
 # # Action 
-# Get-Tache -Reference "Reprise béton" -Display Query
+# Get-Tache -Reference "Reprise béton" -Mode Debug
 # 
 # # Execute Tache ######################################################################################################################
 # Get-Personne -Reference "mohamed"
@@ -69,7 +69,7 @@ New-Execution -Id "50FE19B9-0F82-4ED5-8961-0E49B7B00001" -Tache "89A16088-0355-4
 New-Execution -Id "50FE19B9-0F82-4ED5-8961-0E49B7B00002" -Tache "89A16088-0355-4602-B777-0E49B7B10001" -Emplacement "310F51DB-BD8A-44D4-B672-B68B6EE9F002" -DateDebut "17/02/2025 10:00" -Personne "0AD1CCD7-2AE3-49BE-94A4-54B84F3DE002"
 
 # Liste des sites pour exécutions de mohamed le 11/02/2025 quelque soit l'heure
-Get-Execution -Personne ^ -DateDebut "17/02/2025" -Filter "ListeSites" -Display Query
+Get-Execution -Personne ^ -DateDebut "17/02/2025" -Filter "ListeSites" -Mode Debug
 
 # 
 # # Présentation des sous tâches -----------------------------------------------------------------------------------------------------
@@ -87,7 +87,7 @@ Get-Execution -Personne ^ -DateDebut "17/02/2025" -Filter "ListeSites" -Display 
 # New-Execution -Id "50FE19B9-0F82-4ED5-8961-0E49B7B00003" -Tache ^ -Emplacement ^ -DateDebut "11/02/2025 08:00" -Personne ^
 # 
 # # Présentation des sous tâches -----------------------------------------------------------------------------------------------------
-# Get-Execution -Filter SousTaches -Personne ^ -Emplacement ^ -Tache ^ -Select "Execution.Id, Tache.Id as Tache, Tache.Reference" -Display Query
+# Get-Execution -Filter SousTaches -Personne ^ -Emplacement ^ -Tache ^ -Select "Execution.Id, Tache.Id as Tache, Tache.Reference" -Mode Debug
 # 
 # 
 # # Execute Tache -----------------------------------------------------------------------------------------------------

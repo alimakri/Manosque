@@ -39,6 +39,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<!-- Files --> 		
+		<MauiAsset Include="Assets\ListeSites.xml" />
+		<MauiAsset Include="Assets\Password.xml" />
 		<!-- App Icon -->
 		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
 
@@ -60,6 +63,7 @@
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.1" />
+		<PackageReference Include="Microsoft.Maui.Essentials" Version="8.0.100" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -68,6 +72,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Pages\TachePage.xaml.cs">
+	    <DependentUpon>TachePage.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Pages\SitesPage.xaml.cs">
 	    <DependentUpon>SitesPage.xaml</DependentUpon>
 	  </Compile>
@@ -78,6 +85,9 @@
 
 	<ItemGroup>
 	  <MauiXaml Update="Components\CardView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\TachePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\SitesPage.xaml">

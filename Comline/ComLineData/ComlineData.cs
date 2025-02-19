@@ -34,7 +34,7 @@ namespace ComlineApp.Manager
         public ErrorCodeEnum ErrorCode = 0;
         public ResultList Results = new();
         public string TableName = "";
-        public string DisplayQuery = "";
+        public string ModeDebug = "";
 
         public bool ContainsAllParameters(params string[] searchparameters)
         {
