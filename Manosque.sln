@@ -59,6 +59,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceSystem", "Services\C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceApi", "Services\ServiceApi\ServiceApi.csproj", "{FD0148DD-ECAA-423F-9C41-F6907AC053E1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AndroidMaui", "AndroidMaui\AndroidMaui.csproj", "{8631C2AC-D66C-4CA8-BA9D-726C04162EB0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -147,6 +149,10 @@ Global
 		{FD0148DD-ECAA-423F-9C41-F6907AC053E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD0148DD-ECAA-423F-9C41-F6907AC053E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD0148DD-ECAA-423F-9C41-F6907AC053E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8631C2AC-D66C-4CA8-BA9D-726C04162EB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8631C2AC-D66C-4CA8-BA9D-726C04162EB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8631C2AC-D66C-4CA8-BA9D-726C04162EB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8631C2AC-D66C-4CA8-BA9D-726C04162EB0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -170,5 +176,9 @@ Global
 		{96C7F936-4361-468A-A36E-F097DA7B9E34} = {87225832-DDDF-4676-8346-60B05BE05B2A}
 		{5CF73E6D-03D7-41FC-9420-BE33650F53CE} = {87225832-DDDF-4676-8346-60B05BE05B2A}
 		{FD0148DD-ECAA-423F-9C41-F6907AC053E1} = {87225832-DDDF-4676-8346-60B05BE05B2A}
+		{8631C2AC-D66C-4CA8-BA9D-726C04162EB0} = {42900C23-D618-4247-AEFD-CF1E31D544D0}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2EEB25CA-FD11-4080-9F5C-1AC33119F565}
 	EndGlobalSection
 EndGlobal
