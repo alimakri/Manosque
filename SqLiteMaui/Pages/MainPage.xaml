@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SqLiteMaui.Pages.MainPage">
+    <VerticalStackLayout Padding="20">
+
+        <Label Text="SQLite - Gestion des Personnes"
+               FontSize="24"
+               FontAttributes="Bold"
+               HorizontalOptions="Center"/>
+
+        <Entry x:Name="NameEntry"
+               Placeholder="Entrez votre nom"
+               FontSize="18"/>
+
+        <Entry x:Name="SurnameEntry"
+               Placeholder="Entrez votre prénom"
+               FontSize="18"/>
+
+        <Entry x:Name="StreetEntry"
+               Placeholder="Rue"
+               FontSize="18"/>
+
+        <Entry x:Name="CityEntry"
+               Placeholder="Ville"
+               FontSize="18"/>
+
+        <Entry x:Name="PostalEntry"
+               Placeholder="Code Postal"
+               FontSize="18"/>
+
+        <Entry x:Name="CompanyEntry"
+               Placeholder="Nom de l'entreprise"
+               FontSize="18"/>
+
+        <Entry x:Name="SectorEntry"
+               Placeholder="Secteur"
+               FontSize="18"/>
+
+        <Button Text="Ajouter"
+                Clicked="OnSaveClicked"/>
+
+        <Button Text="Charger"
+                Clicked="OnLoadClicked"/>
+
+        <Button Text="Supprimer tout"
+                Clicked="OnClearClicked"/>
+
+        <Label x:Name="UserInfoLabel"
+               Text="Aucune donnée"
+               FontSize="18"
+               HorizontalOptions="Center"
+               VerticalOptions="CenterAndExpand"/>
+
+    </VerticalStackLayout>
+</ContentPage>

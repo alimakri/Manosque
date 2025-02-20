@@ -31,6 +31,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComLineManager", "Comline\C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Divers", "Divers", "{618967FA-E7DD-4B4E-96CE-3B3119F2700C}"
 	ProjectSection(SolutionItems) = preProject
+		Extra\ListeSites.xml = Extra\ListeSites.xml
 		Extra\scenario1.ps1 = Extra\scenario1.ps1
 		Extra\scenario2.ps1 = Extra\scenario2.ps1
 		Extra\scenario3.ps1 = Extra\scenario3.ps1
@@ -60,6 +61,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceApi", "Services\ServiceApi\ServiceApi.csproj", "{FD0148DD-ECAA-423F-9C41-F6907AC053E1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AndroidMaui", "AndroidMaui\AndroidMaui.csproj", "{8631C2AC-D66C-4CA8-BA9D-726C04162EB0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqLiteMaui", "SqLiteMaui\SqLiteMaui.csproj", "{E4417AD6-0D3A-4B92-B6DB-A5F9333DEAD8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileStorageMaui", "FileStorageMaui\FileStorageMaui.csproj", "{C8F81F6A-0547-4437-B5BF-AD93D7A9A978}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -153,6 +158,15 @@ Global
 		{8631C2AC-D66C-4CA8-BA9D-726C04162EB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8631C2AC-D66C-4CA8-BA9D-726C04162EB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8631C2AC-D66C-4CA8-BA9D-726C04162EB0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4417AD6-0D3A-4B92-B6DB-A5F9333DEAD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4417AD6-0D3A-4B92-B6DB-A5F9333DEAD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4417AD6-0D3A-4B92-B6DB-A5F9333DEAD8}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{E4417AD6-0D3A-4B92-B6DB-A5F9333DEAD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4417AD6-0D3A-4B92-B6DB-A5F9333DEAD8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8F81F6A-0547-4437-B5BF-AD93D7A9A978}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8F81F6A-0547-4437-B5BF-AD93D7A9A978}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8F81F6A-0547-4437-B5BF-AD93D7A9A978}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8F81F6A-0547-4437-B5BF-AD93D7A9A978}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -177,6 +191,8 @@ Global
 		{5CF73E6D-03D7-41FC-9420-BE33650F53CE} = {87225832-DDDF-4676-8346-60B05BE05B2A}
 		{FD0148DD-ECAA-423F-9C41-F6907AC053E1} = {87225832-DDDF-4676-8346-60B05BE05B2A}
 		{8631C2AC-D66C-4CA8-BA9D-726C04162EB0} = {42900C23-D618-4247-AEFD-CF1E31D544D0}
+		{E4417AD6-0D3A-4B92-B6DB-A5F9333DEAD8} = {42900C23-D618-4247-AEFD-CF1E31D544D0}
+		{C8F81F6A-0547-4437-B5BF-AD93D7A9A978} = {42900C23-D618-4247-AEFD-CF1E31D544D0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2EEB25CA-FD11-4080-9F5C-1AC33119F565}

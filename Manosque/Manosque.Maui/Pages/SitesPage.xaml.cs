@@ -25,7 +25,7 @@ namespace Manosque.Maui.Pages
                 var today = DateTime.Now.AddDays(-1).ToString("dd/MM/yyyy");
                 App.MonServiceAPi.Command.Prompt = $@"Get-Execution -Personne ""{user}"" -DateDebut ""{today}"" -Filter ""ListeSites""";
                 App.MonServiceAPi.Command.Results.Tables.Clear();
-                App.MonServiceAPi.Execute(EnumDataSimulation.ListeSites);
+                App.MonServiceAPi.Execute();
                 DataTable tableSites;
                 try
                 {
