@@ -60,7 +60,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceSystem", "Services\C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceApi", "Services\ServiceApi\ServiceApi.csproj", "{FD0148DD-ECAA-423F-9C41-F6907AC053E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AndroidMaui", "AndroidMaui\AndroidMaui.csproj", "{8631C2AC-D66C-4CA8-BA9D-726C04162EB0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StorageMaui", "AndroidMaui\StorageMaui.csproj", "{8631C2AC-D66C-4CA8-BA9D-726C04162EB0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqLiteMaui", "SqLiteMaui\SqLiteMaui.csproj", "{E4417AD6-0D3A-4B92-B6DB-A5F9333DEAD8}"
 EndProject
@@ -156,6 +156,7 @@ Global
 		{FD0148DD-ECAA-423F-9C41-F6907AC053E1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8631C2AC-D66C-4CA8-BA9D-726C04162EB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8631C2AC-D66C-4CA8-BA9D-726C04162EB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8631C2AC-D66C-4CA8-BA9D-726C04162EB0}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{8631C2AC-D66C-4CA8-BA9D-726C04162EB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8631C2AC-D66C-4CA8-BA9D-726C04162EB0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E4417AD6-0D3A-4B92-B6DB-A5F9333DEAD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
