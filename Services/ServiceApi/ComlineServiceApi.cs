@@ -43,7 +43,7 @@ namespace ComlineApp.Services
         private void ExecuteWithoutSimul()
         {
             using var client = new HttpClient();
-            client.BaseAddress = new Uri("https://localhost:7040/");
+            client.BaseAddress = new Uri("https://localhost:7149/");
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
@@ -55,15 +55,9 @@ namespace ComlineApp.Services
                 HttpResponseMessage response = client.Send(request);
                 if (response.IsSuccessStatusCode)
                 {
-                    DataTable? dt = (DataTable?)JsonConvert.DeserializeObject(
-                        Regex.Unescape(response.Content.ReadAsStringAsync().GetAwaiter().GetResult()).Trim('"'),
-                        typeof(DataTable));
-                    if (response.Headers.TryGetValues("X-Table-Name", out var tableNameValues) && dt != null)
-                    {
-                        string? tableName = tableNameValues.FirstOrDefault();
-                        dt.TableName = tableName;
-                    }
-                    if (dt != null) Command.Results.Tables.Add(dt);
+                    var jsonResult = Regex.Unescape(response.Content.ReadAsStringAsync().GetAwaiter().GetResult()).Trim('"');
+                    var result = (ResultList?)JsonConvert.DeserializeObject(jsonResult, typeof(ResultList));
+                    if (result != null) Command.Results = result;
                 }
                 else
                     Command.Results.AddError($"Erreur d'un appel api : {response.ReasonPhrase}", ErrorCodeEnum.AppelApi);
