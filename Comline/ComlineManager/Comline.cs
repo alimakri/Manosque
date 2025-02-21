@@ -173,6 +173,8 @@ namespace ComlineApp.Manager
 
     public interface ICoreComline
     {
+        void Execute(List<string?> prompts);
+        ResultList Results { get; }
     }
 
     public enum ContinueEnum { None, StopOnError, Stop, ContinueOnError }
