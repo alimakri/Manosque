@@ -9,7 +9,7 @@ namespace Manosque.ServiceData
 {
     public class ServiceData : ServiceDataBase, IServiceData
     {
-        public ServiceData()
+        public ServiceData(string connectionString) : base(connectionString)
         {
             DataTable t = new();
             Query.CommandText = "select * from Absence";

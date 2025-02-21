@@ -19,12 +19,12 @@ namespace ComlineApp.Services
         protected SqlDataAdapter Adapter = new();
         #endregion
 
-        public ServiceDataBase()
+        public ServiceDataBase(string connectionString)
         {
             //Command = command;
             SqlConnection cnx = new()
             {
-                ConnectionString = Global.ConnectionString
+                ConnectionString = connectionString
             };
             cnx.Open();
             Query.Connection = cnx;

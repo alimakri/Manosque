@@ -6,7 +6,7 @@ using ComLineCommon;
 
 namespace ComlineApp.Manager
 {
-    public partial class CoreComline(IServiceData serviceData)
+    public partial class CoreComline(IServiceData serviceData) : ICoreComline
     {
         public IServiceData MonServiceData = serviceData;
 
@@ -170,5 +170,10 @@ namespace ComlineApp.Manager
         private static partial Regex MyRegex();
         #endregion
     }
+
+    public interface ICoreComline
+    {
+    }
+
     public enum ContinueEnum { None, StopOnError, Stop, ContinueOnError }
 }

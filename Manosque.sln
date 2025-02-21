@@ -66,6 +66,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqLiteMaui", "SqLiteMaui\Sq
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileStorageMaui", "FileStorageMaui\FileStorageMaui.csproj", "{C8F81F6A-0547-4437-B5BF-AD93D7A9A978}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "makrisoft", "makrisoft", "{9A23E024-E3B9-434A-80DB-AAABDC0A4D27}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MktCore8", "MktCore8\MktCore8.csproj", "{B0D4B903-AFF6-4455-86C8-E509242BCE4B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -168,6 +172,10 @@ Global
 		{C8F81F6A-0547-4437-B5BF-AD93D7A9A978}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C8F81F6A-0547-4437-B5BF-AD93D7A9A978}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C8F81F6A-0547-4437-B5BF-AD93D7A9A978}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0D4B903-AFF6-4455-86C8-E509242BCE4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0D4B903-AFF6-4455-86C8-E509242BCE4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0D4B903-AFF6-4455-86C8-E509242BCE4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0D4B903-AFF6-4455-86C8-E509242BCE4B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -194,6 +202,7 @@ Global
 		{8631C2AC-D66C-4CA8-BA9D-726C04162EB0} = {42900C23-D618-4247-AEFD-CF1E31D544D0}
 		{E4417AD6-0D3A-4B92-B6DB-A5F9333DEAD8} = {42900C23-D618-4247-AEFD-CF1E31D544D0}
 		{C8F81F6A-0547-4437-B5BF-AD93D7A9A978} = {42900C23-D618-4247-AEFD-CF1E31D544D0}
+		{B0D4B903-AFF6-4455-86C8-E509242BCE4B} = {9A23E024-E3B9-434A-80DB-AAABDC0A4D27}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2EEB25CA-FD11-4080-9F5C-1AC33119F565}

@@ -12,7 +12,7 @@
         // Data
         public readonly static string DatabaseName = "ManosqueBD";
         public readonly static string VersionDatabase = "Version Database 1.0";
-        public readonly static string ConnectionString = @"Data Source=.\SQLEXPRESS;Initial Catalog=ManosqueBD;Integrated Security=SSPI;TrustServerCertificate=True";
+        //public readonly static string ConnectionString = @"Data Source=.\SQLEXPRESS;Initial Catalog=ManosqueBD;Integrated Security=SSPI;TrustServerCertificate=True";
         public readonly static List<string> SpecialParameters = ["Liste", "Select", "Return", "Mode", "Compute", "Filter"];
 
         // QueryFactory
