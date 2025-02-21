@@ -22,7 +22,7 @@ namespace Manosque.Maui.Pages
 
                 var Sites = new ObservableCollection<Site>();
 
-                var today = DateTime.Now.AddDays(-1).ToString("dd/MM/yyyy");
+                var today = new DateTime(2025, 2, 17);
                 App.MonServiceAPi.Command.Prompt = $@"Get-Execution -Personne ""{user}"" -DateDebut ""{today}"" -Filter ""ListeSites""";
                 App.MonServiceAPi.Command.Results.Tables.Clear();
                 App.MonServiceAPi.Execute();

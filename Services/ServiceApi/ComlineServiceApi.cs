@@ -43,7 +43,7 @@ namespace ComlineApp.Services
         private void ExecuteWithoutSimul()
         {
             using var client = new HttpClient();
-            client.BaseAddress = new Uri("https://localhost:7250/");
+            client.BaseAddress = new Uri("https://makrisoft.net/");
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 

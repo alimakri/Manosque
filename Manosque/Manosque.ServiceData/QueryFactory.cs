@@ -145,8 +145,8 @@ namespace ComlineApp.Services
                                 select x.Emplacement, e.Reference, x.Statut, t.Reference tache from Execution x 
                                     inner join Emplacement e on x.Emplacement=e.Id
                                     inner join Tache t on x.tache=t.Id
-                                    Group by x.Statut, x.Emplacement, CAST(DateDebut as Date), x.Personne, e.Reference, t.Reference
-                                    having CAST(DateDebut as Date)={dico["DateDebut"]} and Personne=@id_Personne");
+                                    Group by x.Statut, x.Emplacement,  CONVERT(nvarchar(50), DateDebut, 103), x.Personne, e.Reference, t.Reference
+                                    having CONVERT(nvarchar(50), DateDebut, 103)={dico["DateDebut"]} and Personne=@id_Personne");
                     break;
                 case "TopTache":
                     if (!Command.ContainsAllParameters("Personne", "Emplacement"))
