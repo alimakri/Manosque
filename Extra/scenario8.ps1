@@ -73,7 +73,8 @@ Get-Execution -Personne ^ -DateDebut "17/02/2025" -Filter "ListeSites" -Mode Deb
 
 # 
 # # Présentation des sous tâches -----------------------------------------------------------------------------------------------------
-# Get-Execution -Filter SousTaches -Personne ^ -Emplacement ^ -Tache ^ -Select "Execution.Id, Tache.Id as Tache, Tache.Reference"
+Get-Execution -Filter SousTaches -Personne "mohamed" -Emplacement "Part-Dieu" -Tache "Remise en état lot vacants" -Select "Execution.Id, Tache.Id as Tache, Tache.Reference"
+Get-Action -Tache "Remise en état lot vacants" 
 # 
 # # Execute Tache -----------------------------------------------------------------------------------------------------
 # Get-Tache -Reference "Ligne sol"

@@ -1,0 +1,7 @@
+POST https://makrisoft.net/api/comline HTTP/1.1
+User-Agent: Fiddler
+Host: makrisoft.net
+Content-Type: application/json
+Content-Length: 98
+
+{"Command":"Get-Execution -Personne \"mohamed\" -DateDebut \"17/02/2025\" -Filter \"ListeSites\""}

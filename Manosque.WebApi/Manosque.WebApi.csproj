@@ -7,12 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.5" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ComLineData\ComLineData.csproj" />
     <ProjectReference Include="..\ComlineManager\ComLineManager.csproj" />
+    <ProjectReference Include="..\ComlineServiceData\ComlineServices.ServiceData.csproj" />
+    <ProjectReference Include="..\ComlineServiceSystem\ComlineServices.ServiceSystem.csproj" />
     <ProjectReference Include="..\Manosque.ServiceData\Manosque.ServiceData.csproj" />
   </ItemGroup>
 

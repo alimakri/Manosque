@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ComLineCommon\ComLineCommon.csproj" />
+    <ProjectReference Include="..\ComLineData\ComLineData.csproj" />
+    <ProjectReference Include="..\ComlineServiceApi\ComlineServices.ServiceApi.csproj" />
+    <ProjectReference Include="..\ComlineServiceData\ComlineServices.ServiceData.csproj" />
+    <ProjectReference Include="..\ComlineServiceSystem\ComlineServices.ServiceSystem.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DataTable>
+  <xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:MainDataTable="Query" msdata:UseCurrentLocale="true">
+      <xs:complexType>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="Query">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Index" msdata:AutoIncrement="true" msdata:AutoIncrementSeed="1" type="xs:int" minOccurs="0" />
+                <xs:element name="Libelle" type="xs:string" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:choice>
+      </xs:complexType>
+    </xs:element>
+  </xs:schema>
+  <diffgr:diffgram xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:diffgr="urn:schemas-microsoft-com:xml-diffgram-v1">
+    <NewDataSet>
+      <Query diffgr:id="Query1" msdata:rowOrder="0" diffgr:hasChanges="inserted">
+        <Index>1</Index>
+        <Libelle>Declare @id_Personne nvarchar(50);
+select @id_Personne=id  from TableId where Reference='Personne';
+select x.Emplacement, e.Reference, x.Statut, t.Reference tache from Execution x 
+inner join Emplacement e on x.Emplacement=e.Id
+inner join Tache t on x.tache=t.Id
+Group by x.Statut, x.Emplacement,  CONVERT(nvarchar(50), DateDebut, 103), x.Personne, e.Reference, t.Reference
+having CONVERT(nvarchar(50), DateDebut, 103)='17/02/2025' and Personne=@id_Personne</Libelle>
+      </Query>
+    </NewDataSet>
+  </diffgr:diffgram>
+</DataTable>

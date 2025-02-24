@@ -1,5 +1,5 @@
 using ComlineApp.Manager;
-using ComlineApp.Services;
+using ComlineServices;
 using Manosque.ServiceData;
 
 
@@ -11,7 +11,7 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSingleton<ICoreComline, CoreComline>();
-builder.Services.AddSingleton<IServiceData>(provider => new ServiceData(connectionString));
+builder.Services.AddSingleton<IServiceData>(provider => new Manosque.ServiceData.ServiceData(connectionString));
 
 
 var app = builder.Build();
