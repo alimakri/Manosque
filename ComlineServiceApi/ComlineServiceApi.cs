@@ -47,7 +47,7 @@ namespace ComlineServices
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            var json = $@"{{""Command"":""{Command.Prompt.Replace("\"", "\\\"")}""}}";
+            var json = $@"{{""Script"":""{string.Join(';',prompts)}""}}";
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             HttpRequestMessage request = new(HttpMethod.Post, "api/comline") { Content = content };
             try

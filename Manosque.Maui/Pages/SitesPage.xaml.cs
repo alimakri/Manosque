@@ -7,27 +7,35 @@ namespace Manosque.Maui.Pages
 {
     public partial class SitesPage : ContentPage, IQueryAttributable
     {
-        private string PromptSites { get { return $@"Get-Execution -Personne ""{User}"" -DateDebut ""{Today}"" -Filter ""ListeSites"""; } }
+        private List<string> PromptsSites;
         private string? User = "";
+        private string? Execution = "";
         private DateOnly Today = new DateOnly(2025, 2, 17);
 
         public SitesPage()
         {
             InitializeComponent();
-
+            PromptsSites = ["Get-Execution -Reference NULL", $@"Get-Execution -Execution ^ -Personne ""{User}"" -DateDebut ""{Today}"" -Filter ""ListeSites"""];
         }
 
         public void ApplyQueryAttributes(IDictionary<string, object> query)
         {
+            if (query.ContainsKey("execution"))
+            {
+                Execution = query["execution"] as string;
+                PromptsSites[0].Replace("NULL", $@"""{Execution}""");
+            }
             if (query.ContainsKey("user"))
+            {
+                User = query["user"] as string;
+            }
             {
                 User = query["user"] as string;
 
                 var Sites = new ObservableCollection<Site>();
 
-                App.MonServiceAPi.Command.Prompt = PromptSites;
                 App.MonServiceAPi.Command.Results.Tables.Clear();
-                App.MonServiceAPi.Execute();
+                App.MonServiceAPi.Execute(PromptsSites);
 
                 var tableList = App.MonServiceAPi.Command.Results.TableList;
                 if (tableList.Contains("Error"))
@@ -42,7 +50,7 @@ namespace Manosque.Maui.Pages
                     foreach (DataRow row in tableSites.Rows)
                     {
                         if (Guid.TryParse(row["Emplacement"].ToString(), out id))
-                            Sites.Add(new Site { Id = id, Tache = (string)row["Tache"], Libelle = (string)row["Reference"], Statut = (long)row["Statut"] });
+                            Sites.Add(new Site { Id = id, Tache = row["Tache"] as string, Libelle = (string)row["Reference"], Statut = (long)row["Statut"] });
                     }
                     this.SitesCollectionView.ItemsSource = Sites;
                 }

@@ -20,7 +20,7 @@ namespace Manosque.Maui.Pages
         {
             var command = App.MonServiceAPi.Command;
             command.Prompt = Prompt.Text;
-            App.MonServiceAPi.Execute();
+            App.MonServiceAPi.Execute([command.Prompt]);
             DataTablesStackLayout.Clear();
             try
             {

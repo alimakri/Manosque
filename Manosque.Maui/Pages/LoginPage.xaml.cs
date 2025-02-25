@@ -11,7 +11,7 @@
         {
             var command = App.MonServiceAPi.Command;
             command.Prompt = PromptLogin;
-            App.MonServiceAPi.Execute();
+            App.MonServiceAPi.Execute([command.Prompt]);
 
             try
             {

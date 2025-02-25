@@ -30,7 +30,7 @@ namespace ComlineApp.Manager
             get { return $"{Verb}-{Noun}"; }
         }
         public string QueryName = "";
-        public string Prompt = "";
+        public List<string> Prompts = new();
         public ErrorCodeEnum ErrorCode = 0;
         public ResultList Results = new();
         public string TableName = "";

@@ -111,6 +111,6 @@ public partial class CardView : Frame
 
     private async void OnTacheClicked(object sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync($"//root/pages/tache?tache={CardNumberLabel.Text}");
+        await Shell.Current.GoToAsync($"//sites?execution={CardNumber}");
     }
 }

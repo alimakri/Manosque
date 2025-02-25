@@ -61,13 +61,14 @@ New-Execution -Id "50FE19B9-0F82-4ED5-8961-0E49B7B01130" -Reference "EXE_1.1.3" 
 # ##################################
 
 # Liste des sites ******************
-Get-Execution -Execution NULL -Personne "mohamed" -DateDebut "17/02/2025" -Filter "ListeSites" -Mode Debug
-
-# WHILE
-Get-Execution -Reference "EXE_1"
-
-Get-Execution -Execution ^ -Personne "mohamed" -DateDebut "17/02/2025" -Filter "ListeSites" -Mode Debug
-
-Get-Execution -Reference "EXE_1.1"
-
-Get-Execution -Execution ^ -Personne "mohamed" -DateDebut "17/02/2025" -Filter "ListeSites" -Mode Debug
+# Get-Execution -Reference NULL
+# Get-Execution -Execution ^ -Personne "mohamed" -DateDebut "17/02/2025" -Filter "ListeSites" -Mode Debug
+# 
+# # WHILE
+# Get-Execution -Reference "EXE_1"
+# 
+# Get-Execution -Execution ^ -Personne "mohamed" -DateDebut "17/02/2025" -Filter "ListeSites" -Mode Debug
+# 
+# Get-Execution -Reference "EXE_1.1"
+# 
+# Get-Execution -Execution ^ -Personne "mohamed" -DateDebut "17/02/2025" -Filter "ListeSites" -Mode Debug

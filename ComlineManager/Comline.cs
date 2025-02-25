@@ -76,7 +76,7 @@ namespace ComlineApp.Manager
                     MonServiceData.Execute(Command);
                     break;
                 case "Api":
-                    new ServiceApi(Command).Execute();
+                    new ServiceApi(Command).Execute([Command.Prompt]);
                     break;
                 default:
                     Command.Results.AddError($"Comline.cs.{new StackTrace(true).GetFrame(0)?.GetFileLineNumber()}: la commande {Command.QueryName} n'est pas associé à un service ou le service [{ServiceSystem.Options["Service"]}] n'existe pas !", ErrorCodeEnum.UnexistedService);
