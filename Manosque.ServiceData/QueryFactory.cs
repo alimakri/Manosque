@@ -146,7 +146,7 @@ namespace ComlineApp.Services
                     }
                     else
                         Result.Append($@"
-                                select x.Id, x.Emplacement, e.Reference, x.Statut, t.Reference tache from Execution x 
+                                select x.Reference, x.Id, x.Emplacement, e.Reference, x.Statut, t.Reference tache from Execution x 
                                     inner join Emplacement e on x.Emplacement=e.Id
                                     left join Tache t on x.tache=t.Id
                                     where ((@id_Execution is null and x.Execution is NULL) or (x.Execution = @id_Execution)) and CAST(DateDebut as Date) = CONVERT(Date, {dico["DateDebut"]}, 103) and Personne=@id_Personne");

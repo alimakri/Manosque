@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ResultList>
+  <xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true">
+      <xs:complexType>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="Info">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Index" msdata:AutoIncrement="true" msdata:AutoIncrementSeed="1" type="xs:int" minOccurs="0" />
+                <xs:element name="Libelle" type="xs:string" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="Execution">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Reference" type="xs:string" minOccurs="0" />
+                <xs:element name="Id" msdata:DataType="System.Guid, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e" type="xs:string" minOccurs="0" />
+                <xs:element name="Emplacement" msdata:DataType="System.Guid, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e" type="xs:string" minOccurs="0" />
+                <xs:element name="Reference1" type="xs:string" minOccurs="0" />
+                <xs:element name="Statut" type="xs:int" minOccurs="0" />
+                <xs:element name="tache" type="xs:string" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:choice>
+      </xs:complexType>
+    </xs:element>
+  </xs:schema>
+  <diffgr:diffgram xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:diffgr="urn:schemas-microsoft-com:xml-diffgram-v1">
+    <NewDataSet>
+      <Info diffgr:id="Info1" msdata:rowOrder="0" diffgr:hasChanges="inserted">
+        <Index>1</Index>
+        <Libelle>Declare @id_Execution nvarchar(50);
+select @id_Execution=id  from TableId where Reference='Execution';
+Declare @id_Personne nvarchar(50);
+select @id_Personne=id  from Personne where Reference='mohamed';
+select x.Reference, x.Id, x.Emplacement, e.Reference, x.Statut, t.Reference tache from Execution x 
+inner join Emplacement e on x.Emplacement=e.Id
+left join Tache t on x.tache=t.Id
+where ((@id_Execution is null and x.Execution is NULL) or (x.Execution = @id_Execution)) and CAST(DateDebut as Date) = CONVERT(Date, '17/02/2025', 103) and Personne=@id_Personne</Libelle>
+      </Info>
+      <Info diffgr:id="Info2" msdata:rowOrder="1" diffgr:hasChanges="inserted">
+        <Index>2</Index>
+        <Libelle>Get-Execution -Execution ^ -Personne "mohamed" -DateDebut "17/02/2025" -Filter "ListeSites" -Mode Debug</Libelle>
+      </Info>
+      <Execution diffgr:id="Execution1" msdata:rowOrder="0">
+        <Reference>EXE_1.1</Reference>
+        <Id>50fe19b9-0f82-4ed5-8961-0e49b7b00110</Id>
+        <Emplacement>310f51db-bd8a-44d4-b672-b68b6ee9f001</Emplacement>
+        <Reference1>Site1</Reference1>
+        <Statut>0</Statut>
+      </Execution>
+      <Execution diffgr:id="Execution2" msdata:rowOrder="1">
+        <Reference>EXE_1.2</Reference>
+        <Id>50fe19b9-0f82-4ed5-8961-0e49b7b00120</Id>
+        <Emplacement>310f51db-bd8a-44d4-b672-b68b6ee9f001</Emplacement>
+        <Reference1>Site1</Reference1>
+        <Statut>0</Statut>
+      </Execution>
+      <Execution diffgr:id="Execution3" msdata:rowOrder="2">
+        <Reference>EXE_1.3.A</Reference>
+        <Id>50fe19b9-0f82-4ed5-8961-0e49b7b0013a</Id>
+        <Emplacement>310f51db-bd8a-44d4-b672-b68b6ee9f001</Emplacement>
+        <Reference1>Site1</Reference1>
+        <Statut>0</Statut>
+      </Execution>
+    </NewDataSet>
+  </diffgr:diffgram>
+</ResultList>
