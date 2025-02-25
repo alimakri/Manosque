@@ -7,12 +7,28 @@
     xmlns:local="clr-namespace:Manosque.Maui.Pages"
     Shell.FlyoutBehavior="Flyout" BackgroundColor="Gray"
     Title="Manosque.Maui">
-    <FlyoutItem Title="Login" Icon="home.png" Route="root">
-        <ShellContent Title="Login" Route="login" ContentTemplate="{DataTemplate local:LoginPage}" />
-        <Tab Route="pages">
-            <ShellContent Title="Sites" Route="sites" ContentTemplate="{DataTemplate local:SitesPage}" />
-            <ShellContent Title="Taches" Route="tache" ContentTemplate="{DataTemplate local:TachePage}" />
-            <ShellContent Title="Comline" Route="comline" ContentTemplate="{DataTemplate local:ComlinePage}" />
-        </Tab>
+    <FlyoutItem Title="Login" FlyoutIcon="{StaticResource IconOne}">
+        <ShellContent
+            Title="Login"
+            ContentTemplate="{DataTemplate local:LoginPage}"
+            Route="login" />
+    </FlyoutItem>
+    <FlyoutItem Title="Sites" FlyoutIcon="{StaticResource IconTwo}">
+        <ShellContent
+            Title="Liste des sites"
+            ContentTemplate="{DataTemplate local:SitesPage}"
+            Route="sites" />
+    </FlyoutItem>
+    <FlyoutItem Title="Tâches" FlyoutIcon="{StaticResource IconThree}">
+        <ShellContent
+            Title="Liste des tâches"
+            ContentTemplate="{DataTemplate local:TachePage}"
+            Route="taches" />
+    </FlyoutItem>
+    <FlyoutItem Title="Comline" FlyoutIcon="{StaticResource IconFour}">
+        <ShellContent
+            Title="Requête Comline"
+            ContentTemplate="{DataTemplate local:ComlinePage}"
+            Route="comline" />
     </FlyoutItem>
 </Shell>

@@ -20,7 +20,7 @@
                 if (n == 1)
                 {
                     App.User = UserNom.Text;
-                    await Shell.Current.GoToAsync($"//root/pages/sites?user={App.User}");
+                    await Shell.Current.GoToAsync($"//sites?user={App.User}");
                     return;
                 }
             }

@@ -73,9 +73,10 @@ namespace ComlineApp.Services
                     case var x when Global.ForeignKeys.ContainsKey($"{Command.Noun}.{cle}"):
                         Result.Append($@"
                                 Declare @id_{cle} nvarchar(50);");
-                        if (Guid.TryParse(x[cle].Replace("\"", ""), out _))
-                            Result.Append($@"
-                                select @id_{cle}={x[cle].Replace("\"", "'")};");
+                        if (x[cle].ToUpper()=="NULL") 
+                            Result.Append($@"select @id_{cle}=NULL;");
+                        else if (Guid.TryParse(x[cle].Replace("\"", ""), out _)) 
+                            Result.Append($@"select @id_{cle}={x[cle].Replace("\"", "'")};");
                         else
                             Result.Append($@"
                                 select @id_{cle}=id  from {Global.ForeignKeys[$"{Command.Noun}.{cle}"]} where Reference='{x[cle].Replace("\"", "")}';");
@@ -145,11 +146,10 @@ namespace ComlineApp.Services
                     }
                     else
                         Result.Append($@"
-                                select x.Emplacement, e.Reference, x.Statut, t.Reference tache from Execution x 
+                                select x.Id, x.Emplacement, e.Reference, x.Statut, t.Reference tache from Execution x 
                                     inner join Emplacement e on x.Emplacement=e.Id
-                                    inner join Tache t on x.tache=t.Id
-                                    Group by x.Statut, x.Emplacement,  DateDebut, x.Personne, e.Reference, t.Reference
-                                    having CAST(DateDebut as Date) = CONVERT(Date, {dico["DateDebut"]}, 103) and Personne=@id_Personne");
+                                    left join Tache t on x.tache=t.Id
+                                    where ((@id_Execution is null and x.Execution is NULL) or (x.Execution = @id_Execution)) and CAST(DateDebut as Date) = CONVERT(Date, {dico["DateDebut"]}, 103) and Personne=@id_Personne");
                     break;
                 case "TopTache":
                     if (!Command.ContainsAllParameters("Personne", "Emplacement"))

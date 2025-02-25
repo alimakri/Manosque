@@ -10,7 +10,8 @@ ServiceSystem.Options.Add("DisplayMode", "Normal");
 
 // Injection de dépendance : IServiceData = ServiceData de Manosque dans Comline
 var serviceProvider = new ServiceCollection()
-    .AddTransient(provider => new Manosque.ServiceData.ServiceData("Server=.\\SQLEXPRESS;Database=ManosqueBD;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True"))
+    //.AddTransient(provider => new Manosque.ServiceData.ServiceData("Server=.\\SQLEXPRESS;Database=ManosqueBD;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True"))
+    .AddSingleton<IServiceData>(provider => new Manosque.ServiceData.ServiceData("Server=.\\SQLEXPRESS;Database=ManosqueBD;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True"))
     .AddTransient<CoreComline>()
     .BuildServiceProvider();
 var comLine = serviceProvider.GetService<CoreComline>();

@@ -16,6 +16,7 @@ namespace Manosque.Maui
                     fonts.AddFont("MaterialIcons-Regular.ttf", "MaterialIcons");
                     fonts.AddFont("FontAwesome6-Brands.otf", "FA6Brands");
                     fonts.AddFont("FontAwesome6-Regular.otf", "FA6Regular");
+                    fonts.AddFont("fa_solid.ttf", "FontAwesome");
                 });
 #if DEBUG
             builder.Logging.AddDebug();
