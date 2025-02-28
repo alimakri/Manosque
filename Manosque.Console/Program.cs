@@ -4,7 +4,14 @@ using ComLineConsoleApp;
 using ComlineServices;
 using Microsoft.Extensions.DependencyInjection;
 
-// Options
+// Options Ali
+ServiceData.WorkingDirectory = @"D:\Manosque\extra";
+ServiceSystem.WorkingDirectory = @"D:\Manosque\extra";
+
+// Options Thierno
+//ServiceData.WorkingDirectory = @"D:\Manosque\extra";
+//ServiceSystem.WorkingDirectory = @"D:\Manosque\extra";
+
 ServiceSystem.Options.Add("Service", "System");
 ServiceSystem.Options.Add("DisplayMode", "Normal");
 
@@ -19,11 +26,8 @@ var comLine = serviceProvider.GetService<CoreComline>();
 if (comLine == null) return;
 
 // La console
-var maConsole = new ConsoleComline(comLine)
-{
-    // Initialiser le script de démarrage
-    Prompts = [Global.Prompt]
-};
+comLine.Command.Prompts = [Global.Prompt];
+var maConsole = new ConsoleComline(comLine);
 
 // GO !
 maConsole.Launch();

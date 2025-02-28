@@ -39,7 +39,7 @@ namespace MktCore8.Controllers
                     rd.Close();
                 }
             }
-            catch (Exception ex) { ViewBag.Reader = "Erreur Reader"; }
+            catch (Exception) { ViewBag.Reader = "Erreur Reader"; }
             return View();
         }
 

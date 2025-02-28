@@ -3,13 +3,13 @@ using System.Data;
 using System.Diagnostics;
 using ComLineCommon;
 using ComlineServices;
+using ComLineData;
 
 namespace ComlineApp.Manager
 {
     public partial class CoreComline(IServiceData serviceData) : ICoreComline
     {
         public IServiceData MonServiceData = serviceData;
-
 
         #region Properties
         private readonly Regex TheRegex = MyRegex();
@@ -28,32 +28,30 @@ namespace ComlineApp.Manager
         #endregion
 
         #region Execute
-        public void Execute(List<string?> prompts)
+        public void Execute()
         {
-            if (prompts.Count == 0) return; var prompt = prompts[0];
-            if (prompt != null && string.IsNullOrEmpty(prompt.Trim())) return;
-            //if (prompt != null && prompt.StartsWith('#')) return;
-
-            // Execute prompt
-            if (prompt != null) Command.Prompt = prompt.Trim();
-            Results.Tables.Clear();
-            Command.ErrorCode = ErrorCodeEnum.None;
-            Continue = ContinueEnum.StopOnError;
-
-            AnalyzePrompt();
-            var res = SelectService();
-            if (res == ErrorCodeEnum.None && res != ErrorCodeEnum.NothingToDo) ExecuteService();
-
-            if (Continue == ContinueEnum.Stop || (Command.ErrorCode != ErrorCodeEnum.None && Command.ErrorCode != ErrorCodeEnum.NothingToDo))
+            var prompt = Command.Prompts[0].Trim();
+            if (!string.IsNullOrEmpty(prompt) && !prompt.StartsWith('#'))
             {
-                prompts.RemoveRange(1, prompts.Count - 1);
+                // Analyze
+                AnalyzePrompt();
+                // SelectService
+                var res = SelectService();
+                // ExecuteService
+                if (res == ErrorCodeEnum.None && res != ErrorCodeEnum.NothingToDo) ExecuteService();
             }
+            if (Continue == ContinueEnum.Stop || (Command.ErrorCode != ErrorCodeEnum.None && Command.ErrorCode != ErrorCodeEnum.NothingToDo))
+                Command.Prompts.RemoveRange(1, Command.Prompts.Count - 1);
 
             // Execute-File ----------------------------
             if (Command.ErrorCode == 0 && SingleCommand == "Execute-File")
             {
-                var table = Results.Tables["Commande"];
-                if (table != null) prompts.InsertRange(1, table.AsEnumerable().Select(row => row.Field<string>("Libelle")));
+                DataTable? table = Results.Tables["Commande"];
+                if (table != null)
+                {
+                    var list = table?.AsEnumerable().Select(row => row.Field<string>("Libelle")).Cast<string>().Where(x => x != null);
+                    if (list != null && list.Any()) Command.Prompts.InsertRange(1, list);
+                }
             }
         }
         private void ExecuteService()
@@ -76,7 +74,7 @@ namespace ComlineApp.Manager
                     MonServiceData.Execute(Command);
                     break;
                 case "Api":
-                    new ServiceApi(Command).Execute([Command.Prompt]);
+                    new ServiceApi(Command).Execute();
                     break;
                 default:
                     Command.Results.AddError($"Comline.cs.{new StackTrace(true).GetFrame(0)?.GetFileLineNumber()}: la commande {Command.QueryName} n'est pas associé à un service ou le service [{ServiceSystem.Options["Service"]}] n'existe pas !", ErrorCodeEnum.UnexistedService);
@@ -90,7 +88,7 @@ namespace ComlineApp.Manager
         private void AnalyzePrompt()
         {
             // Regex error
-            var matches = TheRegex.Match(Command.Prompt);
+            var matches = TheRegex.Match(Command.Prompts[0]);
             if (!matches.Success)
             {
                 Command.Results.AddError($"Comline.cs.{new StackTrace(true).GetFrame(0)?.GetFileLineNumber()} : La commande {Command.QueryName} n'existe pas !", ErrorCodeEnum.UnexistedCommand);
@@ -103,27 +101,26 @@ namespace ComlineApp.Manager
             Command.Noun = matches.Groups["noun"].Value.Capitalize();
 
             // Parameters
-            Command.Parameters.Clear();
             var parameters = matches.Groups["param"].Captures;
             var values = matches.Groups["value"].Captures;
             for (int i = 0; i < parameters.Count; i++)
             {
                 var val = "";
                 if (i < values.Count) val = values[i].Value;
-                Command.Parameters.Add(
-                    parameters[i].Value.Capitalize(),
-                    val);
+                Command.Parameters.Add(parameters[i].Value.Capitalize(), new Tuple<string, string>(parameters[i].Value.Capitalize(), val));
             }
-            Command.Parameters = Command.Parameters.OrderBy(p => p.Key).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+            //Command.Parameters = Command.Parameters.OrderBy(p => p.Key).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+
             // Continue
             ContinueEnum c = ContinueEnum.None;
             if (Command.Parameters.ContainsKey("Continue"))
             {
-                _ = Enum.TryParse<ContinueEnum>(Command.Parameters["Continue"], out c);
+                _ = Enum.TryParse<ContinueEnum>(Command.Parameters["Continue"].Item2, out c);
                 if (c != ContinueEnum.None) Continue = c;
                 Command.Parameters.Remove("Continue");
             }
 
+            // QueryName
             Command.QueryName = SingleCommand;
 
             if (Command.Parameters.Count > 0)
@@ -135,8 +132,6 @@ namespace ComlineApp.Manager
                     case "New":
                         if (Command.Parameters.ContainsKey("Reference"))
                             Command.QueryName = $"{SingleCommand}.InsertFull";
-                        //else
-                        //    Command.QueryName += "error";
                         break;
                     default:
                         Command.QueryName += "." + string.Join('.', Command.Parameters.Select(x => x.Key.ToString()).OrderBy(x => x)); break;
@@ -153,7 +148,7 @@ namespace ComlineApp.Manager
             }
             else if (Command.SingleCommand == "Set-Option" && Command.Parameters.ContainsKey("Service"))
             {
-                ServiceSystem.Options["Service"] = Command.Parameters["Service"];
+                ServiceSystem.Options["Service"] = Command.Parameters["Service"].Item2;
                 Command.Results.AddInfo($"Service {ServiceSystem.Options["Service"]} ok", "Info");
                 Command.ErrorCode = ErrorCodeEnum.NothingToDo;
 
@@ -161,19 +156,24 @@ namespace ComlineApp.Manager
             return Command.ErrorCode;
         }
 
-        public void Reset()
-        {
-            Command = new ComlineData();
-        }
 
         [GeneratedRegex(@"(?<verb>\w+)-(?<noun>\w+)((?:\s+-(?<param>\w+)(?:[\f\n\r\t\v\s\p{Z}]+(?<value>""[^""]+""|\S+(?:\.\d+)?))?)*)")]
         private static partial Regex MyRegex();
+
+        public void Reset()
+        {
+            Results.Tables.Clear();
+            Command.ErrorCode = ErrorCodeEnum.None;
+            Continue = ContinueEnum.StopOnError;
+            Command.Parameters.Clear();
+            Results.Tables.Clear();
+        }
         #endregion
     }
 
     public interface ICoreComline
     {
-        void Execute(List<string?> prompts);
+        void Execute();
         ResultList Results { get; }
     }
 

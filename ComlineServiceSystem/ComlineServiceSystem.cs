@@ -1,6 +1,5 @@
-﻿
-using ComlineApp.Manager;
-using ComLineCommon;
+﻿using ComLineCommon;
+using ComLineData;
 using System.Diagnostics;
 
 namespace ComlineServices
@@ -10,39 +9,32 @@ namespace ComlineServices
         public static Dictionary<string, string> Options = [];
         private readonly ComlineData Command = command;
         public string QueryName { get { return Command.QueryName; } }
-
+        public static string WorkingDirectory = "";
         public void Execute()
         {
             switch (QueryName)
             {
                 case "Set-Option.Service":
-                    Options["Service"] = Command.Parameters["Service"].Trim('"');
+                    Options["Service"] = Command.Parameters["Service"].Item2.Trim('"');
                     Command.Results.AddInfo($"Service {Command.Parameters["Service"]}", "Info");
                     break;
                 case "Set-Option.DisplayMode":
-                    Options["DisplayMode"] = Command.Parameters["DisplayMode"].Trim('"');
+                    Options["DisplayMode"] = Command.Parameters["DisplayMode"].Item2.Trim('"');
                     Command.Results.AddInfo($"DisplayMode {Command.Parameters["DisplayMode"]}", "Info");
                     break;
                 case "Get-Version":
                     Command.Results.AddInfo(Global.VersionSystem, "Info");
                     break;
                 case "Execute-File.Name":
-                    if (CheckParameter_File(Path.Combine(Global.WorkingDirectory, Command.Parameters["Name"])))
+                    if (CheckParameter_File(Path.Combine(WorkingDirectory, Command.Parameters["Name"].Item2)))
                     {
                         Command.Results.AddInfos(
                             File.ReadAllLines(
-                                Path.Combine(Global.WorkingDirectory, Command.Parameters["Name"]))
+                                Path.Combine(WorkingDirectory, Command.Parameters["Name"].Item2))
                             //.Where(l => !l.StartsWith('#')).ToArray()
                             , "Commande");
                     }
                     break;
-                //case "Set-WorkingDirectory.Path":
-                //    if (CheckParameter_Directory())
-                //    {
-                //        Global.WorkingDirectory = Command.Parameters["Path"];
-                //        Command.Results.AddInfo($"WorkingDirectory = {Command.Parameters["Path"]}", "Info");
-                //    }
-                //    break;
                 default:
                     Command.Results.AddError($"ComlineServiceSystem.cs.{new StackTrace(true).GetFrame(0)?.GetFileLineNumber()} : Le service {Options["Service"]} n'a pas la commande {Command.QueryName} !", ErrorCodeEnum.UnexistedCommand);
                     Command.ErrorCode = ErrorCodeEnum.UnexistedCommand;

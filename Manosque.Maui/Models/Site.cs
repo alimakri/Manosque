@@ -9,8 +9,9 @@ namespace Manosque.Maui.Models
     public class Site
     {
         public Guid Id { get; set; }
-        public string Libelle { get; set; }
-        public string Tache { get; set; }
+        public string Libelle { get; set; } = "";
+        public DateOnly Date { get; set; } = default;
+        public string? Tache { get; set; } = "";
         public long Statut { get; set; }
     }
 }

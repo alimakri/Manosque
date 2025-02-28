@@ -1,5 +1,5 @@
-using ComlineApp.Manager;
 using ComLineCommon;
+using ComLineData;
 using System.Diagnostics.Tracing;
 using System.Globalization;
 using System.Text;
@@ -27,81 +27,70 @@ namespace ComlineApp.Services
             // Variables
             Command = command;
             Command.TableName = Command.Noun;
+            Command.Filter = "";
             Result = new();
             SelectClause = "*";
 
             // Factory
             PrepareQuery();
 
-            if (command.Parameters.ContainsKey("Filter"))
+            if (!string.IsNullOrEmpty(command.Filter))
                 DirectSelect();
             else
                 FactorySelect();
 
-            // Résult
+            // ModeDebug
             if (command.ModeDebug)
             {
                 command.Results.AddInfo(Result, "Info");
-                command.Results.AddInfo(command.Prompt, "Info");
+                command.Results.AddInfo(command.Prompts[0], "Info");
             }
             return Result.ToString();
         }
         private static void PrepareQuery()
         {
-            var dico = Command.Parameters;
             ParameterListe = ""; Command.ModeDebug = false;
-
-            List<string> cles = new(dico.Keys);
+            List<string> cles = new(Command.Parameters.Keys); string val = "";
             foreach (var cle in cles)
             {
-                switch (dico)
-                {
-                    // @ : Parameter Value est un Enum
-                    case var x when x[cle].StartsWith('@'):
-                        Result.Append($@"
-                                Declare {x[cle]} int; 
-                                select {x[cle]} = e.valeur from Enum e where e.reference='{x[cle].Replace("@", "")}';");
-                        break;
-                    // ^ : Référence à TableId 
-                    case var x when x[cle] == "^":
-                        Result.Append($@"
-                                Declare @id_{cle} nvarchar(50);
-                                select @id_{cle}=id  from TableId where Reference='{cle}';");
-                        dico[cle] = $"@id_{cle}";
-                        break;
-                    // FK : Parameter Key is a foreign Key
-                    case var x when Global.ForeignKeys.ContainsKey($"{Command.Noun}.{cle}"):
-                        Result.Append($@"
-                                Declare @id_{cle} nvarchar(50);");
-                        if (x[cle].ToUpper()=="NULL") 
-                            Result.Append($@"select @id_{cle}=NULL;");
-                        else if (Guid.TryParse(x[cle].Replace("\"", ""), out _)) 
-                            Result.Append($@"select @id_{cle}={x[cle].Replace("\"", "'")};");
-                        else
-                            Result.Append($@"
-                                select @id_{cle}=id  from {Global.ForeignKeys[$"{Command.Noun}.{cle}"]} where Reference='{x[cle].Replace("\"", "")}';");
-                        dico[cle] = $"@id_{cle}";
-                        break;
-                }
+                val = Command.Parameters[cle].Item2.Replace('\"', '\'');
+                Command.Parameters[cle] = new Tuple<string, string>(Command.Parameters[cle].Item1, val);
 
-                // Special Parameters
-                switch (cle)
+                // -Return OnlyCount 
+                if (cle == "Return" && val.Trim('"') == "'OnlyCount'") SelectClause = "Count(*) as count";
+                // -Mode Debug 
+                else if (cle == "Mode") Command.ModeDebug = val.Trim('"') == "Debug";
+
+                // Convert DateOnly
+                else if (DateOnly.TryParse(val, out _)) { Command.Parameters[cle] = new Tuple<string, string>($"CAST({cle} as Date)", $"CONVERT(Date, '{val}', 103)"); }
+                // Enum avec @
+                else if (val.StartsWith('@')) Result.Append($@"Declare {val} int; select {val} = e.valeur from Enum e where e.reference='{val.Replace("@", "")}';");
+
+                // -Foreign Key avec ^
+                else if (val == "^") { Result.Append($@"Declare @id_{cle} nvarchar(50); select @id_{cle}=id  from TableId where Reference='{cle}';"); Command.Parameters[cle] = new Tuple<string, string>(cle, $"@id_{cle}"); }
+                // -Foreign Key simple
+                else if (Global.ForeignKeys.ContainsKey($"{Command.Noun}.{cle}"))
                 {
-                    case "Liste":
-                        ParameterListe = dico[cle];
-                        break;
-                    case "Select":
-                        SelectClause = dico[cle].Trim('"'); JoinClause = "";
-                        Join(Command);
-                        break;
-                    case "Return":
-                        if (dico[cle].Trim('"') == "OnlyCount") SelectClause = "Count(*) as count";
-                        break;
-                    case "Mode":
-                        Command.ModeDebug = dico[cle].Trim('"') == "Debug";
-                        break;
-                    case "Compute":
-                        AvgClause = $@"
+                    Result.Append($@"
+                                Declare @id_{cle} nvarchar(50);");
+                    if (val.ToUpper() == "NULL")
+                        Result.Append($@"select @id_{cle}=NULL;");
+                    else if (Guid.TryParse(val, out _))
+                        Result.Append($@"select @id_{cle}={val};");
+                    else
+                        Result.Append($@"
+                                select @id_{cle}=id  from {Global.ForeignKeys[$"{Command.Noun}.{cle}"]} where Reference={val};");
+                    Command.Parameters[cle] = new Tuple<string, string>(cle, $"@id_{cle}");
+                }
+                // -Liste 
+                else if (cle == "Liste") ParameterListe = val;
+                // -Select
+                else if (cle == "Select") { SelectClause = val.Trim('"'); JoinClause = ""; Join(Command); }
+                // -Filter
+                else if (cle == "Filter") Command.Filter = val.Trim('"').Trim('\'');
+                // -Compute
+                else if (cle == "Compute")
+                    AvgClause = $@"
                            DECLARE @avg decimal(18,2);
                            DECLARE @somme int
                            DECLARE @compte int
@@ -115,30 +104,24 @@ namespace ComlineApp.Services
 	                           Select @statut = Valeur from Enum where Reference='AFaire'
 
                            update Execution set Avancement = @avg, Statut=@statut where id=@id;";
-                        break;
-
-                }
-
-                dico[cle] = dico[cle].Replace("\"", "'");
             }
-
+            // Clean Special Parameters
+            var keysToRemove = Command.Parameters.Keys.Where(key => Global.SpecialParameters.Contains(key)).ToList();
+            keysToRemove.ForEach(key => Command.Parameters.Remove(key));
         }
         private static void DirectSelect()
         {
-            var dico = Command.Parameters;
-            var valueFilter = dico["Filter"];
-
-            switch (valueFilter.Trim('\''))
+            switch (Command.Filter)
             {
                 case "ListeSites":
-                    if (!Command.ContainsAllParameters("Personne", "DateDebut"))
+                    if (!Command.ContainsAllQueryParameters("Personne", "DateDebut"))
                     {
                         Command.ErrorCode = ErrorCodeEnum.WrongParameter;
                         Command.TableName = "Error";
                         Result.Append($@"
                                       select 'Personne et DateDebut sont nécessaires !'");
                     }
-                    else if (Command.ContainsOneOfParameters("Select"))
+                    else if (Command.ContainsOneOfExtraParameters("Select"))
                     {
                         Command.ErrorCode = ErrorCodeEnum.WrongParameter;
                         Command.TableName = "Error";
@@ -149,10 +132,10 @@ namespace ComlineApp.Services
                                 select x.Reference, x.Id, x.Emplacement, e.Reference, x.Statut, t.Reference tache from Execution x 
                                     inner join Emplacement e on x.Emplacement=e.Id
                                     left join Tache t on x.tache=t.Id
-                                    where ((@id_Execution is null and x.Execution is NULL) or (x.Execution = @id_Execution)) and CAST(DateDebut as Date) = CONVERT(Date, {dico["DateDebut"]}, 103) and Personne=@id_Personne");
+                                    where ((@id_Execution is null and x.Execution is NULL) or (x.Execution = @id_Execution)) and CAST(DateDebut as Date) = CONVERT(Date, {Command.Parameters["DateDebut"].Item2}, 103) and Personne=@id_Personne");
                     break;
                 case "TopTache":
-                    if (!Command.ContainsAllParameters("Personne", "Emplacement"))
+                    if (!Command.ContainsAllQueryParameters("Personne", "Emplacement"))
                     {
                         Command.ErrorCode = ErrorCodeEnum.WrongParameter;
                         Command.TableName = "Error";
@@ -161,10 +144,10 @@ namespace ComlineApp.Services
                     }
                     else
                         Result.Append($@"
-                                select {SelectClause} from Execution inner join Tache on Execution.Tache=Tache.Id where Emplacement={dico["Emplacement"].Replace('"', '\'')} and Personne={dico["Personne"]} and Tache.Tache IS NULL;");
+                                select {SelectClause} from Execution inner join Tache on Execution.Tache=Tache.Id where Emplacement={Command.Parameters["Emplacement"].Item2.Replace('"', '\'')} and Personne={Command.Parameters["Personne"].Item2} and Tache.Tache IS NULL;");
                     break;
                 case "SousTaches":
-                    if (!Command.ContainsAllParameters("Personne", "Emplacement", "Tache"))
+                    if (!Command.ContainsAllQueryParameters("Personne", "Emplacement", "Tache"))
                     {
                         Command.ErrorCode = ErrorCodeEnum.WrongParameter;
                         Command.TableName = "Error";
@@ -174,8 +157,8 @@ namespace ComlineApp.Services
                     else
                         Result.Append($@"
                                 DECLARE @id uniqueidentifier;
-                                select @id = Execution.id from Execution inner join Tache on Execution.Tache=Tache.Id where Emplacement={dico["Emplacement"]} and Personne={dico["Personne"]} and Execution.Tache={dico["Tache"]};
-                                select {SelectClause} from Execution inner join Tache on Execution.Tache=Tache.Id where Emplacement={dico["Emplacement"]} and Personne={dico["Personne"]} and Execution.Tache={dico["Tache"]};
+                                select @id = Execution.id from Execution inner join Tache on Execution.Tache=Tache.Id where Emplacement={Command.Parameters["Emplacement"]} and Personne={Command.Parameters["Personne"]} and Execution.Tache={Command.Parameters["Tache"]};
+                                select {SelectClause} from Execution inner join Tache on Execution.Tache=Tache.Id where Emplacement={Command.Parameters["Emplacement"]} and Personne={Command.Parameters["Personne"]} and Execution.Tache={Command.Parameters["Tache"]};
                                 Update TableId set id=@id where Reference= '{Command.TableName}';
                                 if @@ROWCOUNT = 0 
                                     insert TableId (Reference, id) values('{Command.TableName}', @id);");
@@ -184,13 +167,8 @@ namespace ComlineApp.Services
         }
         private static void FactorySelect()
         {
-            var dico = Command.Parameters;
-
-            // Clean Special Parameters
-            var keysToRemove = dico.Keys.Where(key => Global.SpecialParameters.Contains(key)).ToList();
-            keysToRemove.ForEach(key => dico.Remove(key));
             // whereClause
-            WhereClause = string.Join(" and ", dico.Keys.Select(key => $"{key}={dico[key]}"));
+            WhereClause = string.Join(" and ", Command.Parameters.Keys.Select(key => $"{Command.Parameters[key].Item1}={Command.Parameters[key].Item2}")).Replace("=NULL", " IS NULL ");
             WhereClause = string.IsNullOrEmpty(WhereClause) ? "" : $" where {WhereClause}";
             // Query
             Result.Append($@"
@@ -243,8 +221,15 @@ namespace ComlineApp.Services
             Result.Append($@"
                 DECLARE @IDs TABLE(ID uniqueidentifier, Reference nvarchar(50));" +
                 $@"
-                insert {command.TableName} ({string.Join(", ", dico.Keys)}) {OutputClause} values ({string.Join(", ", dico.Values)});
+                insert {command.TableName} ({string.Join(", ", dico.Keys)}) {OutputClause} values ({string.Join(", ", dico.Values.Select(x => x.Item2))});
                 select * from {command.TableName} p inner join @IDs t on p.id=t.Id");
+
+            // ModeDebug
+            if (command.ModeDebug)
+            {
+                command.Results.AddInfo(Result, "Info");
+                command.Results.AddInfo(command.Prompts[0], "Info");
+            }
 
             // Result
             return Result.ToString();
@@ -278,6 +263,12 @@ namespace ComlineApp.Services
                     $"select count(*) n from {command.Noun}");
 
             command.TableName = "Info";
+            // ModeDebug
+            if (command.ModeDebug)
+            {
+                command.Results.AddInfo(Result, "Info");
+                command.Results.AddInfo(command.Prompts[0], "Info");
+            }
             return Result.ToString();
         }
         public static string Remove(ComlineData command)
@@ -289,12 +280,19 @@ namespace ComlineApp.Services
 
             // Remove factory Part 1
             string result = "DECLARE @IDs TABLE(ID uniqueidentifier, Reference nvarchar(50));";
-            var tableName2 = dico.FirstOrDefault().Value;
+            var tableName2 = dico.FirstOrDefault().Value.Item2;
             if (tableName2 == null) return "select 'Table non trouvée !'";
             tableName = $"{tableName}{tableName2}";
-            result += $"Declare @id_{tableName2} nvarchar(50); select @id_{tableName2}=id  from {tableName2} where Reference='{dico[tableName2].Trim('\"')}';";
-            var name = dico[tableName2];
-            dico[tableName2] = $"@id_{tableName2}";
+            result += $"Declare @id_{tableName2} nvarchar(50); select @id_{tableName2}=id  from {tableName2} where Reference='{dico[tableName2].Item2.Trim('\"')}';";
+            var name = dico[tableName2].Item2;
+            dico[tableName2] = new Tuple<string, string>(tableName2, $"@id_{tableName2}");
+
+            // ModeDebug
+            if (command.ModeDebug)
+            {
+                command.Results.AddInfo(Result, "Info");
+                command.Results.AddInfo(command.Prompts[0], "Info");
+            }
 
             // Remove factory Part 2
             return result +
@@ -306,7 +304,7 @@ namespace ComlineApp.Services
             // Variables
             var dico = command.Parameters;
             var tableName1 = command.Noun;
-            var tableName2 = command.Parameters.Where(p => p.Value == "^").FirstOrDefault().Key;
+            var tableName2 = command.Parameters.Where(p => p.Value.Item2 == "^").FirstOrDefault().Key;
             command.TableName = command.Noun;
 
             // Prepare
@@ -334,6 +332,13 @@ namespace ComlineApp.Services
                                  @id,
                                  (SELECT id FROM TableID WHERE Reference = '{tableName2}'));
                                 select * from {tableName1}{tableName2};");
+            // ModeDebug
+            if (command.ModeDebug)
+            {
+                command.Results.AddInfo(Result, "Info");
+                command.Results.AddInfo(command.Prompts[0], "Info");
+            }
+
             return Result.ToString();
         }
         public static string Update(ComlineData command)
@@ -351,6 +356,13 @@ namespace ComlineApp.Services
                 "output inserted.Id, inserted.reference into @IDs(ID, Reference)" :
                 "output inserted.Id into @IDs(ID)";
 
+            // ModeDebug
+            if (command.ModeDebug)
+            {
+                command.Results.AddInfo(Result, "Info");
+                command.Results.AddInfo(command.Prompts[0], "Info");
+            }
+
             return Result.Append($@"
                 DECLARE @IDs TABLE(ID uniqueidentifier, Reference nvarchar(50));
                 DECLARE @id uniqueidentifier;
@@ -365,13 +377,13 @@ namespace ComlineApp.Services
         {
             // Variables
             var dico = command.Parameters;
-            var cron = dico["Frequence"].Trim('\'');
+            var cron = dico["Frequence"].Item2.Trim('\'');
             DateTime date1, date2;
 
             // Les dates
-            if (dico.ContainsKey("DateDebut")) DateTime.TryParseExact(dico["DateDebut"].Trim('\''), "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out date1); else date1 = DateTime.Now;
-            if (dico.ContainsKey("DateFin")) DateTime.TryParseExact(dico["DateFin"].Trim('\''), "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out date2); else date2 = date1.AddDays(7);
-            _ = Guid.TryParse(dico["Personne"].Trim('"'), out Guid idPersonne);
+            if (dico.ContainsKey("DateDebut")) DateTime.TryParseExact(dico["DateDebut"].Item2.Trim('\''), "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out date1); else date1 = DateTime.Now;
+            if (dico.ContainsKey("DateFin")) DateTime.TryParseExact(dico["DateFin"].Item2.Trim('\''), "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out date2); else date2 = date1.AddDays(7);
+            _ = Guid.TryParse(dico["Personne"].Item2.Trim('"'), out Guid idPersonne);
             var dates = CronTools.GetDates(cron, date1, date2, idPersonne);
 
             // Prepare
@@ -393,7 +405,7 @@ namespace ComlineApp.Services
                                         '{date.AddHours(2):dd-MM-yyyy HH:mm:ss}', -- Fin après 2h
                                         (SELECT id FROM Personne WHERE Id = @id_Personne),
                                         1, 
-                                        (SELECT valeur FROM Enum WHERE Reference = '{dico["Type"].Replace("@", "")}'),
+                                        (SELECT valeur FROM Enum WHERE Reference = '{dico["Type"].Item2.Replace("@", "")}'),
                                         0 
                                     )");
 
@@ -401,7 +413,7 @@ namespace ComlineApp.Services
 
             return Result.Append($@"
                     {string.Join(",\n", valuesList)};
-                    SELECT * FROM Execution WHERE Tache = {dico["Tache"].Trim('"')};").ToString();
+                    SELECT * FROM Execution WHERE Tache = {dico["Tache"].Item2.Trim('"')};").ToString();
         }
         #endregion
 

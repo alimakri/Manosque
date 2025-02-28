@@ -23,7 +23,7 @@
         <ShellContent
             Title="Liste des tâches"
             ContentTemplate="{DataTemplate local:TachePage}"
-            Route="taches" />
+            Route="tache" />
     </FlyoutItem>
     <FlyoutItem Title="Comline" FlyoutIcon="{StaticResource IconFour}">
         <ShellContent

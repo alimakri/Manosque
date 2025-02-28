@@ -4,20 +4,17 @@
     {
         // System
         public readonly static string ApplicationName = "Manosque";
-        public readonly static string WorkingDirectory = @"D:\Manosque\extra"; // Ali
-        //public readonly static string WorkingDirectory = @"D:\StageMakrisoft\ProjetManosque\extra"; // Thierno
         public readonly static string VersionSystem = "Version 2.0";
         public readonly static string Prompt = @"Execute-File -Name scenario9.ps1";
 
         // Data
         public readonly static string DatabaseName = "ManosqueBD";
         public readonly static string VersionDatabase = "Version Database 1.0";
-        //public readonly static string ConnectionString = @"Data Source=.\SQLEXPRESS;Initial Catalog=ManosqueBD;Integrated Security=SSPI;TrustServerCertificate=True";
-        public readonly static List<string> SpecialParameters = ["Liste", "Select", "Return", "Mode", "Compute", "Filter"];
+        public readonly static List<string> SpecialParameters = ["Liste", "Select", "Return", "Mode", "Compute", "Filter", "Continue", "Service"];
 
         // ServiceData
         //public readonly static string Url = "https://makrisoft.net/";
-        public readonly static string Url = "https://localhost:7040/";
+        public readonly static string Url = "https://localhost:7250/";
 
         // QueryFactory
         public readonly static List<string> Services = ["System", "Data", "Api"];

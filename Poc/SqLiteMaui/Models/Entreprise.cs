@@ -14,10 +14,10 @@ namespace SqLiteMaui.Models
         public int Id { get; set; }
 
         [MaxLength(100)]
-        public string Nom { get; set; }
+        public string Nom { get; set; } = "";
 
         [MaxLength(50)]
-        public string Secteur { get; set; }
+        public string Secteur { get; set; } = "";
 
         public override string ToString()
         {

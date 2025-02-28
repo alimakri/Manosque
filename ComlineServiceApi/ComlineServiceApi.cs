@@ -1,5 +1,5 @@
-﻿using ComlineApp.Manager;
-using ComLineCommon;
+﻿using ComLineCommon;
+using ComLineData;
 using Newtonsoft.Json;
 using System.Data;
 using System.Net.Http.Headers;
@@ -16,6 +16,7 @@ namespace ComlineServices
     }
     public class ServiceApi : IServiceApi
     {
+        public static string WorkingDirectory = "";
         public ComlineData Command { get; set; }
         public ServiceApi(ComlineData command)
         {
@@ -28,7 +29,7 @@ namespace ComlineServices
                 ExecuteWithoutSimul();
             else
             {
-                string path = Path.Combine(Global.WorkingDirectory, $"{simul.ToString()}.xml");
+                string path = Path.Combine(WorkingDirectory, $"{simul.ToString()}.xml");
                 if (File.Exists(path))
                 {
                     XmlSerializer serializer = new XmlSerializer(typeof(DataTable));
@@ -46,8 +47,8 @@ namespace ComlineServices
             client.BaseAddress = new Uri(Global.Url);
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-            var json = $@"{{""Script"":""{string.Join(';',prompts)}""}}";
+            var s = string.Join(';', Command.Prompts.Select(x=>x.Replace("\"", "\\\"")));
+            var json = $"{{\"Script\":\"{s}\"}}";
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             HttpRequestMessage request = new(HttpMethod.Post, "api/comline") { Content = content };
             try

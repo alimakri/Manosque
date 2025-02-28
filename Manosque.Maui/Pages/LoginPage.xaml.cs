@@ -6,12 +6,12 @@
         {
             InitializeComponent();
         }
-        private string PromptLogin { get { return $@"Get-Personne -Reference ""{UserNom.Text}"" -Password ""{UserPassword.Text}"" -Return ""OnlyCount"""; } }
+        private string PromptLogin { get { return $@"Set-Option -Service Data;Get-Personne -Reference ""{UserNom.Text}"" -Password ""{UserPassword.Text}"" -Return ""OnlyCount"""; } }
         private async void OnSites(object sender, EventArgs e)
         {
             var command = App.MonServiceAPi.Command;
-            command.Prompt = PromptLogin;
-            App.MonServiceAPi.Execute([command.Prompt]);
+            command.Prompts = [PromptLogin];
+            App.MonServiceAPi.Execute();
 
             try
             {
@@ -21,7 +21,6 @@
                 {
                     App.User = UserNom.Text;
                     await Shell.Current.GoToAsync($"//sites?user={App.User}");
-                    return;
                 }
             }
             catch (Exception ex)

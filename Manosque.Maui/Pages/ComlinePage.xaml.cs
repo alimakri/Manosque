@@ -12,15 +12,15 @@ namespace Manosque.Maui.Pages
 
         private async void OnRetour(object sender, EventArgs e)
         {
-            await Shell.Current.GoToAsync("//root/login");
+            await Shell.Current.GoToAsync("//login");
 
         }
 
         private void OnComline(object sender, EventArgs e)
         {
             var command = App.MonServiceAPi.Command;
-            command.Prompt = Prompt.Text;
-            App.MonServiceAPi.Execute([command.Prompt]);
+            command.Prompts = [Prompt.Text];
+            App.MonServiceAPi.Execute();
             DataTablesStackLayout.Clear();
             try
             {

@@ -4,21 +4,25 @@
              xmlns:views="clr-namespace:MauiApp1.Components"
              x:Class="Manosque.Maui.Pages.SitesPage">
     <StackLayout>
-        <ScrollView>
-            <CollectionView x:Name="SitesCollectionView">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <VerticalStackLayout>
-                            <views:CardView
-                                CardNumber="{Binding Libelle}"                                  
-                                ExpirationDate="{Binding Tache}"
-                                CardValidationCode="{Binding Statut}"                                
+        <ScrollView  >
+            <VerticalStackLayout >
+                <DatePicker x:Name="myDatePicker" MinimumDate="01/01/2025" TextColor="DarkCyan" />
+                <CollectionView x:Name="SitesCollectionView">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <VerticalStackLayout>
+                                <views:CardView
+                                Execution="{Binding Libelle}"                                  
+                                Date="{Binding Date}"                                  
+                                Tache="{Binding Tache}"
+                                Statut="{Binding Statut}"                                
                                 BandeauEnabled="True"
                                 CardImage="&#xf1f1;"/>
-                        </VerticalStackLayout>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+                            </VerticalStackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
         </ScrollView>
     </StackLayout>
 </ContentPage>

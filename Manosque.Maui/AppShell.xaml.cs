@@ -7,7 +7,6 @@ namespace Manosque.Maui
         public AppShell()
         {
             InitializeComponent();
-            Routing.RegisterRoute("login", typeof(LoginPage));
         }
     }
 }

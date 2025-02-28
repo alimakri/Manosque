@@ -1,11 +1,10 @@
 ﻿using ComlineApp.Manager;
+using ComLineCommon;
+using ComLineData;
 using ComlineServices;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System.Data;
-using System.Text.RegularExpressions;
 
 namespace MktCore8.Controllers
 {
@@ -13,11 +12,15 @@ namespace MktCore8.Controllers
     [ApiController]
     public class ComlineController : ControllerBase
     {
+        private IWebHostEnvironment Env;
         ICoreComline MonComline;
-        public ComlineController(ICoreComline comline)
+        public ComlineController(ICoreComline comline, IWebHostEnvironment env)
         {
+            Env = env;
             MonComline = comline;
-            if (!ServiceSystem.Options.ContainsKey("Service")) ServiceSystem.Options.Add("Service", "Data");
+            ServiceData.WorkingDirectory = ServiceSystem.WorkingDirectory = 
+                $@"{Env.WebRootPath.Replace("wwwroot", "documents")}\";
+            if (!ServiceSystem.Options.ContainsKey("Service")) ServiceSystem.Options.Add("Service", "System"); else ServiceSystem.Options["Service"] = "System";
         }
         [HttpGet]
         public ActionResult Get()
@@ -27,22 +30,36 @@ namespace MktCore8.Controllers
         [HttpPost]
         public ActionResult Post([FromBody] Data data)
         {
-            try
-            {
-                MonComline.Execute(new List<string?> { data.Command });
 
-                string json = JsonConvert.SerializeObject(MonComline.Results);
-                return new JsonResult(json)
+            var comline = ((CoreComline)MonComline);
+            if (comline != null)
+            {
+                try
                 {
-                    ContentType = "application/json",
-                    StatusCode = 200 
-                };
-
+                    if (data.Command != null)
+                    {
+                        comline.Command.Prompts = [data.Command];
+                    }
+                    else if (data.Script != null)
+                    {
+                        comline.Command.Prompts = data.Script.Split(';').ToList();
+                    }
+                    while (comline.Command.Prompts.Count > 0)
+                    {
+                        comline.Reset();
+                        comline.Execute();
+                        comline.Command.Prompts.RemoveAt(0);
+                    }
+                    ResultList ds = MonComline.Results;
+                    string json = JsonConvert.SerializeObject(ds, Formatting.None);
+                    var result = new JsonResult(json) { ContentType = "application/json" };
+                    return result;
+                }
+                catch (Exception)
+                {
+                }
             }
-            catch (Exception)
-            {
-                return StatusCode(500, "Une erreur s'est produite lors du traitement de la demande.");
-            }
+            return StatusCode(500, "Une erreur s'est produite lors du traitement de la demande.");
         }
 
     }

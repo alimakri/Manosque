@@ -1,8 +1,6 @@
-﻿
+﻿using System.Text;
 
-using System.Text;
-
-namespace ComlineApp.Manager
+namespace ComLineData
 {
     public enum ServiceEnum { None, System, Data, File }
     public enum ErrorCodeEnum
@@ -23,7 +21,7 @@ namespace ComlineApp.Manager
     {
         public string Verb = "";
         public string Noun = "";
-        public Dictionary<string, string> Parameters = [];
+        public Dictionary<string, Tuple<string, string>> Parameters = [];
 
         public string SingleCommand
         {
@@ -35,16 +33,17 @@ namespace ComlineApp.Manager
         public ResultList Results = new();
         public string TableName = "";
         public bool ModeDebug = false;
+        public string Filter = "";
 
-        public bool ContainsAllParameters(params string[] searchparameters)
+        public bool ContainsAllQueryParameters(params string[] searchparameters)
         {
             return searchparameters.All(param => Parameters.ContainsKey(param));
         }
-        public bool ContainsOneOfParameters(params string[] searchparameters)
+        public bool ContainsOneOfExtraParameters(params string[] searchparameters)
         {
             return searchparameters.Any(param => Parameters.ContainsKey(param));
         }
-        public bool ContainsParameter(string param)
+        public bool ContainsQueryParameter(string param)
         {
             return Parameters.ContainsKey(param);
         }

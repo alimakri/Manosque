@@ -1,5 +1,5 @@
-﻿using ComlineApp.Manager;
-using ComLineCommon;
+﻿using ComLineCommon;
+using ComLineData;
 using Microsoft.Data.SqlClient;
 using System.Data;
 
@@ -13,6 +13,7 @@ namespace ComlineServices
     {
         #region Properties
         protected ComlineData Command = new();
+        public static string WorkingDirectory = "";
 
         // SQL SERVER
         protected SqlCommand Query = new();

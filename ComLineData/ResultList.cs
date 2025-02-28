@@ -1,7 +1,7 @@
 ﻿using System.Data;
 using System.Text;
 
-namespace ComlineApp.Manager
+namespace ComLineData
 {
     public class ResultList : DataSet
     {
@@ -44,7 +44,7 @@ namespace ComlineApp.Manager
         public void AddInfo(StringBuilder libelle, string tableName) { AddInfo(libelle.ToString().TrimStart(), tableName); }
         public void AddInfo(string libelle, string tableName)
         {
-            libelle = string.Join('\n',libelle.Split('\n').Select(x => x.TrimStart()));
+            libelle = string.Join('\n', libelle.Split('\n').Select(x => x.TrimStart()));
             // CreateTableInfo
             if (!Tables.Contains(tableName))
             {

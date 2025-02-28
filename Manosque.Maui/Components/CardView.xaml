@@ -6,8 +6,8 @@
        BorderColor="{StaticResource Primary}" 
        HorizontalOptions="FillAndExpand"
        VerticalOptions="Start"
-       WidthRequest="300"
-       Margin="5"
+       BackgroundColor="{Binding CardTheme}"
+       Margin="1,2"
        CornerRadius="8"
        Padding="0">
     <Frame.Resources>
@@ -44,34 +44,40 @@
                            Grid.Column="1"/>
 
                     <Label Text="Site"
+                           TextColor="Navy"
                            Style="{StaticResource HeaderLabelStyle}"
                            Grid.Row="1"
                            Grid.Column="0"
                            Grid.ColumnSpan="2"/>
 
-                    <Label x:Name="CardNumberLabel"
+                    <Label x:Name="ExecutionLabel"
+                           TextColor="Blue"
                            Style="{StaticResource InfoLabelStyle}"
                            Grid.Row="2"
                            Grid.Column="0"
                            Grid.ColumnSpan="2"/>
 
                     <Label Text="Tâche"
+                           TextColor="Navy"
                            Style="{StaticResource HeaderLabelStyle}"
                            Grid.Row="3"
                            Grid.Column="0"/>
 
-                    <Label x:Name="ExpirationDateLabel"
+                    <Label x:Name="TacheLabel"
+                           TextColor="Red"
                            Style="{StaticResource TacheLabelStyle}"
                            Grid.Row="4"
                            Grid.Column="0"/>
 
                     <Label Text="Statut"
-                           Style="{StaticResource HeaderLabelStyle}"
+                            TextColor="Navy"
+                          Style="{StaticResource HeaderLabelStyle}"
                            HorizontalOptions="End"
                            Grid.Row="3"
                            Grid.Column="1"/>
 
-                    <Label x:Name="CardValidationCodeLabel"
+                    <Label x:Name="StatutLabel"
+                           TextColor="Green"
                            Style="{StaticResource InfoLabelStyle}"
                            HorizontalOptions="End"
                            Grid.Row="4"
@@ -91,8 +97,8 @@
                            HorizontalOptions="Center" TextColor="White"
                            AbsoluteLayout.LayoutBounds="0.5,0.5,AutoSize,AutoSize"
                            AbsoluteLayout.LayoutFlags="PositionProportional" 
-                           Clicked="OnTacheClicked" CommandParameter="{Binding CardNumber}"/>
-            <Label Text="{Binding CardNumber}"/>
+                           Clicked="OnTacheClicked" CommandParameter="{Binding Execution}"/>
+            <Label Text="{Binding Execution}"/>
         </AbsoluteLayout>
             </Grid>
 </Frame>

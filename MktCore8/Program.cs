@@ -4,7 +4,7 @@ using Manosque.ServiceData;
 
 
 var builder = WebApplication.CreateBuilder(args);
-string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+string connectionString = builder.Configuration.GetConnectionString("DefaultConnection")??"";
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

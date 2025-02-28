@@ -2,64 +2,77 @@
 using Manosque.Maui.Models;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Linq;
 
 namespace Manosque.Maui.Pages
 {
     public partial class SitesPage : ContentPage, IQueryAttributable
     {
-        private List<string> PromptsSites;
-        private string? User = "";
-        private string? Execution = "";
-        private DateOnly Today = new DateOnly(2025, 2, 17);
+        private string? User;
+        private Guid? UserId;
+        private string? Execution;
+        private Guid? ExecutionId;
 
         public SitesPage()
         {
             InitializeComponent();
-            PromptsSites = ["Get-Execution -Reference NULL", $@"Get-Execution -Execution ^ -Personne ""{User}"" -DateDebut ""{Today}"" -Filter ""ListeSites"""];
+            myDatePicker.PropertyChanged += DatePicker_PropertyChanged;
         }
-
+        private void DatePicker_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(DatePicker.Date))
+            {
+                ExecuteApi();
+            }
+        }
         public void ApplyQueryAttributes(IDictionary<string, object> query)
         {
-            if (query.ContainsKey("execution"))
+            // Init
+            User = query.TryGetValue("user", out object? value) ? value as string : null;
+            Execution = query.TryGetValue("execution", out object? value2) ? value2 as string : "NULL";
+            if (query.ContainsKey("date") && DateTime.TryParse((string)query["date"], out DateTime value3)) myDatePicker.Date = value3;
+            ExecuteApi();
+        }
+        public void ExecuteApi()
+        {
+            // Stay here in SitesPage
+            App.MonServiceAPi.Command.Results.Tables.Clear();
+            App.MonServiceAPi.Command.Prompts = [
+                "Set-Option -Service Data;",
+                "Get-Execution -Reference NULL".Replace("NULL", $@"""{Execution}"""),
+                $@"Get-Execution -Execution ^ -Personne ""{User}"" -Mode ""Debug"" -DateDebut ""{myDatePicker.Date}"" -Filter ""ListeSites"""];
+            App.MonServiceAPi.Execute();
+
+            var tableList = App.MonServiceAPi.Command.Results.TableList;
+            if (tableList.Contains("Error"))
             {
-                Execution = query["execution"] as string;
-                PromptsSites[0].Replace("NULL", $@"""{Execution}""");
+
             }
-            if (query.ContainsKey("user"))
+            else if (tableList.Contains("Execution"))
             {
-                User = query["user"] as string;
-            }
-            {
-                User = query["user"] as string;
-
-                var Sites = new ObservableCollection<Site>();
-
-                App.MonServiceAPi.Command.Results.Tables.Clear();
-                App.MonServiceAPi.Execute(PromptsSites);
-
-                var tableList = App.MonServiceAPi.Command.Results.TableList;
-                if (tableList.Contains("Error"))
-                {
-
-                }
-                else if (tableList.Contains("Execution"))
-                {
-                    DataTable tableSites;
-                    tableSites = App.MonServiceAPi.Command.Results.Tables["Execution"];
-                    var id = default(Guid);
-                    foreach (DataRow row in tableSites.Rows)
+                ObservableCollection<Site> Sites = [];
+                var id = default(Guid);
+                var list = App.MonServiceAPi.Command.Results.Tables["Execution"]?.Rows.Cast<DataRow>().Where(row => Guid.TryParse(row["Emplacement"].ToString(), out id));
+                if (list != null)
+                    foreach (var row in list)
                     {
-                        if (Guid.TryParse(row["Emplacement"].ToString(), out id))
-                            Sites.Add(new Site { Id = id, Tache = row["Tache"] as string, Libelle = (string)row["Reference"], Statut = (long)row["Statut"] });
+                        Sites.Add(new Site
+                        {
+                            Id = id,
+                            Tache = row["Tache"] as string,
+                            Libelle = (string)row["Reference"],
+                            Statut = (long)row["Statut"],
+                            Date = DateOnly.FromDateTime(myDatePicker.Date)
+                        });
                     }
-                    this.SitesCollectionView.ItemsSource = Sites;
-                }
+
+                this.SitesCollectionView.ItemsSource = Sites;
             }
         }
 
         private async void OnRetour(object sender, EventArgs e)
         {
-            await Shell.Current.GoToAsync("//root/login");
+            await Shell.Current.GoToAsync("//login");
 
         }
     }

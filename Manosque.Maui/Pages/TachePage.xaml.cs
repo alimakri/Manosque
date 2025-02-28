@@ -16,7 +16,7 @@ namespace Manosque.Maui.Pages
         {
             if (query.ContainsKey("tache"))
             {
-                string tache = query["tache"] as string;
+                string? tache = query["tache"] as string;
 
                 TacheName.Text = tache;
             }
