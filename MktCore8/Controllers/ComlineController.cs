@@ -18,7 +18,7 @@ namespace MktCore8.Controllers
         {
             Env = env;
             MonComline = comline;
-            ServiceData.WorkingDirectory = ServiceSystem.WorkingDirectory = 
+            Global.WorkingDirectory_ServiceData = Global.WorkingDirectory_ServiceSystem = 
                 $@"{Env.WebRootPath.Replace("wwwroot", "documents")}\";
             if (!ServiceSystem.Options.ContainsKey("Service")) ServiceSystem.Options.Add("Service", "System"); else ServiceSystem.Options["Service"] = "System";
         }
@@ -46,11 +46,11 @@ namespace MktCore8.Controllers
                     }
                     while (comline.Command.Prompts.Count > 0)
                     {
-                        comline.Reset();
+                        comline.Command.Reset();
                         comline.Execute();
                         comline.Command.Prompts.RemoveAt(0);
                     }
-                    ResultList ds = MonComline.Results;
+                    ResultList ds = comline.Command.Results;
                     string json = JsonConvert.SerializeObject(ds, Formatting.None);
                     var result = new JsonResult(json) { ContentType = "application/json" };
                     return result;

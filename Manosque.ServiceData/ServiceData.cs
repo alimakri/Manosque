@@ -54,10 +54,10 @@ namespace Manosque.ServiceData
 
         private void SerializeResults()
         {
-            if (Command.ModeDebug && Command.Results.Tables.Count > 0 && Directory.Exists(WorkingDirectory))
+            if (Command.ModeDebug && Command.Results.Tables.Count > 0 && Directory.Exists(Global.WorkingDirectory_ServiceData))
             {
                 string fileName = "Results_" + DateTime.Now.ToString("yyyyMMdd_HHmmss");
-                var ds = Command.Results; var path = Path.Combine(WorkingDirectory, fileName);
+                var ds = Command.Results; var path = Path.Combine(Global.WorkingDirectory_ServiceData, fileName);
                 XmlSerializer serializer = new XmlSerializer(typeof(ResultList));
                 using (StreamWriter writer = new StreamWriter(path))
                 {

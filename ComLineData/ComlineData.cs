@@ -19,19 +19,18 @@ namespace ComLineData
     }
     public class ComlineData
     {
-        public string Verb = "";
+        public string Verb="";
         public string Noun = "";
-        public Dictionary<string, Tuple<string, string>> Parameters = [];
-
-        public string Name
-        {
-            get { return $"{Verb}-{Noun}"; }
-        }
-        public List<string> Prompts = new();
-        public ErrorCodeEnum ErrorCode = 0;
-        public ResultList Results = new();
+        public string Name = "";
         public string TableName = "";
+
+        public Dictionary<string, Tuple<string, string>> Parameters = [];
+        public List<string> Prompts = [];
+
+        public ErrorCodeEnum ErrorCode = 0;
         public bool ModeDebug = false;
+
+        public ResultList Results = new();
         public string Filter = "";
 
         public bool ContainsAllQueryParameters(params string[] searchparameters)
@@ -45,6 +44,13 @@ namespace ComLineData
         public bool ContainsQueryParameter(string param)
         {
             return Parameters.ContainsKey(param);
+        }
+
+        public void Reset()
+        {
+            Results.Tables.Clear(); 
+            ErrorCode = ErrorCodeEnum.None;
+            Parameters.Clear();
         }
     }
 }

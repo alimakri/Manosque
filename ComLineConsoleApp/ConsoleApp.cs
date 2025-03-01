@@ -22,7 +22,10 @@ namespace ComLineConsoleApp
             {
                 // Saisie du prompt
                 Console.ForegroundColor = ConsoleColor.Gray;
-                Console.Write($"{ServiceSystem.Options["Service"]}> ");
+                if (ServiceSystem.Options["Service"]=="Api")
+                    Console.Write($"{ServiceSystem.Options["Service"]}.{ServiceApi.RemoteService}> ");
+                else
+                    Console.Write($"{ServiceSystem.Options["Service"]}> ");
                 string? prompt = "";
                 if (comline.Command.Prompts.Count == 0)
                 {
@@ -55,9 +58,6 @@ namespace ComLineConsoleApp
 
         private void Execute(string prompt)
         {
-            // Init
-            comline.Reset();
-
             // Commentaire
             if (prompt == null || prompt.StartsWith('#'))
             {
@@ -67,6 +67,7 @@ namespace ComLineConsoleApp
             else
             {
                 // Execute ---------------------------------
+                comline.Command.Reset();
                 comline.Execute();
 
                 // Display ---------------------------------
@@ -77,7 +78,7 @@ namespace ComLineConsoleApp
                 if (comline.Command.ModeDebug)
                 {
                     Console.ForegroundColor = ConsoleColor.Cyan;
-                    var path = Path.Combine(ServiceData.WorkingDirectory, comline.Command.TableName + ".xml");
+                    var path = Path.Combine(Global.WorkingDirectory_ServiceData, comline.Command.TableName + ".xml");
                     Console.WriteLine($"-- --> Un fichier {path} a été généré.");
                 }
             }
@@ -95,7 +96,7 @@ namespace ComLineConsoleApp
 
         void DisplayResults(string tableName)
         {
-            if (Comline.Command.ErrorCode == 0 && Comline.SingleCommand == "Execute-File") return;
+            if (Comline.Command.ErrorCode == 0 && Comline.Command.Name == "Execute-File") return;
             if (Comline.Command.ErrorCode == 0 && tableName == "Param") return;
 
             // Cosmetic
@@ -117,7 +118,7 @@ namespace ComLineConsoleApp
             Console.BackgroundColor = ConsoleColor.Black;
             Console.WriteLine();
 
-            var dataTable = Comline.Results.Tables[tableName];
+            var dataTable = Comline.Command.Results.Tables[tableName];
             if (dataTable != null)
             {
                 foreach (DataRow row in dataTable.Rows)

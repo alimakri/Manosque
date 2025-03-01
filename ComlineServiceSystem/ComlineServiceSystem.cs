@@ -1,6 +1,7 @@
 ﻿using ComLineCommon;
 using ComLineData;
 using System.Diagnostics;
+using System.IO;
 
 namespace ComlineServices
 {
@@ -8,7 +9,8 @@ namespace ComlineServices
     {
         public static Dictionary<string, string> Options = [];
         private readonly ComlineData Command = command;
-        public static string WorkingDirectory = "";
+
+        #region Execute
         public void Execute()
         {
             switch (Command.Name)
@@ -31,11 +33,17 @@ namespace ComlineServices
                     Command.Results.AddInfo(Global.VersionSystem, "Info");
                     break;
                 case "Execute-File":
-                    if (CheckParameter_File(Path.Combine(WorkingDirectory, Command.Parameters["Name"].Item2)))
+                    var path = Path.Combine(Global.WorkingDirectory_ServiceSystem, Command.Parameters["Name"].Item2);
+                    if (!File.Exists(path))
+                    {
+                        Command.ErrorCode = ErrorCodeEnum.UnexistedFile;
+                        Command.Results.AddError($"File [{path}] does not exist.", ErrorCodeEnum.UnexistedFile);
+                    }
+                    else
                     {
                         Command.Results.AddInfos(
                             File.ReadAllLines(
-                                Path.Combine(WorkingDirectory, Command.Parameters["Name"].Item2))
+                                Path.Combine(Global.WorkingDirectory_ServiceSystem, Command.Parameters["Name"].Item2))
                             //.Where(l => !l.StartsWith('#')).ToArray()
                             , "Commande");
                     }
@@ -46,26 +54,6 @@ namespace ComlineServices
                     break;
             }
         }
-        #region CheckParameter
-        private bool CheckParameter_File(string path)
-        {
-            if (!File.Exists(path))
-            {
-                Command.ErrorCode = ErrorCodeEnum.UnexistedFile;
-                Command.Results.AddError($"File [{path}] does not exist.", ErrorCodeEnum.UnexistedFile);
-                return false;
-            }
-            return true;
-        }
-        //private bool CheckParameter_Directory()
-        //{
-        //    if (!Directory.Exists(Command.Parameters["Path"]))
-        //    {
-        //        Command.ErrorCode = ErrorCodeEnum.UnexistedDirectory;
-        //        Command.Results.AddError($"Directory [{Command.Parameters["Path"]}] does not exist.", ErrorCodeEnum.UnexistedDirectory);
-        //    }
-        //    return true;
-        //}
         #endregion
     }
 }

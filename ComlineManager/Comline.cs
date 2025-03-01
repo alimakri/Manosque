@@ -16,20 +16,13 @@ namespace ComlineApp.Manager
         public ComlineData Command = new();
         public ContinueEnum Continue = ContinueEnum.StopOnError;
 
-        public ResultList Results
-        {
-            get { return Command.Results; }
-        }
-        public string SingleCommand
-        {
-            get { return Command.Name; }
-        }
-
         #endregion
 
         #region Execute
         public void Execute()
         {
+            Continue = ContinueEnum.StopOnError;
+
             var prompt = Command.Prompts[0].Trim();
             if (!string.IsNullOrEmpty(prompt) && !prompt.StartsWith('#'))
             {
@@ -44,9 +37,9 @@ namespace ComlineApp.Manager
                 Command.Prompts.RemoveRange(1, Command.Prompts.Count - 1);
 
             // Execute-File ----------------------------
-            if (Command.ErrorCode == 0 && SingleCommand == "Execute-File")
+            if (Command.ErrorCode == 0 && Command.Name == "Execute-File")
             {
-                DataTable? table = Results.Tables["Commande"];
+                DataTable? table = Command.Results.Tables["Commande"];
                 if (table != null)
                 {
                     var list = table?.AsEnumerable().Select(row => row.Field<string>("Libelle")).Cast<string>().Where(x => x != null);
@@ -99,7 +92,7 @@ namespace ComlineApp.Manager
             // Verb & Noun
             Command.Verb = matches.Groups["verb"].Value.Capitalize();
             Command.Noun = matches.Groups["noun"].Value.Capitalize();
-
+            Command.Name = $"{Command.Verb}-{Command.Noun}";
             // Parameters
             var parameters = matches.Groups["param"].Captures;
             var values = matches.Groups["value"].Captures;
@@ -122,18 +115,42 @@ namespace ComlineApp.Manager
         }
         private ErrorCodeEnum SelectService()
         {
-            if (!ServiceSystem.Options.ContainsKey("Service")) ServiceSystem.Options["Service"] = "System";
+            // Service par défaut
+            if (!ServiceSystem.Options.TryGetValue("Service", out string? option)) ServiceSystem.Options["Service"] = "System";
 
-            if (!Global.Services.Contains(ServiceSystem.Options["Service"]))
+            if (Command.Name == "Set-Option" && option != null)
             {
-                Command.Results.AddError("Service non existant !", ErrorCodeEnum.UnexistedService);
-            }
-            else if (Command.Name == "Set-Option" && Command.Parameters.ContainsKey("Service"))
-            {
-                ServiceSystem.Options["Service"] = Command.Parameters["Service"].Item2;
-                Command.Results.AddInfo($"Service {ServiceSystem.Options["Service"]} ok", "Info");
+                Command.Parameters.TryGetValue("Service", out Tuple<string, string>? askedService);
+
+                if (askedService != null)
+                {
+                    // askedService non existant
+                    if (!Global.Services.Contains(option))
+                    {
+                        Command.Results.AddError("Service non existant !", ErrorCodeEnum.UnexistedService);
+                    }
+                    // Sortir de Service Api
+                    else if (option == "Api" && askedService?.Item2 == "Api")
+                    {
+                        ServiceSystem.Options["Service"] = "System";
+                        Command.Results.AddInfo($"Api déconnecté", "Info");
+                    }
+                    // Changement Service distant
+                    else if (option == "Api" && askedService != null)
+                    {
+                        ServiceApi.RemoteService = askedService.Item2;
+                        Command.Results.AddInfo($"Remote Service {ServiceApi.RemoteService} ok", "Info");
+                    }
+                    // Changement Service local
+                    else
+                    {
+                        ServiceSystem.Options["Service"] = askedService.Item2;
+                        Command.Results.AddInfo($"Service {option} ok", "Info");
+                        Command.ErrorCode = ErrorCodeEnum.NothingToDo;
+
+                    }
+                }
                 Command.ErrorCode = ErrorCodeEnum.NothingToDo;
-
             }
             return Command.ErrorCode;
         }
@@ -142,21 +159,12 @@ namespace ComlineApp.Manager
         [GeneratedRegex(@"(?<verb>\w+)-(?<noun>\w+)((?:\s+-(?<param>\w+)(?:[\f\n\r\t\v\s\p{Z}]+(?<value>""[^""]+""|\S+(?:\.\d+)?))?)*)")]
         private static partial Regex MyRegex();
 
-        public void Reset()
-        {
-            Results.Tables.Clear();
-            Command.ErrorCode = ErrorCodeEnum.None;
-            Continue = ContinueEnum.StopOnError;
-            Command.Parameters.Clear();
-            Results.Tables.Clear();
-        }
         #endregion
     }
 
     public interface ICoreComline
     {
         void Execute();
-        ResultList Results { get; }
     }
 
     public enum ContinueEnum { None, StopOnError, Stop, ContinueOnError }

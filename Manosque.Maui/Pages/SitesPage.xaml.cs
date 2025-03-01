@@ -36,11 +36,11 @@ namespace Manosque.Maui.Pages
         public void ExecuteApi()
         {
             // Stay here in SitesPage
-            App.MonServiceAPi.Command.Results.Tables.Clear();
             App.MonServiceAPi.Command.Prompts = [
                 "Set-Option -Service Data;",
                 "Get-Execution -Reference NULL".Replace("NULL", $@"""{Execution}"""),
                 $@"Get-Execution -Execution ^ -Personne ""{User}"" -Mode ""Debug"" -DateDebut ""{myDatePicker.Date}"" -Filter ""ListeSites"""];
+            App.MonServiceAPi.Command.Reset();
             App.MonServiceAPi.Execute();
 
             var tableList = App.MonServiceAPi.Command.Results.TableList;
