@@ -8,24 +8,29 @@ namespace ComlineServices
     {
         public static Dictionary<string, string> Options = [];
         private readonly ComlineData Command = command;
-        public string QueryName { get { return Command.QueryName; } }
         public static string WorkingDirectory = "";
         public void Execute()
         {
-            switch (QueryName)
+            switch (Command.Name)
             {
-                case "Set-Option.Service":
-                    Options["Service"] = Command.Parameters["Service"].Item2.Trim('"');
-                    Command.Results.AddInfo($"Service {Command.Parameters["Service"]}", "Info");
-                    break;
-                case "Set-Option.DisplayMode":
-                    Options["DisplayMode"] = Command.Parameters["DisplayMode"].Item2.Trim('"');
-                    Command.Results.AddInfo($"DisplayMode {Command.Parameters["DisplayMode"]}", "Info");
+                case "Set-Option":
+                    // Set-Option -Service
+                    if (Command.Parameters.TryGetValue("Service", out Tuple<string, string>? value1) && value1 != null)
+                    {
+                        Options["Service"] = value1.Item2.Trim('"');
+                        Command.Results.AddInfo($"Service {Command.Parameters["Service"]}", "Info");
+                    }
+                    // Set-Option -DisplayMode
+                    else if (Command.Parameters.TryGetValue("DisplayMode", out Tuple<string, string>? value2) && value2 != null)
+                    {
+                        Options["DisplayMode"] = value2.Item2.Trim('"');
+                        Command.Results.AddInfo($"DisplayMode {Command.Parameters["DisplayMode"]}", "Info");
+                    }
                     break;
                 case "Get-Version":
                     Command.Results.AddInfo(Global.VersionSystem, "Info");
                     break;
-                case "Execute-File.Name":
+                case "Execute-File":
                     if (CheckParameter_File(Path.Combine(WorkingDirectory, Command.Parameters["Name"].Item2)))
                     {
                         Command.Results.AddInfos(
@@ -36,7 +41,7 @@ namespace ComlineServices
                     }
                     break;
                 default:
-                    Command.Results.AddError($"ComlineServiceSystem.cs.{new StackTrace(true).GetFrame(0)?.GetFileLineNumber()} : Le service {Options["Service"]} n'a pas la commande {Command.QueryName} !", ErrorCodeEnum.UnexistedCommand);
+                    Command.Results.AddError($"ComlineServiceSystem.cs.{new StackTrace(true).GetFrame(0)?.GetFileLineNumber()} : Le service {Options["Service"]} n'a pas la commande {Command.Name} !", ErrorCodeEnum.UnexistedCommand);
                     Command.ErrorCode = ErrorCodeEnum.UnexistedCommand;
                     break;
             }

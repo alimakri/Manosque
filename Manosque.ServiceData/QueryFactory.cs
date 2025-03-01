@@ -62,7 +62,9 @@ namespace ComlineApp.Services
                 else if (cle == "Mode") Command.ModeDebug = val.Trim('"') == "Debug";
 
                 // Convert DateOnly
-                else if (DateOnly.TryParse(val, out _)) { Command.Parameters[cle] = new Tuple<string, string>($"CAST({cle} as Date)", $"CONVERT(Date, '{val}', 103)"); }
+                else if (DateOnly.TryParse(val.Trim('\''), out _)) { Command.Parameters[cle] = new Tuple<string, string>($"CAST({cle} as Date)", $"CONVERT(Date, '{val.Trim('\'')}', 103)"); }
+                // Convert DateTime
+                else if (DateTime.TryParse(val.Trim('\''), out _)) { Command.Parameters[cle] = new Tuple<string, string>($"CAST({cle} as DateTime)", $"CONVERT(DateTime, '{val.Trim('\'')}', 103)"); }
                 // Enum avec @
                 else if (val.StartsWith('@')) Result.Append($@"Declare {val} int; select {val} = e.valeur from Enum e where e.reference='{val.Replace("@", "")}';");
 

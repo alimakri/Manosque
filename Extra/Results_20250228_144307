@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ResultList>
+  <xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true">
+      <xs:complexType>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="Info">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Index" msdata:AutoIncrement="true" msdata:AutoIncrementSeed="1" type="xs:int" minOccurs="0" />
+                <xs:element name="Libelle" type="xs:string" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="Execution">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Id" msdata:DataType="System.Guid, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e" type="xs:string" minOccurs="0" />
+                <xs:element name="Reference" type="xs:string" minOccurs="0" />
+                <xs:element name="Tache" msdata:DataType="System.Guid, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e" type="xs:string" minOccurs="0" />
+                <xs:element name="DateDebut" type="xs:dateTime" minOccurs="0" />
+                <xs:element name="DateFin" type="xs:dateTime" minOccurs="0" />
+                <xs:element name="Emplacement" msdata:DataType="System.Guid, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e" type="xs:string" minOccurs="0" />
+                <xs:element name="Personne" msdata:DataType="System.Guid, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e" type="xs:string" minOccurs="0" />
+                <xs:element name="Statut" type="xs:int" minOccurs="0" />
+                <xs:element name="Type" type="xs:unsignedByte" minOccurs="0" />
+                <xs:element name="Avancement" type="xs:unsignedByte" minOccurs="0" />
+                <xs:element name="Execution" msdata:DataType="System.Guid, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e" type="xs:string" minOccurs="0" />
+                <xs:element name="Action" msdata:DataType="System.Guid, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e" type="xs:string" minOccurs="0" />
+                <xs:element name="ID1" msdata:DataType="System.Guid, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e" type="xs:string" minOccurs="0" />
+                <xs:element name="Reference1" type="xs:string" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:choice>
+      </xs:complexType>
+    </xs:element>
+  </xs:schema>
+  <diffgr:diffgram xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:diffgr="urn:schemas-microsoft-com:xml-diffgram-v1">
+    <NewDataSet>
+      <Info diffgr:id="Info1" msdata:rowOrder="0" diffgr:hasChanges="inserted">
+        <Index>1</Index>
+        <Libelle>Declare @id_Emplacement nvarchar(50);
+select @id_Emplacement=id  from Emplacement where Reference='Site1';
+Declare @id_Personne nvarchar(50);
+select @id_Personne=id  from Personne where Reference='mohamed';
+DECLARE @IDs TABLE(ID uniqueidentifier, Reference nvarchar(50));
+insert Execution (Id, Reference, Emplacement, DateDebut, Personne) output inserted.Id, inserted.reference into @IDs(ID, Reference) values ('50FE19B9-0F82-4ED5-8961-0E49B7B00001', 'EXE_1', @id_Emplacement, CONVERT(DateTime, '17/02/2025 08:00', 103), @id_Personne);
+select * from Execution p inner join @IDs t on p.id=t.Id</Libelle>
+      </Info>
+      <Info diffgr:id="Info2" msdata:rowOrder="1" diffgr:hasChanges="inserted">
+        <Index>2</Index>
+        <Libelle>New-Execution -Id "50FE19B9-0F82-4ED5-8961-0E49B7B00001" -Reference "EXE_1" -Emplacement "Site1" -DateDebut "17/02/2025 08:00" -Personne "mohamed" -Mode Debug</Libelle>
+      </Info>
+      <Execution diffgr:id="Execution1" msdata:rowOrder="0">
+        <Id>50fe19b9-0f82-4ed5-8961-0e49b7b00001</Id>
+        <Reference>EXE_1</Reference>
+        <DateDebut>2025-02-17T08:00:00+01:00</DateDebut>
+        <Emplacement>310f51db-bd8a-44d4-b672-b68b6ee9f001</Emplacement>
+        <Personne>0ad1ccd7-2ae3-49be-94a4-54b84f3de002</Personne>
+        <Statut>0</Statut>
+        <Type>0</Type>
+        <Avancement>0</Avancement>
+        <ID1>50fe19b9-0f82-4ed5-8961-0e49b7b00001</ID1>
+        <Reference1>EXE_1</Reference1>
+      </Execution>
+    </NewDataSet>
+  </diffgr:diffgram>
+</ResultList>

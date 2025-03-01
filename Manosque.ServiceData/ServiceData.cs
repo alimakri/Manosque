@@ -109,7 +109,7 @@ namespace Manosque.ServiceData
                         Query.CommandText = QueryFactory.GenerateExecution(Command);
                     break;
                 default:
-                    Query.CommandText = $"select -1001 [Index], 'Service Data.cs.{new StackTrace(true).GetFrame(0)?.GetFileLineNumber()}: la requête {Command.QueryName} n''existe pas !' Libelle";
+                    Query.CommandText = $"select -1001 [Index], 'Service Data.cs.{new StackTrace(true).GetFrame(0)?.GetFileLineNumber()}: la requête {Command.Name} n''existe pas !' Libelle";
                     Command.TableName = "Error";
                     Command.ErrorCode = ErrorCodeEnum.ServiceData_UnexistedCommand;
                     break;

@@ -22,7 +22,7 @@ namespace ComlineApp.Manager
         }
         public string SingleCommand
         {
-            get { return Command.SingleCommand; }
+            get { return Command.Name; }
         }
 
         #endregion
@@ -77,7 +77,7 @@ namespace ComlineApp.Manager
                     new ServiceApi(Command).Execute();
                     break;
                 default:
-                    Command.Results.AddError($"Comline.cs.{new StackTrace(true).GetFrame(0)?.GetFileLineNumber()}: la commande {Command.QueryName} n'est pas associé à un service ou le service [{ServiceSystem.Options["Service"]}] n'existe pas !", ErrorCodeEnum.UnexistedService);
+                    Command.Results.AddError($"Comline.cs.{new StackTrace(true).GetFrame(0)?.GetFileLineNumber()}: la commande n'est pas associé à un service ou le service [{ServiceSystem.Options["Service"]}] n'existe pas !", ErrorCodeEnum.UnexistedService);
                     Command.ErrorCode = ErrorCodeEnum.UnexistedService;
                     break;
             }
@@ -91,7 +91,7 @@ namespace ComlineApp.Manager
             var matches = TheRegex.Match(Command.Prompts[0]);
             if (!matches.Success)
             {
-                Command.Results.AddError($"Comline.cs.{new StackTrace(true).GetFrame(0)?.GetFileLineNumber()} : La commande {Command.QueryName} n'existe pas !", ErrorCodeEnum.UnexistedCommand);
+                Command.Results.AddError($"Comline.cs.{new StackTrace(true).GetFrame(0)?.GetFileLineNumber()} : La commande {Command.Name} n'existe pas !", ErrorCodeEnum.UnexistedCommand);
                 Command.ErrorCode = ErrorCodeEnum.UnexistedCommand;
                 return;
             }
@@ -119,24 +119,6 @@ namespace ComlineApp.Manager
                 if (c != ContinueEnum.None) Continue = c;
                 Command.Parameters.Remove("Continue");
             }
-
-            // QueryName
-            Command.QueryName = SingleCommand;
-
-            if (Command.Parameters.Count > 0)
-            {
-                switch (Command.Verb)
-                {
-                    case "Get":
-                        Command.QueryName = Command.SingleCommand; break;
-                    case "New":
-                        if (Command.Parameters.ContainsKey("Reference"))
-                            Command.QueryName = $"{SingleCommand}.InsertFull";
-                        break;
-                    default:
-                        Command.QueryName += "." + string.Join('.', Command.Parameters.Select(x => x.Key.ToString()).OrderBy(x => x)); break;
-                }
-            }
         }
         private ErrorCodeEnum SelectService()
         {
@@ -146,7 +128,7 @@ namespace ComlineApp.Manager
             {
                 Command.Results.AddError("Service non existant !", ErrorCodeEnum.UnexistedService);
             }
-            else if (Command.SingleCommand == "Set-Option" && Command.Parameters.ContainsKey("Service"))
+            else if (Command.Name == "Set-Option" && Command.Parameters.ContainsKey("Service"))
             {
                 ServiceSystem.Options["Service"] = Command.Parameters["Service"].Item2;
                 Command.Results.AddInfo($"Service {ServiceSystem.Options["Service"]} ok", "Info");

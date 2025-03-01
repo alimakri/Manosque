@@ -23,11 +23,10 @@ namespace ComLineData
         public string Noun = "";
         public Dictionary<string, Tuple<string, string>> Parameters = [];
 
-        public string SingleCommand
+        public string Name
         {
             get { return $"{Verb}-{Noun}"; }
         }
-        public string QueryName = "";
         public List<string> Prompts = new();
         public ErrorCodeEnum ErrorCode = 0;
         public ResultList Results = new();

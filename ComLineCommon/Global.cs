@@ -13,8 +13,8 @@
         public readonly static List<string> SpecialParameters = ["Liste", "Select", "Return", "Mode", "Compute", "Filter", "Continue", "Service"];
 
         // ServiceData
-        //public readonly static string Url = "https://makrisoft.net/";
-        public readonly static string Url = "https://localhost:7250/";
+        public readonly static string Url = "https://makrisoft.net/";
+        //public readonly static string Url = "https://localhost:7250/";
 
         // QueryFactory
         public readonly static List<string> Services = ["System", "Data", "Api"];
