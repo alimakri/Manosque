@@ -8,13 +8,10 @@ namespace MktCore8
         User Authenticate(string username, string password);
     }
 
-    public class UserService : IUserService
+    public class UserService(IConfiguration config) : IUserService
     {
-        private string? ConnectionString;
-        public UserService(IConfiguration config)
-        {
-            ConnectionString = config.GetConnectionString("DefaultConnection");
-        }
+        private readonly string? ConnectionString = config.GetConnectionString("DefaultConnection");
+
         //private List<User> _users = new List<User>
         //{
         //    new User { Username = "test", Password = "password" } // Utilisez un hachage pour stocker les mots de passe dans un vrai projet
@@ -35,7 +32,7 @@ namespace MktCore8
     }
     public class User
     {
-        public string Username { get; set; }
-        public string Password { get; set; } // Assurez-vous de stocker les mots de passe de manière sécurisée !
+        public string Username { get; set; } = "";
+        public string Password { get; set; } = ""; // Assurez-vous de stocker les mots de passe de manière sécurisée !
     }
 }

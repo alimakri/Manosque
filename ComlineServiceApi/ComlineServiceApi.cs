@@ -12,15 +12,21 @@ namespace ComlineServices
     public class ServiceApi : IServiceApi
     {
         public static string RemoteService = "System";
-        public static JwtToken Token;
+        public static JwtToken? Token;
         public EnumUrlParam UrlParam = EnumUrlParam.Comline;
+        public static string Url = Global.RemoteUrl;
         public ComlineData Command { get; set; }
         public ServiceApi(ComlineData command)
         {
             Command = command;
             switch (command.Name)
             {
-                case "Connect-Api": UrlParam = EnumUrlParam.Auth; break;
+                case "Connect-Server":
+                    UrlParam = EnumUrlParam.Auth;
+                    command.Parameters.TryGetValue("Name", out Tuple<string, string>? server);
+                    Url = server == null || server.Item2.Equals("ionos", StringComparison.CurrentCultureIgnoreCase) ? Global.RemoteUrl : Global.LocalUrl;
+
+                    break;
             }
         }
 
@@ -33,25 +39,23 @@ namespace ComlineServices
         private void ExecuteApi_Fake(EnumFakeApi simul)
         {
             Command.Reset();
-            string path = Path.Combine(Global.WorkingDirectory_ServiceApi, $"{simul.ToString()}.xml");
+            string path = Path.Combine(Global.WorkingDirectory_ServiceApi, $"{simul}.xml");
             if (File.Exists(path))
             {
-                XmlSerializer serializer = new XmlSerializer(typeof(DataTable));
-                using (StreamReader reader = new StreamReader(path))
-                {
-                    var dt = (DataTable?)serializer.Deserialize(reader);
-                    if (dt != null) Command.Results.Tables.Add(dt);
-                }
+                XmlSerializer serializer = new(typeof(DataTable));
+                using StreamReader reader = new(path);
+                var dt = (DataTable?)serializer.Deserialize(reader);
+                if (dt != null) Command.Results.Tables.Add(dt);
             }
         }
 
-        private async void ExecuteApi()
+        private void ExecuteApi()
         {
             //Command.Reset();
 
             // Init
             using var client = new HttpClient();
-            client.BaseAddress = new Uri(Global.Url);
+            client.BaseAddress = new Uri(Url);
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
@@ -69,7 +73,7 @@ namespace ComlineServices
                         json = System.Text.Json.JsonSerializer.Serialize(login);
                         break;
                     case EnumUrlParam.Comline:
-                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token.token);
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token?.token);
                         s = $"Set-Option -Service {RemoteService};";
                         s += string.Join(';', Command.Prompts.Select(x => x.Replace("\"", "\\\"")));
                         json = $"{{\"Script\":\"{s}\"}}";
@@ -92,7 +96,7 @@ namespace ComlineServices
                                 case EnumUrlParam.Auth:
                                     var jsonResult1 = response.Result.Content.ReadAsStringAsync().GetAwaiter().GetResult();
                                     Token = System.Text.Json.JsonSerializer.Deserialize<JwtToken>(jsonResult1);
-                                    Command.Results.AddInfo($"ok * - *", "Info");
+                                    Command.Results.AddInfo($"ok * - * {Token?.token}", "Info");
                                     break;
                                 case EnumUrlParam.Comline:
                                     var jsonResult = Regex.Unescape(response.Result.Content.ReadAsStringAsync().GetAwaiter().GetResult()).Trim('"');
@@ -119,7 +123,7 @@ namespace ComlineServices
 
         public static void Deconnect()
         {
-            Token.token = "";
+            if (Token != null) Token.token = "";
         }
         #endregion
     }
@@ -131,7 +135,7 @@ namespace ComlineServices
     public enum EnumFakeApi { None, ListeSites, Password }
     public class JwtToken
     {
-        public string token { get; set; }
+        public string token { get; set; } = "";
     }
     public enum EnumUrlParam { Comline, Auth }
 }

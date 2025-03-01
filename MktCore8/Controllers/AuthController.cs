@@ -12,16 +12,10 @@ namespace MktCore8.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthController : ControllerBase
+    public class AuthController(IConfiguration config, IUserService userService) : ControllerBase
     {
-        private readonly IConfiguration _config;
-        private readonly IUserService _userService;
-
-        public AuthController(IConfiguration config, IUserService userService)
-        {
-            _config = config;
-            _userService = userService;
-        }
+        private readonly IConfiguration _config = config;
+        private readonly IUserService _userService = userService;
 
         [HttpPost]
         [Route("login")]
@@ -40,14 +34,14 @@ namespace MktCore8.Controllers
 
         private string GenerateJWT(string username)
         {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"] ?? ""));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var claims = new[]
             {
             new Claim(JwtRegisteredClaimNames.Sub, username),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-        };
+            };
 
             var token = new JwtSecurityToken(_config["Jwt:Issuer"],
               _config["Jwt:Issuer"],

@@ -18,8 +18,8 @@
         public static string WorkingDirectory_ServiceData = "";
 
         // ServiceData
-        //public readonly static string Url = "https://makrisoft.net/";
-        public readonly static string Url = "https://localhost:7250/";
+        public readonly static string RemoteUrl = "https://makrisoft.net/";
+        public readonly static string LocalUrl = "https://localhost:7250/";
 
         // QueryFactory
         public readonly static List<string> Services = ["System", "Data", "Api"];

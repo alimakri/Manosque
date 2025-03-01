@@ -84,5 +84,13 @@ Get-Tache -Reference "Tache 1.3.A"
 Get-Action -Tache ^
 
 Set-Option -Service Api
+Set-Option -Service Data
 
-Connect-Api -Login "mohamed" -Password "P@ssw0rd"
+Connect-Server -Name local -Login "mohamed" -Password "P@ssw0rd"
+Get-Info
+Set-Option -Service Api
+Set-Option -Service Api
+
+Connect-Server -Name ionos -Login "mohamed" -Password "P@ssw0rd"
+Set-Option -Service Data
+Get-Info
