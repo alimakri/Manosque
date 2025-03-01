@@ -1,10 +1,12 @@
 using ComlineApp.Manager;
 using ComlineServices;
-using Manosque.ServiceData;
-
+using MktCore8;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
-string connectionString = builder.Configuration.GetConnectionString("DefaultConnection")??"";
+string connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? "";
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -12,6 +14,27 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSingleton<ICoreComline, CoreComline>();
 builder.Services.AddSingleton<IServiceData>(provider => new Manosque.ServiceData.ServiceData(connectionString));
+
+// Authentication
+builder.Services.AddSingleton<IUserService, UserService>();
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Issuer"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+        };
+    });
 
 
 var app = builder.Build();

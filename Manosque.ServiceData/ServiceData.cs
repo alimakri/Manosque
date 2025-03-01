@@ -115,5 +115,13 @@ namespace Manosque.ServiceData
                     break;
             }
         }
+
+        public bool Authenticate(string reference, string password)
+        {
+            Query.CommandText = $"select Count(*) n from Personne where Reference='{reference}' and Password='{password}'";
+            var ds = new DataSet();
+            Adapter.Fill(ds);
+            return ds.Tables[0].Rows[0][0] as int? == 1;
+        }
     }
 }

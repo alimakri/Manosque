@@ -2,12 +2,14 @@
 using ComLineCommon;
 using ComLineData;
 using ComlineServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
 namespace MktCore8.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ComlineController : ControllerBase
@@ -22,6 +24,7 @@ namespace MktCore8.Controllers
                 $@"{Env.WebRootPath.Replace("wwwroot", "documents")}\";
             if (!ServiceSystem.Options.ContainsKey("Service")) ServiceSystem.Options.Add("Service", "System"); else ServiceSystem.Options["Service"] = "System";
         }
+        [AllowAnonymous]
         [HttpGet]
         public ActionResult Get()
         {

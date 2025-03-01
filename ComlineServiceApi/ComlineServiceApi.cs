@@ -11,12 +11,17 @@ namespace ComlineServices
 {
     public class ServiceApi : IServiceApi
     {
-        public static string RemoteService="System";
-
+        public static string RemoteService = "System";
+        public static JwtToken Token;
+        public EnumUrlParam UrlParam = EnumUrlParam.Comline;
         public ComlineData Command { get; set; }
         public ServiceApi(ComlineData command)
         {
             Command = command;
+            switch (command.Name)
+            {
+                case "Connect-Api": UrlParam = EnumUrlParam.Auth; break;
+            }
         }
 
         #region Execute
@@ -40,43 +45,93 @@ namespace ComlineServices
             }
         }
 
-        private void ExecuteApi()
+        private async void ExecuteApi()
         {
-            Command.Reset();
+            //Command.Reset();
+
+            // Init
             using var client = new HttpClient();
             client.BaseAddress = new Uri(Global.Url);
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            string s = "";
-            s = $"Set-Option -Service {RemoteService};";
-            s += string.Join(';', Command.Prompts.Select(x => x.Replace("\"", "\\\"")));
-            var json = $"{{\"Script\":\"{s}\"}}";
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-            HttpRequestMessage request = new(HttpMethod.Post, "api/comline") { Content = content };
+
+            // content
+            string s = "", json = ""; StringContent content; string urlParam = "api/comline";
             try
             {
-                Task<HttpResponseMessage> response = client.SendAsync(request); // <<<<<<<<<<<<<<<<<
-                if (response.Result.IsSuccessStatusCode)
+                switch (UrlParam)
                 {
-                    var jsonResult = Regex.Unescape(response.Result.Content.ReadAsStringAsync().GetAwaiter().GetResult()).Trim('"');
-                    var result = (ResultList?)JsonConvert.DeserializeObject(jsonResult, typeof(ResultList));
-                    if (result != null) Command.Results = result;
+                    case EnumUrlParam.Auth:
+                        urlParam = "api/auth/login";
+                        Command.Parameters.TryGetValue("Login", out Tuple<string, string>? user);
+                        Command.Parameters.TryGetValue("Password", out Tuple<string, string>? password);
+                        var login = new UserLogin { Username = user?.Item2.Trim('"') ?? "", Password = password?.Item2.Trim('"') ?? "" };
+                        json = System.Text.Json.JsonSerializer.Serialize(login);
+                        break;
+                    case EnumUrlParam.Comline:
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token.token);
+                        s = $"Set-Option -Service {RemoteService};";
+                        s += string.Join(';', Command.Prompts.Select(x => x.Replace("\"", "\\\"")));
+                        json = $"{{\"Script\":\"{s}\"}}";
+                        break;
                 }
-                else
-                    Command.Results.AddError($"Erreur d'un appel api : {response.Result.ReasonPhrase}", ErrorCodeEnum.AppelApi);
+                content = new StringContent(json, Encoding.UTF8, "application/json");
+                HttpRequestMessage request = new(HttpMethod.Post, urlParam) { Content = content };
+
+                // Send
+                Task<HttpResponseMessage> response = client.SendAsync(request); // <<<<<<<<<<<<<<<<<
+
+                // Result
+                if (response.Result != null)
+                {
+                    switch (response.Result.StatusCode)
+                    {
+                        case System.Net.HttpStatusCode.OK:
+                            switch (UrlParam)
+                            {
+                                case EnumUrlParam.Auth:
+                                    var jsonResult1 = response.Result.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                                    Token = System.Text.Json.JsonSerializer.Deserialize<JwtToken>(jsonResult1);
+                                    Command.Results.AddInfo($"ok * - *", "Info");
+                                    break;
+                                case EnumUrlParam.Comline:
+                                    var jsonResult = Regex.Unescape(response.Result.Content.ReadAsStringAsync().GetAwaiter().GetResult()).Trim('"');
+                                    var result = (ResultList?)JsonConvert.DeserializeObject(jsonResult, typeof(ResultList));
+                                    if (result != null) Command.Results = result;
+                                    // Error
+                                    else
+                                        Command.Results.AddError($"Erreur d'un appel api : {response.Result.ReasonPhrase}", ErrorCodeEnum.AppelApi);
+                                    break;
+                            }
+                            break;
+                        default:
+                            Command.Results.AddError($"Erreur d'un appel api : {response.Result.ReasonPhrase}", ErrorCodeEnum.AppelApi);
+                            break;
+                    }
+
+                }
             }
             catch (Exception ex)
             {
-                Command.Results.AddError($"Erreur de connexion au service Web : {ex.Message}", ErrorCodeEnum.AppelApi);
+                Command.Results.AddError($"Erreur de connexion au service WebApi : {ex.Message}", ErrorCodeEnum.AppelApi);
             }
+        }
+
+        public static void Deconnect()
+        {
+            Token.token = "";
         }
         #endregion
     }
     public interface IServiceApi
     {
-        void Execute(EnumFakeApi simul = EnumFakeApi.None);
         ComlineData Command { get; set; }
 
     }
     public enum EnumFakeApi { None, ListeSites, Password }
+    public class JwtToken
+    {
+        public string token { get; set; }
+    }
+    public enum EnumUrlParam { Comline, Auth }
 }

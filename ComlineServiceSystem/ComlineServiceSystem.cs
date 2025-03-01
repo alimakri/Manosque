@@ -19,8 +19,9 @@ namespace ComlineServices
                     // Set-Option -Service
                     if (Command.Parameters.TryGetValue("Service", out Tuple<string, string>? value1) && value1 != null)
                     {
-                        Options["Service"] = value1.Item2.Trim('"');
-                        Command.Results.AddInfo($"Service {Command.Parameters["Service"]}", "Info");
+                        throw new Exception();
+                        //Options["Service"] = value1.Item2.Trim('"');
+                        //Command.Results.AddInfo($"Service {Command.Parameters["Service"]}", "Info");
                     }
                     // Set-Option -DisplayMode
                     else if (Command.Parameters.TryGetValue("DisplayMode", out Tuple<string, string>? value2) && value2 != null)

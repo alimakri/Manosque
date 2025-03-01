@@ -82,3 +82,7 @@ Get-Execution -Execution ^ -Personne "mohamed" -DateDebut "17/02/2025" -Filter "
 Get-Tache -Reference "Tache 1.3.A"
 
 Get-Action -Tache ^
+
+Set-Option -Service Api
+
+Connect-Api -Login "mohamed" -Password "P@ssw0rd"

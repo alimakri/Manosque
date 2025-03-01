@@ -49,7 +49,7 @@ namespace ComlineApp.Manager
         }
         private void ExecuteService()
         {
-
+            // Continue ?
             if (Command.ErrorCode != ErrorCodeEnum.None && Command.ErrorCode != ErrorCodeEnum.NothingToDo)
             {
                 if (Continue == ContinueEnum.ContinueOnError)
@@ -58,6 +58,7 @@ namespace ComlineApp.Manager
                     Command.Results.AddError("Executing terminated on error", ErrorCodeEnum.None);
                 return;
             }
+            // Execute Service
             switch (ServiceSystem.Options["Service"])
             {
                 case "System":
@@ -116,38 +117,43 @@ namespace ComlineApp.Manager
         private ErrorCodeEnum SelectService()
         {
             // Service par défaut
-            if (!ServiceSystem.Options.TryGetValue("Service", out string? option)) ServiceSystem.Options["Service"] = "System";
+            if (!ServiceSystem.Options.TryGetValue("Service", out string? actualService)) ServiceSystem.Options["Service"] = "System";
 
-            if (Command.Name == "Set-Option" && option != null)
+            if (Command.Name == "Set-Option" && actualService != null)
             {
                 Command.Parameters.TryGetValue("Service", out Tuple<string, string>? askedService);
 
                 if (askedService != null)
                 {
                     // askedService non existant
-                    if (!Global.Services.Contains(option))
+                    if (!Global.Services.Contains(actualService))
                     {
                         Command.Results.AddError("Service non existant !", ErrorCodeEnum.UnexistedService);
                     }
-                    // Sortir de Service Api
-                    else if (option == "Api" && askedService?.Item2 == "Api")
+                    // Deconnect Api
+                    else if (askedService?.Item2 == "Api" && actualService == "Api")
                     {
                         ServiceSystem.Options["Service"] = "System";
                         Command.Results.AddInfo($"Api déconnecté", "Info");
+                        ServiceApi.Deconnect();
                     }
                     // Changement Service distant
-                    else if (option == "Api" && askedService != null)
+                    else if (askedService != null && actualService == "Api")
                     {
                         ServiceApi.RemoteService = askedService.Item2;
                         Command.Results.AddInfo($"Remote Service {ServiceApi.RemoteService} ok", "Info");
+                    }
+                    // Connect to Api
+                    else if (askedService?.Item2 == "Api")
+                    {
+                        ServiceSystem.Options["Service"] = askedService.Item2;
+                        Command.Results.AddInfo($"Service {askedService.Item2} ok", "Info");
                     }
                     // Changement Service local
                     else
                     {
                         ServiceSystem.Options["Service"] = askedService.Item2;
-                        Command.Results.AddInfo($"Service {option} ok", "Info");
-                        Command.ErrorCode = ErrorCodeEnum.NothingToDo;
-
+                        Command.Results.AddInfo($"Service {askedService.Item2} ok", "Info");
                     }
                 }
                 Command.ErrorCode = ErrorCodeEnum.NothingToDo;
