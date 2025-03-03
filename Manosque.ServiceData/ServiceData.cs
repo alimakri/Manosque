@@ -12,7 +12,7 @@ namespace Manosque.ServiceData
     public class ServiceData : ComlineServices.ServiceData, IServiceData
     {
         public static Exception? Exception;
-        public ServiceData(string connectionString) : base(connectionString)
+        public ServiceData() 
         {
             DataTable t = new();
             Query.CommandText = "select * from Absence";
@@ -29,11 +29,8 @@ namespace Manosque.ServiceData
                 CronTools.JoursExclus.Add(new Absence { Date = DateOnly.FromDateTime((DateTime)row["Jour"]), Personne = row["Personne"] as Guid? });
             }
         }
-        public override void Execute(ComlineData command)
+        public override void Execute()
         {
-            // Init
-            Command = command;
-
             // Pre Process : Build Query
             Before();
 
@@ -118,19 +115,20 @@ namespace Manosque.ServiceData
             }
         }
 
-        public bool Authenticate(string reference, string password)
+        public Guid? Authenticate(string reference, string password)
         {
-            Query.CommandText = $"select Count(*) n from Personne where Reference='{reference}' and Password='{password}'";
-            var ds = new DataSet(); Exception = null;
+            Query.CommandText = $"select Id n from Personne where Reference='{reference}' and Password='{password}'";
+            var ds = new DataSet(); 
+            Exception = null;
             try
             {
                 Adapter.Fill(ds);
-                return ds.Tables[0].Rows[0][0] as int? == 1;
+                return ds.Tables[0].Rows[0][0] as Guid?;
             }
             catch(Exception ex)
             {
                 Exception = ex;
-                return false;
+                return default;
             }
         }
     }

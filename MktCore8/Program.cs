@@ -24,7 +24,7 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSingleton<ICoreComline, CoreComline>();
-builder.Services.AddSingleton<IServiceData>(provider => new Manosque.ServiceData.ServiceData(connectionString));
+builder.Services.AddSingleton<IServiceData>(provider => new Manosque.ServiceData.ServiceData());
 
 // Authentication
 builder.Services.AddSingleton<IUserService, UserService>();

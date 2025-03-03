@@ -16,15 +16,15 @@ namespace ComlineServices
             switch (Command.Name)
             {
                 case "Set-Option":
-                    // Set-Option -Service
-                    if (Command.Parameters.TryGetValue("Service", out Tuple<string, string>? value1) && value1 != null)
-                    {
-                        throw new Exception();
-                        //Options["Service"] = value1.Item2.Trim('"');
-                        //Command.Results.AddInfo($"Service {Command.Parameters["Service"]}", "Info");
-                    }
+                    //// Set-Option -Service
+                    //if (Command.Parameters.TryGetValue("Service", out Tuple<string, string>? value1) && value1 != null)
+                    //{
+                    //    throw new Exception();
+                    //    //Options["Service"] = value1.Item2.Trim('"');
+                    //    //Command.Results.AddInfo($"Service {Command.Parameters["Service"]}", "Info");
+                    //}
                     // Set-Option -DisplayMode
-                    else if (Command.Parameters.TryGetValue("DisplayMode", out Tuple<string, string>? value2) && value2 != null)
+                    if (Command.Parameters.TryGetValue("DisplayMode", out Tuple<string, string>? value2) && value2 != null)
                     {
                         Options["DisplayMode"] = value2.Item2.Trim('"');
                         Command.Results.AddInfo($"DisplayMode {Command.Parameters["DisplayMode"]}", "Info");

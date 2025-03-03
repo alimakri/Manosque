@@ -4,6 +4,7 @@ using ComlineApp.Manager;
 using ComlineServices;
 using ComLineCommon;
 using Microsoft.Identity.Client;
+using System;
 
 namespace ComLineConsoleApp
 {
@@ -41,6 +42,14 @@ namespace ComLineConsoleApp
                 switch (prompt)
                 {
                     // Commandes Console
+                    case "local":
+                        Console.BackgroundColor = ConsoleColor.Magenta;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        ServiceApi.Url = "https://localhost:7250/"; 
+                        Console.WriteLine("https://localhost:7250/");
+                        Console.BackgroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.DarkGray;
+                        break;
                     case "cls": Console.Clear(); break;
                     case "stop": comline.Command.Prompts.RemoveRange(1, comline.Command.Prompts.Count - 1); break;
                     case "exit": fin = true; break;

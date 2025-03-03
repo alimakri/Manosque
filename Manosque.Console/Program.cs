@@ -13,9 +13,10 @@ Global.WorkingDirectory_ServiceData = Global.WorkingDirectory_ServiceSystem = @"
 ServiceSystem.Options.Add("Service", "System");
 ServiceSystem.Options.Add("DisplayMode", "Normal");
 
+ServiceData.ConnectionString = "Server=.\\SQLEXPRESS;Database=ManosqueBD;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True";
+
 var serviceProvider = new ServiceCollection()
-    .AddSingleton<IServiceData>(provider => new Manosque.ServiceData.ServiceData("Server=.\\SQLEXPRESS;Database=ManosqueBD;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True"))
-    .AddTransient<CoreComline>()
+    .AddSingleton<CoreComline>()
     .BuildServiceProvider();
 var comLine = serviceProvider.GetService<CoreComline>();
 

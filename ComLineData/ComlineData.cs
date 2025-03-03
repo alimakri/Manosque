@@ -15,7 +15,8 @@ namespace ComLineData
         QueryError,
         UnExistedTable,
         NothingToDo,
-        AppelApi
+        AppelApi,
+        Authentication
     }
     public class ComlineData
     {
@@ -32,6 +33,7 @@ namespace ComLineData
 
         public ResultList Results = new();
         public string Filter = "";
+        public string ConnectionString;
 
         public bool ContainsAllQueryParameters(params string[] searchparameters)
         {

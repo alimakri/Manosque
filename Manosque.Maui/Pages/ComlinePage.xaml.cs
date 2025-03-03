@@ -1,4 +1,5 @@
 ﻿
+using ComlineServices;
 using System.Data;
 
 namespace Manosque.Maui.Pages
@@ -18,13 +19,13 @@ namespace Manosque.Maui.Pages
 
         private void OnComline(object sender, EventArgs e)
         {
-            var command = App.MonServiceAPi.Command;
-            command.Prompts = [Prompt.Text];
-            App.MonServiceAPi.Execute();
+            ServiceApi.Command = new ComLineData.ComlineData();
+            ServiceApi.Command.Prompts = [Prompt.Text];
+            App.MonServiceApi.Execute();
             DataTablesStackLayout.Clear();
             try
             {
-                foreach (DataTable dataTable in command.Results.Tables)
+                foreach (DataTable dataTable in ServiceApi.Command.Results.Tables)
                 {
 
                     CreateGrid(dataTable);

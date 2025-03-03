@@ -1,5 +1,6 @@
+local
 Set-Option -DisplayMode Normal
-Set-Option -Service Data
+Connect-Service -Name Data
 
 # Nettoyage de la BD
 Delete-All
@@ -65,32 +66,40 @@ New-Action -Id "003663BB-287B-484E-9E1A-ECD8A0C70002" -Question "Tache 1.3.A Act
 New-Action -Id "003663BB-287B-484E-9E1A-ECD8A0C70003" -Question "Tache 1.3.A Action 3" -Tache "Tache 1.3.A" -Type @Texte
 
 # ##################################
+# Authentification
+Get-Personne -Reference "mohamed" -Password "P@ssw0rd" -Select "Id"
 
 # Liste des sites ******************
-Get-Execution -Reference NULL
-Get-Execution -Execution ^ -Personne "mohamed" -DateDebut "17/02/2025" -Filter "ListeSites"
+# Get-Execution -Reference NULL
+# Get-Execution -Execution ^ -Personne "mohamed" -DateDebut "17/02/2025" -Filter "ListeSites"
 
 # WHILE
-Get-Execution -Reference "EXE_1"
-
-Get-Execution -Execution ^ -Personne "mohamed" -DateDebut "17/02/2025" -Filter "ListeSites"
-
-Get-Execution -Reference "EXE_1.1"
-
-Get-Execution -Execution ^ -Personne "mohamed" -DateDebut "17/02/2025" -Filter "ListeSites"
-
-Get-Tache -Reference "Tache 1.3.A"
-
-Get-Action -Tache ^
-
-Set-Option -Service Api
-Set-Option -Service Data
-
-# Connect-Server -Name local -Login "mohamed" -Password "P@ssw0rd"
+# Get-Execution -Reference "EXE_1"
+# 
+# Get-Execution -Execution ^ -Personne "mohamed" -DateDebut "17/02/2025" -Filter "ListeSites"
+# 
+# Get-Execution -Reference "EXE_1.1"
+# 
+# Get-Execution -Execution ^ -Personne "mohamed" -DateDebut "17/02/2025" -Filter "ListeSites"
+# 
+# Get-Tache -Reference "Tache 1.3.A"
+# 
+# Get-Action -Tache ^
+# 
+# Connect-Service -Name Api
+# Connect-Service -Name Data
+# 
+# # Connect-Server -Name local -Login "mohamed" -Password "P@ssw0rd"
+# # Get-Info
+# # Connect-Service -Name Api
+# # Connect-Service -Name Api
+# 
+# Connect-Server -Name ionos -Login "mohamed" -Password "P@ssw0rd"
+# Connect-Service -Name Data
 # Get-Info
-# Set-Option -Service Api
-# Set-Option -Service Api
 
-Connect-Server -Name ionos -Login "mohamed" -Password "P@ssw0rd"
-Set-Option -Service Data
-Get-Info
+# Connect-Service -Name Api -Login "mohamed" -Password "P@ssw0rd"
+# Connect-Service -Name Data
+# Get-Personne
+# Connect-Service -Name Api
+Connect-Service -Name Api -Login "mohamed" -Password "P@ssw0rd"

@@ -12,6 +12,7 @@
     <ProjectReference Include="..\ComlineServiceApi\ComlineServices.ServiceApi.csproj" />
     <ProjectReference Include="..\ComlineServiceData\ComlineServices.ServiceData.csproj" />
     <ProjectReference Include="..\ComlineServiceSystem\ComlineServices.ServiceSystem.csproj" />
+    <ProjectReference Include="..\Manosque.ServiceData\Manosque.ServiceData.csproj" />
   </ItemGroup>
 
 </Project>

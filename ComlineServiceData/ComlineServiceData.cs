@@ -8,19 +8,20 @@ namespace ComlineServices
     public class ServiceData
     {
         #region Properties
-        protected ComlineData Command = new();
+        public ComlineData Command = new();
 
         // SQL SERVER
         protected SqlCommand Query = new();
         protected SqlDataAdapter Adapter = new();
+        public static string ConnectionString = "";
         #endregion
 
-        public ServiceData(string connectionString)
+        public ServiceData()
         {
             //Command = command;
             SqlConnection cnx = new()
             {
-                ConnectionString = connectionString
+                ConnectionString = ConnectionString
             };
             cnx.Open();
             Query.Connection = cnx;
@@ -28,11 +29,11 @@ namespace ComlineServices
             Adapter.SelectCommand = Query;
         }
 
-        public virtual void Execute(ComlineData command) { }
+        public virtual void Execute() { }
     }
 
     public interface IServiceData
     {
-        void Execute(ComlineData command);
+        void Execute();
     }
 }

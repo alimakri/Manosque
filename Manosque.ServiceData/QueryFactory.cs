@@ -77,7 +77,7 @@ namespace ComlineApp.Services
                                 Declare @id_{cle} nvarchar(50);");
                     if (val.ToUpper() == "NULL")
                         Result.Append($@"select @id_{cle}=NULL;");
-                    else if (Guid.TryParse(val, out _))
+                    else if (Guid.TryParse(val.Trim('\''), out _))
                         Result.Append($@"select @id_{cle}={val};");
                     else
                         Result.Append($@"
@@ -87,7 +87,7 @@ namespace ComlineApp.Services
                 // -Liste 
                 else if (cle == "Liste") ParameterListe = val;
                 // -Select
-                else if (cle == "Select") { SelectClause = val.Trim('"'); JoinClause = ""; Join(Command); }
+                else if (cle == "Select") { SelectClause = val.Trim('"').Trim('\''); JoinClause = ""; Join(Command); }
                 // -Filter
                 else if (cle == "Filter") Command.Filter = val.Trim('"').Trim('\'');
                 // -Compute
@@ -198,7 +198,7 @@ namespace ComlineApp.Services
             {
                 // Query normal
                 Result.Append($@"
-                            select {SelectClause} from {Command.TableName} {WhereClause}");
+                            select {SelectClause} from {Command.TableName} x {WhereClause}");
             }
         }
         #endregion

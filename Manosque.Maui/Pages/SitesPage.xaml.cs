@@ -1,4 +1,6 @@
 ﻿
+using ComLineCommon;
+using ComlineServices;
 using Manosque.Maui.Models;
 using System.Collections.ObjectModel;
 using System.Data;
@@ -8,8 +10,8 @@ namespace Manosque.Maui.Pages
 {
     public partial class SitesPage : ContentPage, IQueryAttributable
     {
-        private string? User;
-        private Guid? UserId;
+        //private string? User;
+        private string? UserId;
         private string? Execution;
         private Guid? ExecutionId;
 
@@ -18,6 +20,14 @@ namespace Manosque.Maui.Pages
             InitializeComponent();
             myDatePicker.PropertyChanged += DatePicker_PropertyChanged;
         }
+        public void ApplyQueryAttributes(IDictionary<string, object> query)
+        {
+            // Init
+            UserId = query.TryGetValue("user", out object? value) ? value as string : null;
+            Execution = query.TryGetValue("execution", out object? value2) ? value2 as string : "NULL";
+            if (query.ContainsKey("date") && DateTime.TryParse((string)query["date"], out DateTime value3)) myDatePicker.Date = value3;
+            ExecuteApi();
+        }
         private void DatePicker_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(DatePicker.Date))
@@ -25,25 +35,18 @@ namespace Manosque.Maui.Pages
                 ExecuteApi();
             }
         }
-        public void ApplyQueryAttributes(IDictionary<string, object> query)
-        {
-            // Init
-            User = query.TryGetValue("user", out object? value) ? value as string : null;
-            Execution = query.TryGetValue("execution", out object? value2) ? value2 as string : "NULL";
-            if (query.ContainsKey("date") && DateTime.TryParse((string)query["date"], out DateTime value3)) myDatePicker.Date = value3;
-            ExecuteApi();
-        }
         public void ExecuteApi()
         {
             // Stay here in SitesPage
-            App.MonServiceAPi.Command.Prompts = [
-                "Set-Option -Service Data;",
+            ServiceApi.Command = new ComLineData.ComlineData();
+            ServiceApi.Command.Reset();
+            ServiceApi.Command.Prompts = [
+                "Connect-Service -Name Data;",
                 "Get-Execution -Reference NULL".Replace("NULL", $@"""{Execution}"""),
-                $@"Get-Execution -Execution ^ -Personne ""{User}"" -Mode ""Debug"" -DateDebut ""{myDatePicker.Date}"" -Filter ""ListeSites"""];
-            App.MonServiceAPi.Command.Reset();
-            App.MonServiceAPi.Execute();
+                $@"Get-Execution -Execution ^ -Personne ""{UserId}"" -Mode ""Debug"" -DateDebut ""{myDatePicker.Date}"" -Filter ""ListeSites"""];
+            App.MonServiceApi.Execute();
 
-            var tableList = App.MonServiceAPi.Command.Results.TableList;
+            var tableList = ServiceApi.Command.Results.TableList;
             if (tableList.Contains("Error"))
             {
 
@@ -52,7 +55,7 @@ namespace Manosque.Maui.Pages
             {
                 ObservableCollection<Site> Sites = [];
                 var id = default(Guid);
-                var list = App.MonServiceAPi.Command.Results.Tables["Execution"]?.Rows.Cast<DataRow>().Where(row => Guid.TryParse(row["Emplacement"].ToString(), out id));
+                var list = ServiceApi.Command.Results.Tables["Execution"]?.Rows.Cast<DataRow>().Where(row => Guid.TryParse(row["Emplacement"].ToString(), out id));
                 if (list != null)
                     foreach (var row in list)
                     {

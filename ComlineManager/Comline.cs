@@ -4,12 +4,15 @@ using System.Diagnostics;
 using ComLineCommon;
 using ComlineServices;
 using ComLineData;
+using System.Linq;
 
 namespace ComlineApp.Manager
 {
-    public partial class CoreComline(IServiceData serviceData) : ICoreComline
+    public partial class CoreComline() : ICoreComline
     {
-        public IServiceData MonServiceData = serviceData;
+        public Manosque.ServiceData.ServiceData? MonServiceData;
+        public ServiceApi? MonServiceApi;
+        public ServiceSystem? MonServiceSystem;
 
         #region Properties
         private readonly Regex TheRegex = MyRegex();
@@ -26,12 +29,19 @@ namespace ComlineApp.Manager
             var prompt = Command.Prompts[0].Trim();
             if (!string.IsNullOrEmpty(prompt) && !prompt.StartsWith('#'))
             {
+                // Init Services
+                MonServiceApi = new ServiceApi(Command);
+                MonServiceSystem = new ServiceSystem(Command);
+                MonServiceData = new Manosque.ServiceData.ServiceData();
+                MonServiceData.Command = Command;
+
                 // Analyze
                 AnalyzePrompt();
                 // SelectService
                 var res = SelectService();
                 // ExecuteService
-                if (res == ErrorCodeEnum.None && res != ErrorCodeEnum.NothingToDo) ExecuteService();
+                if (res == ErrorCodeEnum.None && res != ErrorCodeEnum.NothingToDo) 
+                    ExecuteService();
             }
             if (Continue == ContinueEnum.Stop || (Command.ErrorCode != ErrorCodeEnum.None && Command.ErrorCode != ErrorCodeEnum.NothingToDo))
                 Command.Prompts.RemoveRange(1, Command.Prompts.Count - 1);
@@ -62,13 +72,13 @@ namespace ComlineApp.Manager
             switch (ServiceSystem.Options["Service"])
             {
                 case "System":
-                    new ServiceSystem(Command).Execute();
+                    MonServiceSystem?.Execute();
                     break;
                 case "Data":
-                    MonServiceData.Execute(Command);
+                    MonServiceData?.Execute();
                     break;
                 case "Api":
-                    new ServiceApi(Command).Execute();
+                    MonServiceApi?.Execute();
                     break;
                 default:
                     Command.Results.AddError($"Comline.cs.{new StackTrace(true).GetFrame(0)?.GetFileLineNumber()}: la commande n'est pas associé à un service ou le service [{ServiceSystem.Options["Service"]}] n'existe pas !", ErrorCodeEnum.UnexistedService);
@@ -119,9 +129,9 @@ namespace ComlineApp.Manager
             // Service par défaut
             if (!ServiceSystem.Options.TryGetValue("Service", out string? actualService)) ServiceSystem.Options["Service"] = "System";
 
-            if (Command.Name == "Set-Option" && actualService != null)
+            if (Command.Name == "Connect-Service" && actualService != null)
             {
-                Command.Parameters.TryGetValue("Service", out Tuple<string, string>? askedService);
+                Command.Parameters.TryGetValue("Name", out Tuple<string, string>? askedService);
 
                 if (askedService != null)
                 {
@@ -130,30 +140,47 @@ namespace ComlineApp.Manager
                     {
                         Command.Results.AddError("Service non existant !", ErrorCodeEnum.UnexistedService);
                     }
-                    // Deconnect Api
-                    else if (askedService?.Item2 == "Api" && actualService == "Api")
-                    {
-                        ServiceSystem.Options["Service"] = "System";
-                        Command.Results.AddInfo($"Api déconnecté", "Info");
-                        ServiceApi.Deconnect();
-                    }
                     // Changement Service distant
-                    else if (askedService != null && actualService == "Api")
+                    else if (askedService.Item2 != "Api" && actualService == "Api")
                     {
                         ServiceApi.RemoteService = askedService.Item2;
                         Command.Results.AddInfo($"Remote Service {ServiceApi.RemoteService} ok", "Info");
                     }
-                    // Connect to Api
-                    else if (askedService?.Item2 == "Api")
+                    else if (MonServiceApi != null)
                     {
-                        ServiceSystem.Options["Service"] = askedService.Item2;
-                        Command.Results.AddInfo($"Service {askedService.Item2} ok", "Info");
-                    }
-                    // Changement Service local
-                    else
-                    {
-                        ServiceSystem.Options["Service"] = askedService.Item2;
-                        Command.Results.AddInfo($"Service {askedService.Item2} ok", "Info");
+                        // Deconnect Api
+                        if (askedService?.Item2 == "Api" && actualService == "Api")
+                        {
+                            ServiceSystem.Options["Service"] = "System";
+                            Command.Results.AddInfo($"Api déconnecté", "Info");
+                            MonServiceApi.DeconnectApi();
+                        }
+                        // Connect to Api
+                        else if (askedService?.Item2 == "Api")
+                        {
+                            if (Command.Parameters.TryGetValue("Login", out Tuple<string, string>? login) &&
+                                Command.Parameters.TryGetValue("Password", out Tuple<string, string>? password) &&
+                                MonServiceApi.ConnectApi(new UserLogin { Username = login.Item2, Password = password.Item2 }))
+                            {
+                                ServiceSystem.Options["Service"] = askedService.Item2;
+                                Command.Results.AddInfo($"Service {askedService.Item2} ok", "Info");
+                            }
+                            else
+                            {
+                                Command.Results.AddError($"Identification nécessaire", ErrorCodeEnum.Authentication);
+                            }
+                        }
+                        // Changement Service local
+                        else
+                        {
+                            if (Global.Services.Contains(askedService.Item2))
+                            {
+                                ServiceSystem.Options["Service"] = askedService.Item2;
+                                Command.Results.AddInfo($"Service {askedService.Item2} ok", "Info");
+                            }
+                            else
+                                Command.Results.AddError($"Service {askedService.Item2} non existant", ErrorCodeEnum.UnexistedService);
+                        }
                     }
                 }
                 Command.ErrorCode = ErrorCodeEnum.NothingToDo;

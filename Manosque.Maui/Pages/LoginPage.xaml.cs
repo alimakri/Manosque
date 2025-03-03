@@ -1,25 +1,28 @@
-﻿namespace Manosque.Maui.Pages
+﻿using ComLineCommon;
+using ComlineServices;
+
+namespace Manosque.Maui.Pages
 {
     public partial class LoginPage : ContentPage
     {
+        private readonly string PromptLogin;
         public LoginPage()
         {
             InitializeComponent();
+            //PromptLogin = $@"Get-Personne -Reference ""{UserNom.Text}"" -Password ""{UserPassword.Text}"" -Select ""Id"";";
         }
-        private string PromptLogin { get { return $@"Set-Option -Service Data;Get-Personne -Reference ""{UserNom.Text}"" -Password ""{UserPassword.Text}"" -Return ""OnlyCount"""; } }
         private async void OnSites(object sender, EventArgs e)
         {
-            var command = App.MonServiceAPi.Command;
-            command.Prompts = [PromptLogin];
-            App.MonServiceAPi.Execute();
+            // Connect
+            ServiceApi.Command = new ComLineData.ComlineData();
+            App.MonServiceApi.ConnectApi(new UserLogin { Username = UserNom.Text, Password = UserPassword.Text });
 
             try
             {
-                var table = command.Results.Tables["Personne"];
-                var n = table?.Rows[0][0] as long?;
-                if (n == 1)
+                var table = ServiceApi.Command.Results.Tables["Info"];
+                App.User = (string?) table?.Rows[0][1];
+                if (App.User != null)
                 {
-                    App.User = UserNom.Text;
                     await Shell.Current.GoToAsync($"//sites?user={App.User}");
                 }
             }
