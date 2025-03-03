@@ -1,30 +1,34 @@
 ﻿using ComLineData;
 using Manosque.ServiceData;
+using MktCore8.Controllers;
 
 namespace MktCore8
 {
     public interface IUserService
     {
-        User Authenticate(string username, string password);
+        User? Authenticate(string username, string password);
     }
 
-    public class UserService(IConfiguration config) : IUserService
+    public class UserService(IConfiguration config, ILogger<UserService> logger) : IUserService
     {
         private readonly string? ConnectionString = config.GetConnectionString("DefaultConnection");
+        private readonly ILogger<UserService> _logger = logger;
 
-        //private List<User> _users = new List<User>
-        //{
-        //    new User { Username = "test", Password = "password" } // Utilisez un hachage pour stocker les mots de passe dans un vrai projet
-        //};
-
-        public User Authenticate(string username, string password)
+        public User? Authenticate(string username, string password)
         {
-            //var user = _users.SingleOrDefault(x => x.Username == username && x.Password == password);
+            _logger.LogInformation("UserService.Authenticate");
+
             if (ConnectionString != null)
             {
-                if (new ServiceData(ConnectionString).Authenticate(username, password))
+                new ServiceData(ConnectionString).Authenticate(username, password);
+                if (ServiceData.Exception == null)
                 {
                     return new User { Username = username, Password = password };
+                }
+                else
+                {
+                    _logger.LogError("UserService.Authenticate: {ServiceData.Exception}", ServiceData.Exception);
+
                 }
             }
             return null;

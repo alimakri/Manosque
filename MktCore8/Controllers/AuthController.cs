@@ -1,8 +1,6 @@
 ﻿using ComLineCommon;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -12,15 +10,18 @@ namespace MktCore8.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthController(IConfiguration config, IUserService userService) : ControllerBase
+    public class AuthController(IConfiguration config, ILogger<AuthController> logger, IUserService userService) : ControllerBase
     {
         private readonly IConfiguration _config = config;
         private readonly IUserService _userService = userService;
+        private readonly ILogger<AuthController> _logger = logger;
 
         [HttpPost]
         [Route("login")]
         public IActionResult Login([FromBody] UserLogin model)
         {
+            _logger.LogInformation("AuthController.Login");
+
             var user = _userService.Authenticate(model.Username, model.Password);
 
             if (user == null)
@@ -29,6 +30,7 @@ namespace MktCore8.Controllers
             }
 
             var tokenString = GenerateJWT(user.Username);
+            _logger.LogInformation("AuthController.Login: tokenString {tokenString}", tokenString);
             return Ok(new { Token = tokenString });
         }
 

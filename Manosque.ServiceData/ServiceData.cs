@@ -2,6 +2,7 @@
 using ComLineCommon;
 using ComLineData;
 using ComlineServices;
+using Serilog;
 using System.Data;
 using System.Diagnostics;
 using System.Xml.Serialization;
@@ -10,6 +11,7 @@ namespace Manosque.ServiceData
 {
     public class ServiceData : ComlineServices.ServiceData, IServiceData
     {
+        public static Exception? Exception;
         public ServiceData(string connectionString) : base(connectionString)
         {
             DataTable t = new();
@@ -119,9 +121,17 @@ namespace Manosque.ServiceData
         public bool Authenticate(string reference, string password)
         {
             Query.CommandText = $"select Count(*) n from Personne where Reference='{reference}' and Password='{password}'";
-            var ds = new DataSet();
-            Adapter.Fill(ds);
-            return ds.Tables[0].Rows[0][0] as int? == 1;
+            var ds = new DataSet(); Exception = null;
+            try
+            {
+                Adapter.Fill(ds);
+                return ds.Tables[0].Rows[0][0] as int? == 1;
+            }
+            catch(Exception ex)
+            {
+                Exception = ex;
+                return false;
+            }
         }
     }
 }

@@ -18,6 +18,7 @@ namespace MktCore8.Controllers
 
         public IActionResult Index()
         {
+            //MonLogger.LogInformation("HomeController.Login");
             string? s = "Erreur"; ViewBag.ConnectionString = "Erreur ConnectionString";
             try
             {

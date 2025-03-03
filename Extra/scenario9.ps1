@@ -43,7 +43,7 @@ New-Tache -Id "89A16088-0355-4602-B777-0E49B7B1111B" -Reference "Tache 1.1.1.B"
 New-Tache -Id "89A16088-0355-4602-B777-0E49B7B1111C" -Reference "Tache 1.1.1.C" 
 
 # Executions Niveau 0 -----------------------------------------------------------------------------------------------------
-New-Execution -Id "50FE19B9-0F82-4ED5-8961-0E49B7B00001" -Reference "EXE_1" -Emplacement "Site1" -DateDebut "17/02/2025 08:00" -Personne "mohamed" -Mode Debug
+New-Execution -Id "50FE19B9-0F82-4ED5-8961-0E49B7B00001" -Reference "EXE_1" -Emplacement "Site1" -DateDebut "17/02/2025 08:00" -Personne "mohamed" 
 New-Execution -Id "50FE19B9-0F82-4ED5-8961-0E49B7B00002" -Reference "EXE_2" -Emplacement "Site2" -DateDebut "17/02/2025 08:00" -Personne "mohamed"
 New-Execution -Id "50FE19B9-0F82-4ED5-8961-0E49B7B00003" -Reference "EXE_3" -Emplacement "Site3" -DateDebut "17/02/2025 08:00" -Personne "mohamed"
 
@@ -68,7 +68,7 @@ New-Action -Id "003663BB-287B-484E-9E1A-ECD8A0C70003" -Question "Tache 1.3.A Act
 
 # Liste des sites ******************
 Get-Execution -Reference NULL
-Get-Execution -Execution ^ -Personne "mohamed" -DateDebut "17/02/2025" -Filter "ListeSites" -Mode Debug
+Get-Execution -Execution ^ -Personne "mohamed" -DateDebut "17/02/2025" -Filter "ListeSites"
 
 # WHILE
 Get-Execution -Reference "EXE_1"
@@ -86,10 +86,10 @@ Get-Action -Tache ^
 Set-Option -Service Api
 Set-Option -Service Data
 
-Connect-Server -Name local -Login "mohamed" -Password "P@ssw0rd"
-Get-Info
-Set-Option -Service Api
-Set-Option -Service Api
+# Connect-Server -Name local -Login "mohamed" -Password "P@ssw0rd"
+# Get-Info
+# Set-Option -Service Api
+# Set-Option -Service Api
 
 Connect-Server -Name ionos -Login "mohamed" -Password "P@ssw0rd"
 Set-Option -Service Data
