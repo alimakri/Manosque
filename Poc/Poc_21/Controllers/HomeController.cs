@@ -1,16 +1,22 @@
 using Microsoft.AspNetCore.Mvc;
-using MktPoc.Models;
+using Poc_21.Models;
 using System.Diagnostics;
 
-namespace MktPoc.Controllers
+namespace Poc_21.Controllers
 {
-    public class HomeController(ILogger<HomeController> logger) : Controller
+    public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger = logger;
+        private readonly ILogger<HomeController> MonLogger;
+        private readonly IConfiguration MaConfig;
+
+        public HomeController(ILogger<HomeController> logger, IConfiguration config)
+        {
+            MonLogger = logger;
+            MonLogger.LogInformation("Va dormir...");
+        }
 
         public IActionResult Index()
         {
-            _logger.LogInformation("Seri Log is Working");
             return View();
         }
 
