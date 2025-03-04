@@ -6,8 +6,23 @@
     <h1 class="text-center">Site makrisoft</h1>
     <ul>
         <li>
-            <strong>Test token</strong>
-            <p>TokenGet donne un jeton pour pouvoir accéder à TokenUse. Sinon Not authorized !</p>
+            <strong>JWT</strong>
+            <p>A tester avec Fiddler. makrisoft.net met trop de temps en tant que client Api
+                <ul>
+                    <li>
+                        <a href="https://makrisoft.net/api/comline/login">https://makrisoft.net/api/comline/login</a> pour récupérer un jeton
+                    </li>
+                    <li>
+                        <a href="https://makrisoft.net/api/comline">https://makrisoft.net/api/comline</a> pour tester le jeton
+                        <p>
+                            User-Agent: Fiddler<br/>
+                            Content-Type: application/json<br />
+                            Authorization: Bearer --.---.---<br /><br/>
+                            et dans le POST : {"UserName":"ali","Password":"password"}
+                        </p>
+                    </li>
+                </ul>
+            </p>
         </li>
     </ul>
 </div>
