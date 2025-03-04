@@ -30,6 +30,7 @@ namespace Poc_21.Controllers
         public IActionResult Index()
         {
             MonLogger.LogInformation("HomeController.Index");
+            MonLogger.LogInformation("Thierno");
             return View();
         }
         public IActionResult TokenUse()

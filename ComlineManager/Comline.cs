@@ -26,7 +26,7 @@ namespace ComlineApp.Manager
         {
             Continue = ContinueEnum.StopOnError;
 
-            var prompt = Command.Prompts[0].Trim();
+            var prompt = Command.Prompts[0];
             if (!string.IsNullOrEmpty(prompt) && !prompt.StartsWith('#'))
             {
                 // Init Services
@@ -40,7 +40,7 @@ namespace ComlineApp.Manager
                 // SelectService
                 var res = SelectService();
                 // ExecuteService
-                if (res == ErrorCodeEnum.None && res != ErrorCodeEnum.NothingToDo) 
+                if (res == ErrorCodeEnum.None && res != ErrorCodeEnum.NothingToDo)
                     ExecuteService();
             }
             if (Continue == ContinueEnum.Stop || (Command.ErrorCode != ErrorCodeEnum.None && Command.ErrorCode != ErrorCodeEnum.NothingToDo))
@@ -109,9 +109,32 @@ namespace ComlineApp.Manager
             var values = matches.Groups["value"].Captures;
             for (int i = 0; i < parameters.Count; i++)
             {
-                var val = "";
-                if (i < values.Count) val = values[i].Value;
-                Command.Parameters.Add(parameters[i].Value.Capitalize(), new Tuple<string, string>(parameters[i].Value.Capitalize(), val));
+                var val = ""; string newVal = ""; string newKey = "";
+                if (i < values.Count)
+                {
+                    val = values[i].Value.Trim().Trim('\'').Trim('"');
+
+                    // All conversions
+                    if (int.TryParse(val, out int k)) newVal = k.ToString();
+                    else if (double.TryParse(val, out double d)) newVal = d.ToString().Replace(',', '.');
+                    else if (DateTime.TryParse(val, out DateTime dt))
+                    {
+                        newKey = $"CAST({values[i].Index} as Datetime)";
+                        newVal = $"CONVERT(DateTime, '{dt.ToString("dd/MM/yyyy HH:mm:ss")}', 103)";
+                    }
+                    else if (DateOnly.TryParse(val, out DateOnly dy))
+                    {
+                        newKey = $"CAST({values[i].Index} as Date)";
+                        newVal = $"CONVERT(Date, '{dt.ToString("dd/MM/yyyy")}', 103)";
+                    }
+                    else if (val.StartsWith('@')) newVal = val;
+                    else if (val.ToUpper() == "NULL") newVal = "NULL";
+                    else newVal = $"'{val}'";
+                }
+                Command.Parameters.Add(
+                    parameters[i].Value.Capitalize(), 
+                    new Tuple<string, string, 
+                    string>(newKey.Capitalize(), val, newVal));
             }
             //Command.Parameters = Command.Parameters.OrderBy(p => p.Key).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
@@ -131,7 +154,7 @@ namespace ComlineApp.Manager
 
             if (Command.Name == "Connect-Service" && actualService != null)
             {
-                Command.Parameters.TryGetValue("Name", out Tuple<string, string>? askedService);
+                Command.Parameters.TryGetValue("Name", out Tuple<string, string, string>? askedService);
 
                 if (askedService != null)
                 {
@@ -158,8 +181,8 @@ namespace ComlineApp.Manager
                         // Connect to Api
                         else if (askedService?.Item2 == "Api")
                         {
-                            if (Command.Parameters.TryGetValue("Login", out Tuple<string, string>? login) &&
-                                Command.Parameters.TryGetValue("Password", out Tuple<string, string>? password) &&
+                            if (Command.Parameters.TryGetValue("Login", out Tuple<string, string, string>? login) &&
+                                Command.Parameters.TryGetValue("Password", out Tuple<string, string, string>? password) &&
                                 MonServiceApi.ConnectApi(new UserLogin { Username = login.Item2, Password = password.Item2 }))
                             {
                                 ServiceSystem.Options["Service"] = askedService.Item2;

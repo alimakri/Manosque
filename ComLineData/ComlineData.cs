@@ -25,7 +25,8 @@ namespace ComLineData
         public string Name = "";
         public string TableName = "";
 
-        public Dictionary<string, Tuple<string, string>> Parameters = [];
+        // string1 = cle, string2=val trimé, string3 val pour sql
+        public Dictionary<string, Tuple<string, string, string>> Parameters = [];
         public List<string> Prompts = [];
 
         public ErrorCodeEnum ErrorCode = 0;

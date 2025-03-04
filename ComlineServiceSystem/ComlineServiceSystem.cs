@@ -16,17 +16,10 @@ namespace ComlineServices
             switch (Command.Name)
             {
                 case "Set-Option":
-                    //// Set-Option -Service
-                    //if (Command.Parameters.TryGetValue("Service", out Tuple<string, string>? value1) && value1 != null)
-                    //{
-                    //    throw new Exception();
-                    //    //Options["Service"] = value1.Item2.Trim('"');
-                    //    //Command.Results.AddInfo($"Service {Command.Parameters["Service"]}", "Info");
-                    //}
                     // Set-Option -DisplayMode
-                    if (Command.Parameters.TryGetValue("DisplayMode", out Tuple<string, string>? value2) && value2 != null)
+                    if (Command.Parameters.TryGetValue("DisplayMode", out Tuple<string, string, string>? value2) && value2 != null)
                     {
-                        Options["DisplayMode"] = value2.Item2.Trim('"');
+                        Options["DisplayMode"] = value2.Item2;
                         Command.Results.AddInfo($"DisplayMode {Command.Parameters["DisplayMode"]}", "Info");
                     }
                     break;
@@ -42,11 +35,7 @@ namespace ComlineServices
                     }
                     else
                     {
-                        Command.Results.AddInfos(
-                            File.ReadAllLines(
-                                Path.Combine(Global.WorkingDirectory_ServiceSystem, Command.Parameters["Name"].Item2))
-                            //.Where(l => !l.StartsWith('#')).ToArray()
-                            , "Commande");
+                        Command.Results.AddInfos(File.ReadAllLines(path), "Commande");
                     }
                     break;
                 default:

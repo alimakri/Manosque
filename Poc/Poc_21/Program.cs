@@ -13,7 +13,7 @@ try
     // Serilog
     builder.Host.UseSerilog((context, loggerConfiguration) =>
     {
-        //loggerConfiguration.WriteTo.Console();
+        loggerConfiguration.WriteTo.Console();
         loggerConfiguration.ReadFrom.Configuration(context.Configuration);
     });
 

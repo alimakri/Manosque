@@ -114,6 +114,7 @@ namespace ComLineConsoleApp
 
             switch (tableName)
             {
+                case "Debug": color = ConsoleColor.Magenta; break;
                 case "Error": color = ConsoleColor.DarkRed; break;
                 case "Info": color = ConsoleColor.DarkGreen; break;
                 default:

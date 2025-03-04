@@ -42,8 +42,7 @@ namespace Manosque.Maui.Pages
             ServiceApi.Command.Reset();
             ServiceApi.Command.Prompts = [
                 "Connect-Service -Name Data;",
-                "Get-Execution -Reference NULL".Replace("NULL", $@"""{Execution}"""),
-                $@"Get-Execution -Execution ^ -Personne ""{UserId}"" -Mode ""Debug"" -DateDebut ""{myDatePicker.Date}"" -Filter ""ListeSites"""];
+                $@"Get-Execution -Execution ""{Execution}"" -Personne ""{UserId}"" -Mode ""Debug"" -DateDebut ""{myDatePicker.Date}"" -Filter ""ListeSites"""];
             App.MonServiceApi.Execute();
 
             var tableList = ServiceApi.Command.Results.TableList;

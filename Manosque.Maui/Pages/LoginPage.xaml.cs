@@ -9,7 +9,6 @@ namespace Manosque.Maui.Pages
         public LoginPage()
         {
             InitializeComponent();
-            //PromptLogin = $@"Get-Personne -Reference ""{UserNom.Text}"" -Password ""{UserPassword.Text}"" -Select ""Id"";";
         }
         private async void OnSites(object sender, EventArgs e)
         {

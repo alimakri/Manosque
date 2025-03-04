@@ -15,6 +15,8 @@ namespace Poc_21.Controllers
     {
         private readonly ILogger<HomeController> MonLogger;
         private readonly IConfiguration _config;
+
+
         public ComlineController(ILogger<HomeController> logger, IConfiguration config)
         {
             MonLogger = logger;
@@ -22,6 +24,8 @@ namespace Poc_21.Controllers
 
             MonLogger.LogInformation("ComlineController.ComlineController");
         }
+
+
         [AllowAnonymous]
         [HttpGet]
         public ActionResult Get()
@@ -29,12 +33,16 @@ namespace Poc_21.Controllers
             MonLogger.LogInformation("ComlineController.Get");
             return new ContentResult() { Content = "Comline Get -> Ok !" };
         }
+        
+        
         [HttpPost]
         public ActionResult Post([FromBody] UserLogin user)
         {
             MonLogger.LogInformation("ComlineController.Post");
             return new ContentResult() { Content = "Comline Post -> Ok !" };
         }
+        
+        
         [AllowAnonymous]
         [HttpPost]
         [Route("login")]
@@ -42,10 +50,15 @@ namespace Poc_21.Controllers
         {
             MonLogger.LogInformation("ComlineController.Login");
             if (user.Username != "ali" || user.Password != "password") return Unauthorized();
+            MonLogger.LogInformation("ComlineController.Login: login password ok");
 
             var tokenString = GenerateJWT(user.Username);
+            MonLogger.LogInformation($"ComlineController.Login: tokenString password {tokenString}");
+
             return Ok(new { UserId = user.Username, Token = tokenString });
         }
+        
+        
         private string GenerateJWT(string username)
         {
             MonLogger.LogInformation("ComlineController.GenerateJWT");

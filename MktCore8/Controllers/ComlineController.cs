@@ -59,7 +59,7 @@ namespace MktCore8.Controllers
                     }
                     else if (data.Script != null)
                     {
-                        comline.Command.Prompts = [.. data.Script.Split(';')];
+                        comline.Command.Prompts = [.. data.Script.Split(';', StringSplitOptions.RemoveEmptyEntries)];
                     }
                     while (comline.Command.Prompts.Count > 0)
                     {
@@ -86,7 +86,7 @@ namespace MktCore8.Controllers
         {
             _logger.LogInformation("AuthController.Login");
 
-            var user = _userService.Authenticate(model.Username.Trim('"'), model.Password.Trim('"'));
+            var user = _userService.Authenticate(model.Username, model.Password);
 
             if (user == null) return Unauthorized();
 

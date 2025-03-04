@@ -14,7 +14,8 @@ namespace ComlineServices
     {
         public static string RemoteService = "System";
         public static JwtToken? Token;
-        public static string Url = "https://makrisoft.net/";
+        //public static string Url = "https://makrisoft.net/";
+        public static string Url = "https://localhost:7250/";
 
         public static ComlineData Command { get; set; }
         public  ServiceApi(ComlineData command)
