@@ -132,8 +132,8 @@ namespace ComlineApp.Manager
                     else newVal = $"'{val}'";
                 }
                 Command.Parameters.Add(
-                    parameters[i].Value.Capitalize(), 
-                    new Tuple<string, string, 
+                    parameters[i].Value.Capitalize(),
+                    new Tuple<string, string,
                     string>(newKey.Capitalize(), val, newVal));
             }
             //Command.Parameters = Command.Parameters.OrderBy(p => p.Key).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
@@ -151,11 +151,11 @@ namespace ComlineApp.Manager
         {
             // Service par défaut
             if (!ServiceSystem.Options.TryGetValue("Service", out string? actualService)) ServiceSystem.Options["Service"] = "System";
+            // Set askedService
+            Command.Parameters.TryGetValue("Name", out Tuple<string, string, string>? askedService);
 
-            if (Command.Name == "Connect-Service" && actualService != null)
+            if (Command.Name == "Connect-Service")
             {
-                Command.Parameters.TryGetValue("Name", out Tuple<string, string, string>? askedService);
-
                 if (askedService != null)
                 {
                     // askedService non existant
@@ -171,15 +171,8 @@ namespace ComlineApp.Manager
                     }
                     else if (MonServiceApi != null)
                     {
-                        // Deconnect Api
-                        if (askedService?.Item2 == "Api" && actualService == "Api")
-                        {
-                            ServiceSystem.Options["Service"] = "System";
-                            Command.Results.AddInfo($"Api déconnecté", "Info");
-                            MonServiceApi.DeconnectApi();
-                        }
                         // Connect to Api
-                        else if (askedService?.Item2 == "Api")
+                        if (askedService?.Item2 == "Api")
                         {
                             if (Command.Parameters.TryGetValue("Login", out Tuple<string, string, string>? login) &&
                                 Command.Parameters.TryGetValue("Password", out Tuple<string, string, string>? password) &&
@@ -205,6 +198,16 @@ namespace ComlineApp.Manager
                                 Command.Results.AddError($"Service {askedService.Item2} non existant", ErrorCodeEnum.UnexistedService);
                         }
                     }
+                }
+                Command.ErrorCode = ErrorCodeEnum.NothingToDo;
+            }
+            else if (Command.Name == "Deconnect-Service")
+            {
+                ServiceSystem.Options["Service"] = "System";
+                if (askedService?.Item2 == "Api")
+                {
+                    Command.Results.AddInfo($"Api déconnecté", "Info");
+                    MonServiceApi?.DeconnectApi();
                 }
                 Command.ErrorCode = ErrorCodeEnum.NothingToDo;
             }

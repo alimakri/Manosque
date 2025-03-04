@@ -24,7 +24,7 @@ namespace ComLineConsoleApp
                 // Saisie du prompt
                 Console.ForegroundColor = ConsoleColor.Gray;
                 if (ServiceSystem.Options["Service"]=="Api")
-                    Console.Write($"{ServiceSystem.Options["Service"]}.{ServiceApi.RemoteService}> ");
+                    Console.Write($"{ServiceSystem.Options["Service"]}>{ServiceApi.RemoteService}> ");
                 else
                     Console.Write($"{ServiceSystem.Options["Service"]}> ");
                 string? prompt = "";
@@ -45,8 +45,8 @@ namespace ComLineConsoleApp
                     case "local":
                         Console.BackgroundColor = ConsoleColor.Magenta;
                         Console.ForegroundColor = ConsoleColor.White;
-                        ServiceApi.Url = "https://localhost:7250/"; 
-                        Console.WriteLine("https://localhost:7250/");
+                        ServiceApi.Url = "https://localhost:7298/"; // 7298 - 7250
+                        Console.WriteLine(ServiceApi.Url);
                         Console.BackgroundColor = ConsoleColor.Black;
                         Console.ForegroundColor = ConsoleColor.DarkGray;
                         break;
@@ -68,7 +68,7 @@ namespace ComLineConsoleApp
         private void Execute(string prompt)
         {
             // Commentaire
-            if (prompt == null || prompt.StartsWith('#'))
+            if (string.IsNullOrEmpty(prompt) || prompt.StartsWith('#'))
             {
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
                 Console.WriteLine((prompt + ' ').PadRight(100, '-'));

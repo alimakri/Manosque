@@ -12,6 +12,7 @@ namespace Manosque.Maui
         public App()
         {
             InitializeComponent();
+            ServiceApi.Url = "https://localhost:7250/";
             MainPage = new AppShell();
         }
     }

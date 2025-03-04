@@ -1,5 +1,7 @@
+using ComlineApp.Manager;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Poc_21.Models;
 using Serilog;
 using System.Text;
 
@@ -19,6 +21,10 @@ try
 
     // Add services to the container.
     builder.Services.AddControllersWithViews();
+
+    // Injections
+    builder.Services.AddSingleton<IUserService, UserService>();
+    builder.Services.AddSingleton<ICoreComline, CoreComline>();
 
     // Authentication
     builder.Services.AddAuthentication(options =>

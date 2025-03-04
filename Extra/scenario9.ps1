@@ -1,4 +1,4 @@
-local
+# local
 Set-Option -DisplayMode Normal
 Connect-Service -Name Data
 
@@ -73,7 +73,9 @@ Connect-Service -Name Data
 # 
 # 
 # # Liste des sites ******************
-# Get-Execution -Execution NULL -Personne "0ad1ccd7-2ae3-49be-94a4-54b84f3de002" -DateDebut "17/02/2025" -Filter "ListeSites" -Mode Debug
+Get-Execution -Execution NULL -Personne "0ad1ccd7-2ae3-49be-94a4-54b84f3de002" -DateDebut "17/02/2025" -Filter "ListeSites" -Mode Debug
 # 
 # # Liste EXE_1 ******************
 Get-Execution -Execution "50fe19b9-0f82-4ed5-8961-0e49b7b00001" -Personne "0ad1ccd7-2ae3-49be-94a4-54b84f3de002" -DateDebut "17/02/2025" -Filter "ListeSites" -Mode Debug
+Get-Personne
+Deconnect-Service -Name Api

@@ -86,7 +86,10 @@ namespace ComlineServices
             try
             {
                 s = $"Connect-Service -Name {RemoteService};";
-                s += string.Join(';', Command.Prompts.Select(x => x.Replace("\"", "\\\"")));
+
+                //s += string.Join(';', Command.Prompts.Select(x => x.Replace("\"", "\\\"")));
+                s += Command.Prompts[0].Replace("\"", "\\\"");
+
                 json = $"{{\"Script\":\"{s}\"}}";
 
                 content = new StringContent(json, Encoding.UTF8, "application/json");
