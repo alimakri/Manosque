@@ -5,7 +5,7 @@
         // System
         public readonly static string ApplicationName = "Manosque";
         public readonly static string VersionSystem = "Version 2.0";
-        public readonly static string Prompt = @"Execute-File -Name scenario9.ps1";
+        //public readonly static string Prompt = @"Execute-File -Name scenario9.ps1";
 
         // Data
         public readonly static string DatabaseName = "ManosqueBD";

@@ -4,17 +4,21 @@ using ComLineConsoleApp;
 using ComlineServices;
 using Microsoft.Extensions.DependencyInjection;
 
-// Options Ali
-Global.WorkingDirectory_ServiceData = Global.WorkingDirectory_ServiceSystem = @"D:\Manosque\extra";
+// WorkingDirectories
+Global.WorkingDirectory_ServiceData = Global.WorkingDirectory_ServiceSystem = @"D:\Manosque\extra";  // ali
+// Global.ServiceData.WorkingDirectory = Global.ServiceSystem.WorkingDirectory = @"D:\Manosque\extra"; // Thierno
 
-// Options Thierno
-//ServiceData.WorkingDirectory = ServiceSystem.WorkingDirectory = @"D:\Manosque\extra";
-
+// ServiceSystem
 ServiceSystem.Options.Add("Service", "System");
 ServiceSystem.Options.Add("DisplayMode", "Normal");
 
+// ServiceData
 ServiceData.ConnectionString = "Server=.\\SQLEXPRESS;Database=ManosqueBD;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True";
 
+// ServiceApi
+ServiceApi.Url = "https://makrisoft.net/";
+
+// Services DI
 var serviceProvider = new ServiceCollection()
     .AddSingleton<CoreComline>()
     .BuildServiceProvider();
@@ -22,9 +26,8 @@ var comLine = serviceProvider.GetService<CoreComline>();
 
 if (comLine == null) return;
 
-// La console
-comLine.Command.Prompts = [Global.Prompt];
-var maConsole = new ConsoleComline(comLine);
+// Scenario
+comLine.Command.Prompts = ["Connect-Service -Name Api -Login \"mohamed\" -Password \"P@ssw0rd\""]; // "Execute-File -Name scenario9.ps1";
 
 // GO !
-maConsole.Launch();
+new ConsoleComline(comLine).Launch();
