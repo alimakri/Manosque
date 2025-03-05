@@ -1,4 +1,5 @@
 ﻿
+using ComlineServices;
 using Manosque.Maui.Models;
 using System.Collections.ObjectModel;
 using System.Data;
@@ -11,14 +12,47 @@ namespace Manosque.Maui.Pages
         {
             InitializeComponent();
         }
+        string? TacheId;
 
         public void ApplyQueryAttributes(IDictionary<string, object> query)
         {
-            if (query.ContainsKey("tache"))
+            if (query.ContainsKey("tacheId"))
             {
-                string? tache = query["tache"] as string;
+                TacheId = query["tacheId"] as string;
+                ExecuteApi();
+            }
+        }
+        public void ExecuteApi()
+        {
+            // Stay here in SitesPage
+            ServiceApi.Command = new ComLineData.ComlineData();
+            ServiceApi.Command.Reset();
+            ServiceApi.Command.Prompts.Add($@"
+                    Connect-Service -Name Data;
+                    Get-Action -Tache ""{TacheId}""");
+            App.MonServiceApi.Execute();
 
-                TacheName.Text = tache;
+            var tableList = ServiceApi.Command.Results.TableList;
+            if (tableList.Contains("Error"))
+            {
+
+            }
+            else if (tableList.Contains("Action"))
+            {
+                ObservableCollection<TacheAction> TacheActions = [];
+                var id = default(Guid);
+                var list = ServiceApi.Command.Results.Tables["Action"]?.Rows.Cast<DataRow>();
+                if (list != null)
+                    foreach (var row in list)
+                    {
+                        TacheActions.Add(new TacheAction
+                        {
+                            Id = id,
+                            Execution = (string)row["Question"],
+                        });
+                    }
+
+                TacheActionsCollectionView.ItemsSource = TacheActions;
             }
         }
 

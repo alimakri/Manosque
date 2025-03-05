@@ -18,7 +18,7 @@ ServiceData.ConnectionString = "Server=.\\SQLEXPRESS;Database=ManosqueBD;Trusted
 // ServiceApi
 ServiceApi.Url = "https://makrisoft.net/";
 
-// Services DI
+// Singleton CoreComline instancié ici
 var serviceProvider = new ServiceCollection()
     .AddSingleton<CoreComline>()
     .BuildServiceProvider();
@@ -27,7 +27,7 @@ var comLine = serviceProvider.GetService<CoreComline>();
 if (comLine == null) return;
 
 // Scenario
-comLine.Command.Prompts = ["Connect-Service -Name Api -Login \"mohamed\" -Password \"P@ssw0rd\""]; // "Execute-File -Name scenario9.ps1";
+comLine.Command.Prompts = []; // "Execute-File -Name scenario9.ps1";
 
 // GO !
 new ConsoleComline(comLine).Launch();

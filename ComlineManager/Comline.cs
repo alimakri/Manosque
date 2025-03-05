@@ -117,15 +117,15 @@ namespace ComlineApp.Manager
                     // All conversions
                     if (int.TryParse(val, out int k)) newVal = k.ToString();
                     else if (double.TryParse(val, out double d)) newVal = d.ToString().Replace(',', '.');
-                    else if (DateTime.TryParse(val, out DateTime dt))
-                    {
-                        newKey = $"CAST({values[i].Index} as Datetime)";
-                        newVal = $"CONVERT(DateTime, '{dt.ToString("dd/MM/yyyy HH:mm:ss")}', 103)";
-                    }
                     else if (DateOnly.TryParse(val, out DateOnly dy))
                     {
-                        newKey = $"CAST({values[i].Index} as Date)";
-                        newVal = $"CONVERT(Date, '{dt.ToString("dd/MM/yyyy")}', 103)";
+                        newKey = $"CAST({parameters[i].Value} as Date)";
+                        newVal = $"CONVERT(Date, '{dy.ToString("dd/MM/yyyy")}', 103)";
+                    }
+                    else if (DateTime.TryParse(val, out DateTime dt))
+                    {
+                        newKey = $"CAST({parameters[i].Value} as Datetime)";
+                        newVal = $"CONVERT(DateTime, '{dt.ToString("dd/MM/yyyy HH:mm:ss")}', 103)";
                     }
                     else if (val.StartsWith('@')) newVal = val;
                     else if (val.ToUpper() == "NULL") newVal = "NULL";

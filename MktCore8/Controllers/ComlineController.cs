@@ -14,7 +14,7 @@ using System.Text;
 
 namespace MktCore8.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ComlineController : ControllerBase

@@ -3,8 +3,6 @@ using System.Text;
 using ComlineApp.Manager;
 using ComlineServices;
 using ComLineCommon;
-using Microsoft.Identity.Client;
-using System;
 
 namespace ComLineConsoleApp
 {
@@ -53,6 +51,7 @@ namespace ComLineConsoleApp
                     case "cls": Console.Clear(); break;
                     case "stop": comline.Command.Prompts.RemoveRange(1, comline.Command.Prompts.Count - 1); break;
                     case "exit": fin = true; break;
+                    case "token":Console.WriteLine(ServiceApi.Token?.token); break;
                     case "help": Help(); break;
                     case "sep": Console.WriteLine("==============================================================================="); break;
 

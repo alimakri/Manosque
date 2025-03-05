@@ -1,10 +1,7 @@
-﻿
-using ComLineCommon;
-using ComlineServices;
+﻿using ComlineServices;
 using Manosque.Maui.Models;
 using System.Collections.ObjectModel;
 using System.Data;
-using System.Linq;
 
 namespace Manosque.Maui.Pages
 {
@@ -40,9 +37,9 @@ namespace Manosque.Maui.Pages
             // Stay here in SitesPage
             ServiceApi.Command = new ComLineData.ComlineData();
             ServiceApi.Command.Reset();
-            ServiceApi.Command.Prompts = [
-                "Connect-Service -Name Data;",
-                $@"Get-Execution -Execution ""{Execution}"" -Personne ""{UserId}"" -Mode ""Debug"" -DateDebut ""{myDatePicker.Date}"" -Filter ""ListeSites"""];
+            ServiceApi.Command.Prompts.Add($@"
+                    Connect-Service -Name Data;
+                    Get-Execution -Execution ""{Execution}"" -Personne ""{UserId}"" -Mode ""Debug"" -DateDebut ""{DateOnly.FromDateTime(myDatePicker.Date)}"" -Filter ""ListeSites""");
             App.MonServiceApi.Execute();
 
             var tableList = ServiceApi.Command.Results.TableList;
@@ -61,6 +58,7 @@ namespace Manosque.Maui.Pages
                         Sites.Add(new Site
                         {
                             Id = id,
+                            TacheId = row["tacheId"] as string,
                             Tache = row["Tache"] as string,
                             Libelle = (string)row["Reference"],
                             Statut = (long)row["Statut"],

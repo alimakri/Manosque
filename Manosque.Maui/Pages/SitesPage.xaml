@@ -15,6 +15,7 @@
                                 Execution="{Binding Libelle}"                                  
                                 Date="{Binding Date}"                                  
                                 Tache="{Binding Tache}"
+                                TacheId="{Binding TacheId}"
                                 Statut="{Binding Statut}"                                
                                 BandeauEnabled="True"
                                 CardImage="&#xf1f1;"/>
