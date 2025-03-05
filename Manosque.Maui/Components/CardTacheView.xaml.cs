@@ -1,5 +1,3 @@
-using Manosque.Maui;
-
 namespace MauiApp1.Components;
 
 public partial class CardTacheView : Frame

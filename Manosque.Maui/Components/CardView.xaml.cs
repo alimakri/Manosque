@@ -119,7 +119,7 @@ public partial class CardView : Frame
     }
     private void SetCardTheme()
     {
-        if (string.IsNullOrEmpty(Tache)) CreditCardViewFrame.BackgroundColor = Colors.White; else CreditCardViewFrame.BackgroundColor = Colors.SkyBlue;
+        if (string.IsNullOrEmpty(Tache)) CreditCardViewFrame2.BackgroundColor = Colors.White; else CreditCardViewFrame2.BackgroundColor = Colors.SkyBlue;
     }
     #endregion
 

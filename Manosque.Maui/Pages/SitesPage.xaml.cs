@@ -1,4 +1,5 @@
 ﻿using ComlineServices;
+using Maui.Components;
 using Manosque.Maui.Models;
 using System.Collections.ObjectModel;
 using System.Data;
@@ -34,6 +35,8 @@ namespace Manosque.Maui.Pages
         }
         public void ExecuteApi()
         {
+            TaskViews.Clear();
+
             // Stay here in SitesPage
             ServiceApi.Command = new ComLineData.ComlineData();
             ServiceApi.Command.Reset();
@@ -55,19 +58,37 @@ namespace Manosque.Maui.Pages
                 if (list != null)
                     foreach (var row in list)
                     {
-                        Sites.Add(new Site
+                        var taskView = new CardViewTask();
+                        var site = new Site
                         {
-                            Id = id,
+                            Id = row["Id"] as string,
                             TacheId = row["tacheId"] as string,
                             Tache = row["Tache"] as string,
                             Libelle = (string)row["Reference"],
                             Statut = (long)row["Statut"],
-                            Date = DateOnly.FromDateTime(myDatePicker.Date)
-                        });
-                    }
+                            Date = DateOnly.FromDateTime(myDatePicker.Date),
+                            Image = "\uf1f1",
+                        };
+                        site.CardViewCommand = new Command(() => ButtonClick(site));
 
-                this.SitesCollectionView.ItemsSource = Sites;
+                        taskView.BindingContext = site;
+                        this.TaskViews.Children.Add(taskView);
+                    }
             }
+        }
+
+        private async void ButtonClick(object obj)
+        {
+            var site = (Site)obj;
+            if (!string.IsNullOrEmpty(site.TacheId))
+                await Shell.Current.GoToAsync($"//tache?tacheId={site.TacheId}");
+            else
+            {
+                Execution = site.Id.ToString();
+                ExecuteApi();
+                //await Shell.Current.GoToAsync($"//sites?execution={site.Id}&user={App.User}&date={site.Date}");
+            }
+
         }
 
         private async void OnRetour(object sender, EventArgs e)

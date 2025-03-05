@@ -7,22 +7,8 @@
         <ScrollView  >
             <VerticalStackLayout >
                 <DatePicker x:Name="myDatePicker" MinimumDate="01/01/2025" TextColor="DarkCyan" />
-                <CollectionView x:Name="SitesCollectionView">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <VerticalStackLayout>
-                                <views:CardView
-                                Execution="{Binding Libelle}"                                  
-                                Date="{Binding Date}"                                  
-                                Tache="{Binding Tache}"
-                                TacheId="{Binding TacheId}"
-                                Statut="{Binding Statut}"                                
-                                BandeauEnabled="True"
-                                CardImage="&#xf1f1;"/>
-                            </VerticalStackLayout>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
+                <VerticalStackLayout x:Name="TaskViews">
+                </VerticalStackLayout>
             </VerticalStackLayout>
         </ScrollView>
     </StackLayout>
