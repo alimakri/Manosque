@@ -72,11 +72,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Components\CardTacheView.xaml.cs">
-	    <DependentUpon>CardTacheView.xaml</DependentUpon>
-	  </Compile>
 	  <Compile Update="Components\CardViewTask.xaml.cs">
 	    <DependentUpon>CardViewTask.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Components\CardViewAction.xaml.cs">
+	    <DependentUpon>CardViewAction.xaml</DependentUpon>
 	  </Compile>
 	  <Compile Update="Pages\ComlinePage.xaml.cs">
 	    <DependentUpon>ComlinePage.xaml</DependentUpon>
@@ -93,13 +93,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Components\CardTacheView.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Components\CardView.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
 	  <MauiXaml Update="Components\CardViewTask.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Components\CardViewAction.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\ComlinePage.xaml">

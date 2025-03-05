@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Frame xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-       x:Class="MauiApp1.Components.CardView"
-       x:Name="CreditCardViewFrame2"
+       x:Class="Maui.Components.CardViewAction"
+       x:Name="CreditCardViewFrame3"
        BorderColor="{StaticResource Primary}" 
        HorizontalOptions="FillAndExpand"
        VerticalOptions="Start"
@@ -34,71 +34,33 @@
             <Setter Property="HorizontalOptions" Value="EndAndExpand"/>
         </Style>
     </Frame.Resources>
-            <Grid ColumnDefinitions="8*,2*">
-                <Grid ColumnDefinitions="3*,*" Padding="10" RowDefinitions="Auto,Auto,40,Auto,40">
+    <Grid ColumnDefinitions="8*,2*">
+        <Grid ColumnDefinitions="3*,*" Padding="10" RowDefinitions="Auto,Auto,40,Auto,40">
 
-                    <Label x:Name="CreditCardImageLabel"
-                           Style="{StaticResource CreditCardImageLabelStyle}"
-                           FontFamily="FA6Brands"
-                           Grid.Row="0"
-                           Grid.Column="1"/>
-
-                    <Label Text="Site"
+            <Label Text="Action"
                            TextColor="Navy"
                            Style="{StaticResource HeaderLabelStyle}"
                            Grid.Row="1"
                            Grid.Column="0"
                            Grid.ColumnSpan="2"/>
 
-                    <Label x:Name="ExecutionLabel"
+            <Label x:Name="ExecutionLabel"                           
+                           Text="{Binding Libelle}"
                            TextColor="Blue"
                            Style="{StaticResource InfoLabelStyle}"
                            Grid.Row="2"
                            Grid.Column="0"
                            Grid.ColumnSpan="2"/>
-
-                    <Label Text="Tâche"
-                           TextColor="Navy"
-                           Style="{StaticResource HeaderLabelStyle}"
-                           Grid.Row="3"
-                           Grid.Column="0"/>
-
-                    <Label x:Name="TacheLabel"
-                           TextColor="Red"
-                           Style="{StaticResource TacheLabelStyle}"
-                           Grid.Row="4"
-                           Grid.Column="0"/>
-
-                    <Label Text="Statut"
-                            TextColor="Navy"
-                          Style="{StaticResource HeaderLabelStyle}"
-                           HorizontalOptions="End"
-                           Grid.Row="3"
-                           Grid.Column="1"/>
-
-                    <Label x:Name="StatutLabel"
-                           TextColor="Green"
-                           Style="{StaticResource InfoLabelStyle}"
-                           HorizontalOptions="End"
-                           Grid.Row="4"
-                           Grid.Column="1"/>
-                </Grid>
-                <AbsoluteLayout Grid.Column="1">
-                    <BoxView x:Name="Bandeau"
+        </Grid>
+        <AbsoluteLayout Grid.Column="1">
+            <BoxView x:Name="Bandeau"
                              VerticalOptions="FillAndExpand" Opacity="0.5"
                              HorizontalOptions="FillAndExpand"
                              AbsoluteLayout.LayoutFlags="All"
                              AbsoluteLayout.LayoutBounds="0,0,1,1"
                              Background="{StaticResource BackgroundCard}">
-                    </BoxView>
-                    <Button Text="→" x:Name="CardViewButton"
-                           FontSize="Large"
-                           VerticalOptions="Center" BackgroundColor="Transparent"
-                           HorizontalOptions="Center" TextColor="White"
-                           AbsoluteLayout.LayoutBounds="0.5,0.5,AutoSize,AutoSize"
-                           AbsoluteLayout.LayoutFlags="PositionProportional" 
-                           Clicked="OnExecutionClicked" CommandParameter="{Binding Execution}"/>
+            </BoxView>
             <Label Text="{Binding Execution}"/>
         </AbsoluteLayout>
-            </Grid>
+    </Grid>
 </Frame>

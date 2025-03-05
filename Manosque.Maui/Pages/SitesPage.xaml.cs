@@ -36,8 +36,6 @@ namespace Manosque.Maui.Pages
         public void ExecuteApi()
         {
             TaskViews.Clear();
-
-            // Stay here in SitesPage
             ServiceApi.Command = new ComLineData.ComlineData();
             ServiceApi.Command.Reset();
             ServiceApi.Command.Prompts.Add($@"
@@ -54,11 +52,11 @@ namespace Manosque.Maui.Pages
             {
                 ObservableCollection<Site> Sites = [];
                 var id = default(Guid);
-                var list = ServiceApi.Command.Results.Tables["Execution"]?.Rows.Cast<DataRow>().Where(row => Guid.TryParse(row["Emplacement"].ToString(), out id));
+                var list = ServiceApi.Command.Results.Tables["Execution"]?.Rows.Cast<DataRow>();
                 if (list != null)
                     foreach (var row in list)
                     {
-                        var taskView = new CardViewTask();
+                        var view = new CardViewTask();
                         var site = new Site
                         {
                             Id = row["Id"] as string,
@@ -71,8 +69,8 @@ namespace Manosque.Maui.Pages
                         };
                         site.CardViewCommand = new Command(() => ButtonClick(site));
 
-                        taskView.BindingContext = site;
-                        this.TaskViews.Children.Add(taskView);
+                        view.BindingContext = site;
+                        this.TaskViews.Children.Add(view);
                     }
             }
         }

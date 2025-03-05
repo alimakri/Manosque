@@ -7,15 +7,8 @@
         <ScrollView  >
             <VerticalStackLayout >
                 <DatePicker x:Name="myDatePicker" MinimumDate="01/01/2025" TextColor="DarkCyan" />
-                <CollectionView x:Name="TacheActionsCollectionView">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <VerticalStackLayout>
-                                <views:CardTacheView Execution="{Binding Execution}" />
-                            </VerticalStackLayout>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
+                <VerticalStackLayout x:Name="ActionViews">
+                </VerticalStackLayout>
             </VerticalStackLayout>
         </ScrollView>
     </StackLayout>

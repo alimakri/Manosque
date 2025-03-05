@@ -1,5 +1,6 @@
 ﻿
 using ComlineServices;
+using Maui.Components;
 using Manosque.Maui.Models;
 using System.Collections.ObjectModel;
 using System.Data;
@@ -24,7 +25,7 @@ namespace Manosque.Maui.Pages
         }
         public void ExecuteApi()
         {
-            // Stay here in SitesPage
+            ActionViews.Clear();
             ServiceApi.Command = new ComLineData.ComlineData();
             ServiceApi.Command.Reset();
             ServiceApi.Command.Prompts.Add($@"
@@ -45,14 +46,15 @@ namespace Manosque.Maui.Pages
                 if (list != null)
                     foreach (var row in list)
                     {
-                        TacheActions.Add(new TacheAction
+                        var view = new CardViewAction();
+                        var site = new TacheAction
                         {
-                            Id = id,
-                            Execution = (string)row["Question"],
-                        });
-                    }
+                            Libelle = (string)row["Question"]
+                        };
 
-                TacheActionsCollectionView.ItemsSource = TacheActions;
+                        view.BindingContext = site;
+                        this.ActionViews.Children.Add(view);
+                    }
             }
         }
 

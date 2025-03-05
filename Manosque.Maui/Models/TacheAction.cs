@@ -9,6 +9,6 @@ namespace Manosque.Maui.Models
     internal class TacheAction
     {
         public Guid Id { get; set; }
-        public string Execution { get; set; } = "";
+        public string Libelle { get; set; } = "";
     }
 }
