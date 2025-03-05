@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Frame xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Poc23.CardViews.CardViewText"
+       BorderColor="{StaticResource Primary}" 
+       HorizontalOptions="FillAndExpand"
+       VerticalOptions="Start"
+       BackgroundColor="{Binding CardTheme}"
+       Margin="1,2"
+       CornerRadius="8"
+       Padding="0">
+    <StackLayout>
+        <Label Text="CardViewText" FontSize="12" TextColor="Blue"
+                VerticalOptions="Center" 
+                HorizontalOptions="Center" />
+        <Editor />
+    </StackLayout>
+</Frame>
