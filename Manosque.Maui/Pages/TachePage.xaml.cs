@@ -15,7 +15,7 @@ namespace Manosque.Maui.Pages
         }
         string? TacheId;
 
-        public void ApplyQueryAttributes(IDictionary<string, object> query) 
+        public void ApplyQueryAttributes(IDictionary<string, object> query)  
         {
             if (query.ContainsKey("tacheId"))
             {
