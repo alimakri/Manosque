@@ -1,73 +1,79 @@
 using ComlineApp.Manager;
-using ComlineServices;
-using MktCore8;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
+using MktCore8.Models;
 using Serilog;
+using System.Text;
 
-var builder = WebApplication.CreateBuilder(args);
-string connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? "";
-
-// Serilog
-var logger = new LoggerConfiguration()
-    .ReadFrom.Configuration(builder.Configuration)
-    .Enrich.FromLogContext()
+Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
     .CreateLogger();
-builder.Logging.ClearProviders();
-builder.Logging.AddSerilog(logger);
-
-
-// Add services to the container.
-builder.Services.AddControllersWithViews();
-
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSingleton<ICoreComline, CoreComline>();
-builder.Services.AddSingleton<IServiceData>(provider => new Manosque.ServiceData.ServiceData());
-
-// Authentication
-builder.Services.AddSingleton<IUserService, UserService>();
-builder.Services.AddAuthentication(options =>
+try
 {
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-    .AddJwtBearer(options =>
+    var builder = WebApplication.CreateBuilder(args);
+
+    // Serilog
+    builder.Host.UseSerilog((context, loggerConfiguration) =>
     {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = builder.Configuration["Jwt:Issuer"],
-            ValidAudience = builder.Configuration["Jwt:Issuer"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]??""))
-        };
+        loggerConfiguration.WriteTo.Console();
+        loggerConfiguration.ReadFrom.Configuration(context.Configuration);
     });
 
+    // Add services to the container.
+    builder.Services.AddControllersWithViews();
 
-var app = builder.Build();
+    // Injections
+    builder.Services.AddSingleton<IUserService, UserService>();
+    builder.Services.AddSingleton<ICoreComline, CoreComline>();
 
-// Configure the HTTP request pipeline.
-//if (!app.Environment.IsDevelopment())
-//{
-//    app.UseExceptionHandler("/Home/Error");
-//    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-//    app.UseHsts();
-//}
-app.UseDeveloperExceptionPage();
+    // Authentication
+    builder.Services.AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+        .AddJwtBearer(options =>
+        {
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                ValidAudience = builder.Configuration["Jwt:Issuer"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"] ?? ""))
+            };
+        });
+    
+    var app = builder.Build();
 
-app.UseHttpsRedirection();
-app.UseStaticFiles();
+    // Configure the HTTP request pipeline.
+    if (!app.Environment.IsDevelopment())
+    {
+        app.UseExceptionHandler("/Home/Error");
+    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseHsts();
+    }
 
-app.UseRouting();
+    app.UseHttpsRedirection();
+    app.UseStaticFiles();
 
-app.UseAuthorization();
+    app.UseRouting();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    app.UseAuthorization();
 
-app.Run();
+    app.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Home}/{action=Index}/{id?}");
+
+    app.Run();
+}
+catch (Exception ex)
+{
+    Log.Fatal(ex, "server terminated unexpectedly");
+}
+finally
+{
+    Log.CloseAndFlush();
+}

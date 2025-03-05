@@ -1,0 +1,58 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+    <title>makrisoft</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="~/css/main.css" />
+    <link href="~/lib/font-awesome/css/all.min.css" rel="stylesheet" />
+    <noscript>
+        <link rel="stylesheet" href="~/css/noscript.css" />
+    </noscript>
+</head>
+<body class="is-preload">
+
+    <!-- Sidebar -->
+    <section id="sidebar">
+
+        <div class="inner">
+            @if (ViewBag.NoNav== null || !ViewBag.NoNav)
+            {
+                <nav>
+                    <ul>
+                        <li><a href="/home/index#zero">Accueil</a></li>
+                        <li><a href="/home/index#one">Qui sommes nous</a></li>
+                        <li><a href="/home/index#two">Nos compétences</a></li>
+                        <li><a href="/home/index#three">Nous contacter</a></li>
+                        <li><a href="/private/index/0">Privé</a></li>
+                    </ul>
+                </nav>
+            }
+        </div>
+    </section>
+
+    <!-- Wrapper -->
+    <div id="wrapper">
+        @RenderBody()
+    </div>
+
+    <!-- Footer -->
+    <footer id="footer" class="wrapper style1-alt">
+        <div class="inner">
+            <ul class="menu">
+                <li>Site développé par Ali Makri en Asp.Net Core 8 </li>
+            </ul>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="~/js/jquery.min.js"></script>
+    <script src="~/js/jquery.scrollex.min.js"></script>
+    <script src="~/js/jquery.scrolly.min.js"></script>
+    <script src="~/js/browser.min.js"></script>
+    <script src="~/js/breakpoints.min.js"></script>
+    <script src="~/js/util.js"></script>
+    <script src="~/js/main.js"></script>
+
+</body>
+</html>
