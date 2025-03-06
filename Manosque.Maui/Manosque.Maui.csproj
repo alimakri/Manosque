@@ -78,6 +78,9 @@
 	  <Compile Update="Components\CardViewAction.xaml.cs">
 	    <DependentUpon>CardViewAction.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="Components\CardView1.xaml.cs">
+	    <DependentUpon>CardView1.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Pages\ComlinePage.xaml.cs">
 	    <DependentUpon>ComlinePage.xaml</DependentUpon>
 	  </Compile>
@@ -97,6 +100,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Components\CardViewAction.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Components\CardView1.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\ComlinePage.xaml">

@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Frame xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-       x:Class="Maui.Components.CardViewAction"
-       x:Name="CreditCardViewFrame3"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Maui.Components.CardView1"
        BorderColor="{StaticResource Primary}" 
        HorizontalOptions="FillAndExpand"
        VerticalOptions="Start"
-       BackgroundColor="{Binding CardTheme}"
        Margin="1,2"
        CornerRadius="8"
        Padding="0">
@@ -35,22 +33,16 @@
         </Style>
     </Frame.Resources>
     <Grid ColumnDefinitions="8*,2*">
-        <Grid ColumnDefinitions="3*,*" Padding="10" RowDefinitions="Auto,Auto,40,Auto,40">
+        <Grid ColumnDefinitions="Auto,*" Padding="10" RowDefinitions="Auto,Auto,Auto" BackgroundColor="{Binding CardTheme}">
+            <Label Text="{Binding Items[Question1].Libelle}" FontAttributes="Bold" VerticalOptions="Center" Margin="5"  />
+            <CheckBox Grid.Row="0" Grid.Column="1" x:Name="CheckBox1"  IsChecked="{Binding Items[Question1].Valeur}" />
 
-            <Label Text="Action"
-                           TextColor="Navy"
-                           Style="{StaticResource HeaderLabelStyle}"
-                           Grid.Row="1"
-                           Grid.Column="0"
-                           Grid.ColumnSpan="2"/>
+            <Label Grid.Row="1" Grid.Column="0" Text="{Binding Items[Question2].Libelle}" FontAttributes="Bold" VerticalOptions="Center" Margin="5"  />
+            <CheckBox Grid.Row="1" Grid.Column="1" x:Name="CheckBox2" IsChecked="{Binding Items[Question2].Valeur}" />
 
-            <Label x:Name="ExecutionLabel"                           
-                           Text="{Binding Libelle}"
-                           TextColor="Blue"
-                           Style="{StaticResource InfoLabelStyle}"
-                           Grid.Row="2"
-                           Grid.Column="0"
-                           Grid.ColumnSpan="2"/>
+            <Label Grid.Row="2" Grid.Column="0" Text="{Binding Items[Question3].Libelle}" FontAttributes="Bold" VerticalOptions="Center" Margin="5"/>
+            <Entry Grid.Row="2" Grid.Column="1" Text="{Binding Items[Question3].Valeur}" x:Name="TextInput" Placeholder="Tapez ici..." Background="White" />
+
         </Grid>
         <AbsoluteLayout Grid.Column="1">
             <BoxView x:Name="Bandeau"

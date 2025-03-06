@@ -1,5 +1,4 @@
-﻿
-using ComlineServices;
+﻿using ComlineServices;
 using Maui.Components;
 using Manosque.Maui.Models;
 using System.Collections.ObjectModel;
@@ -15,7 +14,7 @@ namespace Manosque.Maui.Pages
         }
         string? TacheId;
 
-        public void ApplyQueryAttributes(IDictionary<string, object> query)  
+        public void ApplyQueryAttributes(IDictionary<string, object> query)
         {
             if (query.ContainsKey("tacheId"))
             {
@@ -40,20 +39,53 @@ namespace Manosque.Maui.Pages
             }
             else if (tableList.Contains("Action"))
             {
-                ObservableCollection<TacheAction> TacheActions = [];
+                ObservableCollection<CardViewModel> TacheActions = [];
                 var id = default(Guid);
                 var list = ServiceApi.Command.Results.Tables["Action"]?.Rows.Cast<DataRow>();
                 if (list != null)
                     foreach (var row in list)
                     {
-                        var view = new CardViewAction();
-                        var site = new TacheAction
+                        var type = (long)row["Type"];
+                        switch (type)
                         {
-                            Libelle = (string)row["Question"]
-                        };
+                            case 2:
+                                // View
+                                var view2 = new CardView1();
+                                this.ActionViews.Children.Add(view2);
+                                // ViewModel
+                                var viewModel2 = new CardViewModel();
+                                viewModel2.Add("Question1", new CardViewModelItem { Libelle = (string)row["Question"], TypeAction = "CheckBox", Valeur = "False" });
+                                viewModel2.Add("Question2", new CardViewModelItem { Libelle = "bla bla", TypeAction = "CheckBox", Valeur = "True" });
+                                viewModel2.Add("Question3", new CardViewModelItem { Libelle = "Alors ?", TypeAction = "TextBox", Valeur = "Bonjour Ali" });
+                                // View|ViewModel
+                                view2.BindingContext = new
+                                {
+                                    Items = viewModel2,
+                                    CardTheme = "LightBlue",
+                                    Statut = Application.Current.Resources["BackgroundCard1"] as LinearGradientBrush,
+                                    Validation = 1
+                                };
 
-                        view.BindingContext = site;
-                        this.ActionViews.Children.Add(view);
+                                break;
+                            default:
+                                // View
+                                var viewDefault = new CardViewAction();
+                                this.ActionViews.Children.Add(viewDefault);
+                                // ViewModel
+                                var viewModelDefault = new CardViewModel();
+                                viewModelDefault.Add("Question1", new CardViewModelItem { Libelle = (string)row["Question"], TypeAction = "CheckBox", Valeur = "True" });
+                                // View|ViewModel
+                                viewDefault.BindingContext = new
+                                {
+                                    Items = viewModelDefault,
+                                    CardTheme = "LightYellow",
+                                    Statut = Application.Current.Resources["BackgroundCard2"] as LinearGradientBrush,
+                                    Validation = 0.5
+                                };
+                                //     public LinearGradientBrush StatutGradientBrush => (LinearGradientBrush)Application.Current.Resources["StatutGradientBrush"];
+                                break;
+                        }
+
                     }
             }
         }

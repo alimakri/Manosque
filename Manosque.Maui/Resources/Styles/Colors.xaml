@@ -55,8 +55,12 @@
         <GradientStop Color="#6F418C" Offset="0.0" />
         <GradientStop Color="Black" Offset="1.0" />
     </LinearGradientBrush>
-    <LinearGradientBrush x:Key="BackgroundCard" StartPoint="0.5,0" EndPoint="0.5,2">
+    <LinearGradientBrush x:Key="BackgroundCard1" StartPoint="0.5,0" EndPoint="0.5,2">
         <GradientStop Color="#6F418C" Offset="0.0" />
+        <GradientStop Color="Black" Offset="1.0" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="BackgroundCard2" StartPoint="0.5,0" EndPoint="0.5,2">
+        <GradientStop Color="DarkGreen" Offset="0.0" />
         <GradientStop Color="Black" Offset="1.0" />
     </LinearGradientBrush>
 
