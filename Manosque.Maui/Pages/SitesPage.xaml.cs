@@ -1,5 +1,5 @@
 ﻿using ComlineServices;
-using Maui.Components;
+using Manosque.Maui.Components;
 using Manosque.Maui.Models;
 using System.Collections.ObjectModel;
 using System.Data;
@@ -12,12 +12,43 @@ namespace Manosque.Maui.Pages
         private string? UserId;
         private string? Execution;
         private Guid? ExecutionId;
-
+        private List<Nav> NavViewModel = [];
         public SitesPage()
         {
             InitializeComponent();
             myDatePicker.PropertyChanged += DatePicker_PropertyChanged;
+            NavButtonsRefresh();
         }
+
+        private void NavButtonsRefresh()
+        {
+            SwipeMenu1.NavButtons.Clear();
+            var b = new ButtonWithId { ExecutionId = null, Text = "Home", BackgroundColor = Colors.Transparent, BorderColor = Colors.Transparent };
+            b.Clicked += NavButtonClick;
+            SwipeMenu1.NavButtons.Children.Add(b);
+
+            foreach (var nav in NavViewModel)
+            {
+                b = new ButtonWithId { ExecutionId = nav.Id, Text = nav.Libelle, BackgroundColor = Colors.Transparent, BorderColor = Colors.Transparent };
+                b.Clicked += NavButtonClick;
+                SwipeMenu1.NavButtons.Children.Add(b);
+            }
+            if (SwipeMenu1.NavButtons.Children.Count > 0) ((ButtonWithId)SwipeMenu1.NavButtons.Children[SwipeMenu1.NavButtons.Children.Count - 1]).TextColor = Colors.Blue;
+        }
+
+        private async void NavButtonClick(object? sender, EventArgs e)
+        {
+            var button = (ButtonWithId)sender;
+            var index = NavViewModel.FindIndex(x => x.Id == button.ExecutionId);
+            if (index != SwipeMenu1.NavButtons.Children.Count - 1)
+            {
+                NavViewModel.RemoveRange(index + 1, NavViewModel.Count - index - 1);
+                NavButtonsRefresh();
+                Execution = button.ExecutionId;
+                ExecuteApi();
+            }
+        }
+
         public void ApplyQueryAttributes(IDictionary<string, object> query)
         {
             // Init
@@ -78,6 +109,8 @@ namespace Manosque.Maui.Pages
         private async void ButtonClick(object obj)
         {
             var site = (Site)obj;
+            NavViewModel.Add(new Nav { Id = site.Id, Libelle = site.Libelle });
+            NavButtonsRefresh();
             if (!string.IsNullOrEmpty(site.TacheId))
                 await Shell.Current.GoToAsync($"//tache?tacheId={site.TacheId}");
             else

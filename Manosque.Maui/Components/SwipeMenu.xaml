@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Manosque.Maui.Components.SwipeMenu">
+    <Grid>
+        <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never">
+            <HorizontalStackLayout  Spacing="0" x:Name="NavButtons" x:FieldModifier="public" HorizontalOptions="Start">
+            </HorizontalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentView>

@@ -1,24 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:views="clr-namespace:MauiApp1.Components"
+             xmlns:views="clr-namespace:Manosque.Maui.Components"
              x:Class="Manosque.Maui.Pages.SitesPage">
-    <VerticalStackLayout >
-        <Grid ColumnDefinitions="Auto,*">
-            <DatePicker x:Name="myDatePicker" MinimumDate="01/01/2025" TextColor="DarkCyan" />
-            <ScrollView Orientation="Horizontal" Grid.Column="1" HorizontalScrollBarVisibility="Never">
-                <HorizontalStackLayout  Spacing="0">
-                    <Button Text="Accueil" Padding="2" BackgroundColor="Transparent" TextColor="blue"/>
-                    <Button Text="Sites" Padding="2" BackgroundColor="Transparent" TextColor="blue"/>
-                    <Button Text="Execution" Padding="2" BackgroundColor="Transparent" TextColor="blue"/>
-                    <Button Text="Tâche" Padding="2" BackgroundColor="Transparent" TextColor="blue"/>
-                    <Button Text="Menu 5" Padding="2" BackgroundColor="Transparent" TextColor="blue"/>
-                    <Button Text="Menu 6" Padding="2" BackgroundColor="Transparent" TextColor="blue"/>
-                    <Button Text="Menu 7" Padding="2" BackgroundColor="Transparent" TextColor="blue"/>
-                </HorizontalStackLayout>
-            </ScrollView>
-        </Grid>
-        <VerticalStackLayout x:Name="TaskViews">
+    <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,*" >
+        <DatePicker x:Name="myDatePicker" MinimumDate="01/01/2025" TextColor="DarkCyan" />
+        <views:SwipeMenu Grid.Column="1" x:Name="SwipeMenu1" />
+        <VerticalStackLayout Grid.Row="1" Grid.ColumnSpan="2" x:Name="TaskViews">
         </VerticalStackLayout>
-    </VerticalStackLayout>
+    </Grid>
 </ContentPage>

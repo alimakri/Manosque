@@ -1,5 +1,5 @@
 ﻿using ComlineServices;
-using Maui.Components;
+using Manosque.Maui.Components;
 using Manosque.Maui.Models;
 using System.Collections.ObjectModel;
 using System.Data;
@@ -8,11 +8,11 @@ namespace Manosque.Maui.Pages
 {
     public partial class TachePage : ContentPage, IQueryAttributable
     {
+        private string? TacheId;
         public TachePage()
         {
             InitializeComponent();
         }
-        string? TacheId;
 
         public void ApplyQueryAttributes(IDictionary<string, object> query)
         {

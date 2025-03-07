@@ -105,6 +105,9 @@
 	  <MauiXaml Update="Components\CardView1.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Components\SwipeMenu.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Pages\ComlinePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

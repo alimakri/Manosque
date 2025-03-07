@@ -1,8 +1,8 @@
 namespace Manosque.Maui.Components;
 
-public partial class CardView1 : Frame
+public partial class SwipeMenu : ContentView
 {
-	public CardView1()
+    public SwipeMenu()
 	{
 		InitializeComponent();
 	}

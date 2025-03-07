@@ -1,4 +1,4 @@
-namespace Maui.Components;
+namespace Manosque.Maui.Components;
 
 public partial class CardViewAction : Frame
 {
