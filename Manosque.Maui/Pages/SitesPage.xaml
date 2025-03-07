@@ -4,7 +4,7 @@
              xmlns:views="clr-namespace:Manosque.Maui.Components"
              x:Class="Manosque.Maui.Pages.SitesPage">
     <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,*" >
-        <DatePicker x:Name="myDatePicker" MinimumDate="01/01/2025" TextColor="DarkCyan" />
+        <DatePicker x:Name="myDatePicker" MinimumDate="01/01/2025" Date="02/17/2025" TextColor="DarkCyan" />
         <views:SwipeMenu Grid.Column="1" x:Name="SwipeMenu1" />
         <VerticalStackLayout Grid.Row="1" Grid.ColumnSpan="2" x:Name="TaskViews">
         </VerticalStackLayout>

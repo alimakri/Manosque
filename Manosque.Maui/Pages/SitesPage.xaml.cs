@@ -12,7 +12,7 @@ namespace Manosque.Maui.Pages
         private string? UserId;
         private string? Execution;
         private Guid? ExecutionId;
-        private List<Nav> NavViewModel = [];
+        private List<Nav> NavViewModel = [new Nav { Id = null }];
         public SitesPage()
         {
             InitializeComponent();
@@ -23,28 +23,29 @@ namespace Manosque.Maui.Pages
         private void NavButtonsRefresh()
         {
             SwipeMenu1.NavButtons.Clear();
-            var b = new ButtonWithId { ExecutionId = null, Text = "Home", BackgroundColor = Colors.Transparent, BorderColor = Colors.Transparent };
+            var b = new Button { BindingContext = new Nav { Id = null }, Text = "Home", BackgroundColor = Colors.Transparent, BorderColor = Colors.Transparent };
             b.Clicked += NavButtonClick;
             SwipeMenu1.NavButtons.Children.Add(b);
 
             foreach (var nav in NavViewModel)
             {
-                b = new ButtonWithId { ExecutionId = nav.Id, Text = nav.Libelle, BackgroundColor = Colors.Transparent, BorderColor = Colors.Transparent };
+                b = new Button { BindingContext = nav, Text = nav.Libelle, BackgroundColor = Colors.Transparent, BorderColor = Colors.Transparent };
                 b.Clicked += NavButtonClick;
                 SwipeMenu1.NavButtons.Children.Add(b);
             }
-            if (SwipeMenu1.NavButtons.Children.Count > 0) ((ButtonWithId)SwipeMenu1.NavButtons.Children[SwipeMenu1.NavButtons.Children.Count - 1]).TextColor = Colors.Blue;
+            // Last in blue
+            if (SwipeMenu1.NavButtons.Children.Count > 0) ((Button)SwipeMenu1.NavButtons.Children[SwipeMenu1.NavButtons.Children.Count - 1]).TextColor = Colors.Blue;
         }
 
         private async void NavButtonClick(object? sender, EventArgs e)
         {
-            var button = (ButtonWithId)sender;
-            var index = NavViewModel.FindIndex(x => x.Id == button.ExecutionId);
+            var button = (Button)sender;
+            var index = NavViewModel.FindIndex(x => x.Id == ((Nav)button.BindingContext).Id);
             if (index != SwipeMenu1.NavButtons.Children.Count - 1)
             {
                 NavViewModel.RemoveRange(index + 1, NavViewModel.Count - index - 1);
                 NavButtonsRefresh();
-                Execution = button.ExecutionId;
+                Execution = ((Nav)button.BindingContext).Id;
                 ExecuteApi();
             }
         }

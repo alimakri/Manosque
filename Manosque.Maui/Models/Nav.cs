@@ -8,7 +8,7 @@ namespace Manosque.Maui.Models
 {
     public class Nav
     {
-        public string Id { get; set; }
+        public string? Id { get; set; }
         public string Libelle { get; set; }
     }
 }
