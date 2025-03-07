@@ -1,8 +1,8 @@
 namespace Maui.Components;
 
-public partial class CardViewTask : Frame
+public partial class CardViewSite : Frame
 {
-	public CardViewTask()
+	public CardViewSite()
 	{
 		InitializeComponent();
 	}

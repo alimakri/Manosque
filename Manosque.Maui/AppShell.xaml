@@ -5,8 +5,8 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:Manosque.Maui.Pages"
-    Shell.FlyoutBehavior="Flyout" BackgroundColor="Gray"
-    Title="Manosque.Maui">
+    Shell.FlyoutBehavior="Disabled" BackgroundColor="Transparent"
+    Title="Manosque">
     <FlyoutItem Title="Login" FlyoutIcon="{StaticResource IconOne}">
         <ShellContent
             Title="Login"
@@ -15,7 +15,7 @@
     </FlyoutItem>
     <FlyoutItem Title="Sites" FlyoutIcon="{StaticResource IconTwo}">
         <ShellContent
-            Title="Liste des sites"
+            Title=">"
             ContentTemplate="{DataTemplate local:SitesPage}"
             Route="sites" />
     </FlyoutItem>

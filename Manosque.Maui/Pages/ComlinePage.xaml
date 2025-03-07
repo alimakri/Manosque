@@ -6,7 +6,7 @@
     <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,*">
         <Entry x:Name="Prompt" Text="Get-Personne"/>
         <Button Grid.Column="1" Clicked="OnComline" Text="Exécuter" HorizontalOptions="FillAndExpand" CornerRadius="20"/>
-        <ScrollView Grid.Row="2">
+        <ScrollView Grid.Row="2" Grid.ColumnSpan="2" Orientation="Both" VerticalScrollBarVisibility="Never" HorizontalScrollBarVisibility="Never">
             <StackLayout x:Name="DataTablesStackLayout" Grid.ColumnSpan="2">
 
             </StackLayout>

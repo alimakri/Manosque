@@ -56,7 +56,7 @@ namespace Manosque.Maui.Pages
                 if (list != null)
                     foreach (var row in list)
                     {
-                        var view = new CardViewTask();
+                        var view = new CardViewSite();
                         var site = new Site
                         {
                             Id = row["Id"] as string,

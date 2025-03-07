@@ -29,7 +29,7 @@ namespace Manosque.Maui.Pages
             ServiceApi.Command.Reset();
             ServiceApi.Command.Prompts.Add($@"
                     Connect-Service -Name Data;
-                    Get-Action -Tache ""{TacheId}""");
+                    Get-Action -Tache ""{TacheId}"" -Mode Debug");
             App.MonServiceApi.Execute();
 
             var tableList = ServiceApi.Command.Results.TableList;

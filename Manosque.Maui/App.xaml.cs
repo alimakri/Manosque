@@ -21,7 +21,7 @@ namespace Manosque.Maui
             //ServiceData.ConnectionString = "Server=.\\SQLEXPRESS;Database=ManosqueBD;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True";
 
             // ServiceApi
-            ServiceApi.Url = "https://localhost:7298/"; // localhost:7298 - makrisoft.net
+            ServiceApi.Url = "https://makrisoft.net/"; // localhost:7298 - makrisoft.net
 
             MainPage = new AppShell();
         }

@@ -3,13 +3,22 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:views="clr-namespace:MauiApp1.Components"
              x:Class="Manosque.Maui.Pages.SitesPage">
-    <StackLayout>
-        <ScrollView  >
-            <VerticalStackLayout >
-                <DatePicker x:Name="myDatePicker" MinimumDate="01/01/2025" TextColor="DarkCyan" />
-                <VerticalStackLayout x:Name="TaskViews">
-                </VerticalStackLayout>
-            </VerticalStackLayout>
-        </ScrollView>
-    </StackLayout>
+    <VerticalStackLayout >
+        <Grid ColumnDefinitions="Auto,*">
+            <DatePicker x:Name="myDatePicker" MinimumDate="01/01/2025" TextColor="DarkCyan" />
+            <ScrollView Orientation="Horizontal" Grid.Column="1" HorizontalScrollBarVisibility="Never">
+                <HorizontalStackLayout  Spacing="0">
+                    <Button Text="Accueil" Padding="2" BackgroundColor="Transparent" TextColor="blue"/>
+                    <Button Text="Sites" Padding="2" BackgroundColor="Transparent" TextColor="blue"/>
+                    <Button Text="Execution" Padding="2" BackgroundColor="Transparent" TextColor="blue"/>
+                    <Button Text="Tâche" Padding="2" BackgroundColor="Transparent" TextColor="blue"/>
+                    <Button Text="Menu 5" Padding="2" BackgroundColor="Transparent" TextColor="blue"/>
+                    <Button Text="Menu 6" Padding="2" BackgroundColor="Transparent" TextColor="blue"/>
+                    <Button Text="Menu 7" Padding="2" BackgroundColor="Transparent" TextColor="blue"/>
+                </HorizontalStackLayout>
+            </ScrollView>
+        </Grid>
+        <VerticalStackLayout x:Name="TaskViews">
+        </VerticalStackLayout>
+    </VerticalStackLayout>
 </ContentPage>
