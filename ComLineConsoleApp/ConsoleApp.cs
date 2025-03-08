@@ -104,8 +104,8 @@ namespace ComLineConsoleApp
 
         void DisplayResults(string tableName)
         {
-            if (Comline.Command.ErrorCode == 0 && Comline.Command.Name == "Execute-File") return;
-            if (Comline.Command.ErrorCode == 0 && tableName == "Param") return;
+            //if (Comline.Command.ErrorCode == 0 && Comline.Command.Name == "Execute-File") return;
+            //if (Comline.Command.ErrorCode == 0 && tableName == "Param") return;
 
             // Cosmetic
             ConsoleColor color = ConsoleColor.Yellow;

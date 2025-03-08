@@ -11,6 +11,7 @@ namespace ComlineServices
         public ComlineData Command = new();
 
         // SQL SERVER
+        protected static SqlConnection Cnx;
         protected SqlCommand Query = new();
         protected SqlDataAdapter Adapter = new();
         public static string ConnectionString = "";
@@ -18,13 +19,15 @@ namespace ComlineServices
 
         public ServiceData()
         {
-            //Command = command;
-            SqlConnection cnx = new()
+            if (Cnx == null)
             {
-                ConnectionString = ConnectionString
-            };
-            cnx.Open();
-            Query.Connection = cnx;
+                Cnx = new()
+                {
+                    ConnectionString = ConnectionString
+                };
+                Cnx.Open();
+            }
+            Query.Connection = Cnx;
             Query.CommandType = System.Data.CommandType.Text;
             Adapter.SelectCommand = Query;
         }

@@ -105,13 +105,20 @@ namespace ComlineServices
                             var jsonResult = Regex.Unescape(response.Result.Content.ReadAsStringAsync().GetAwaiter().GetResult()).Trim('"');
                             var result = (ResultList?)JsonConvert.DeserializeObject(jsonResult, typeof(ResultList));
 
-                            if (result != null) 
+                            if (result != null)
+                            {
                                 Command.Results = result;
+                                if (result.TableList.Contains("Error")) Command.ErrorCode = ErrorCodeEnum.InternalError;    
+                            }
                             else
+                            {
                                 Command.Results.AddError($"Erreur d'un appel api : {response.Result.ReasonPhrase}", ErrorCodeEnum.AppelApi);
+                                Command.ErrorCode = ErrorCodeEnum.AppelApi;
+                            }
                             break;
                         default:
                             Command.Results.AddError($"Erreur d'un appel api : {response.Result.ReasonPhrase}", ErrorCodeEnum.AppelApi);
+                            Command.ErrorCode = ErrorCodeEnum.AppelApi;
                             break;
                     }
                 }

@@ -16,7 +16,8 @@ namespace ComLineData
         UnExistedTable,
         NothingToDo,
         AppelApi,
-        Authentication
+        Authentication,
+        InternalError
     }
     public class ComlineData
     {

@@ -55,6 +55,7 @@ namespace MktCore8.Controllers
         [HttpPost]
         public ActionResult Post([FromBody] Data data)
         {
+            int count = 0;
             _log.LogInformation("ComlineController.Post");
             var comline = ((CoreComline)_comline);
             if (comline != null)
@@ -74,14 +75,17 @@ namespace MktCore8.Controllers
                         comline.Command.Reset();
                         comline.Execute();
                         comline.Command.Prompts.RemoveAt(0);
+                        count++;
                     }
+                    comline.Command.Results.AddInfo($"Nombre de requête comline : {count}", "Info");
                     ResultList ds = comline.Command.Results;
                     string json = JsonConvert.SerializeObject(ds, Newtonsoft.Json.Formatting.None);
                     var result = new JsonResult(json) { ContentType = "application/json" };
                     return result;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    comline.Command.Results.AddError(ex.Message, ErrorCodeEnum.InternalError);
                 }
             }
             return StatusCode(500, "Une erreur s'est produite lors du traitement de la demande.");
