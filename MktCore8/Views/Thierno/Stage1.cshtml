@@ -1,0 +1,135 @@
+﻿@{
+    Layout = "thierno/_Layout";
+}
+<div class="container py-4">
+    <h1 class="text-center text-primary fw-bold mb-4">Stage de 1ère année – Création d’un site web pour un restaurant</h1>
+
+    <!-- Présentation entreprise -->
+    <div class="card bg-dark text-light mb-4 p-4 shadow">
+        <h4 class="text-info">Présentation de l'entreprise</h4>
+        <p>
+            Ce stage s’est déroulé chez <strong>Makrisoft</strong>, une société de services informatiques basée à Vénissieux.
+            J’étais encadré par <strong>Monsieur Ali MAKRI</strong>, développeur sénior.
+        </p>
+    </div>
+
+    <!-- But du projet -->
+    <div class="card bg-dark text-light mb-4 p-4 shadow">
+        <h4 class="text-info">Objectif du projet</h4>
+        <p>
+            Le but était de concevoir un <strong>site web de commande en ligne pour un restaurant</strong>.
+            Ce site permet de consulter les plats, les catégories, et de gérer les paniers et les commandes.
+        </p>
+    </div>
+
+    <!-- Démarche de réalisation -->
+    <div class="card bg-dark text-light mb-4 p-4 shadow">
+        <h4 class="text-info">Étapes de développement</h4>
+        <p>
+            Nous avons commencé par poser l’architecture du projet en suivant un modèle <strong>N-Tiers</strong>.
+            Cette architecture permet de séparer les responsabilités dans des couches bien définies :
+        </p>
+
+        <div class="row g-3">
+            <div class="col-md-6">
+                <div class="bg-secondary p-3 rounded text-white">
+                    <h6>🖥️ Couche Interface</h6>
+                    <p>Gère tout l’aspect visuel du site (HTML, CSS, JS).</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="bg-secondary p-3 rounded text-white">
+                    <h6>🔄 Couche Métier</h6>
+                    <p>Gère la logique métier, c’est le cerveau de l’application.</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="bg-secondary p-3 rounded text-white">
+                    <h6>💾 Couche Données</h6>
+                    <p>S’occupe de la gestion des données et accès à la base SQL.</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="bg-secondary p-3 rounded text-white">
+                    <h6>🧩 Couche Commun</h6>
+                    <p>Contient les classes partagées entre toutes les couches.</p>
+                </div>
+            </div>
+        </div>
+
+        <p class="mt-3">
+            Une attention particulière a été portée sur la <strong>couche Données</strong> (ADO, entités, requêtes SQL).
+        </p>
+    </div>
+
+    <!-- Technologies -->
+    <div class="card bg-dark text-light mb-4 p-4 shadow">
+        <h4 class="text-info">Technologies utilisées</h4>
+        <ul>
+            <li><strong>Framework :</strong> .NET</li>
+            <li><strong>Langage :</strong> C#</li>
+            <li><strong>IDE :</strong> Visual Studio</li>
+            <li><strong>Base de données :</strong> Microsoft SQL Server</li>
+            <li><strong>Versionning :</strong> GitHub</li>
+        </ul>
+
+        <p>
+            Après avoir conçu la couche données, j’ai mis en place une base SQL sur <strong>Microsoft SQL Server</strong>.
+        </p>
+
+        <div class="text-center my-3">
+            <img src="~/images/schema-bdd.png" class="img-fluid rounded shadow" alt="Modèle de données" />
+        </div>
+
+        <p>
+            La relation <strong>n-n</strong> entre <code>Product</code> et <code>Cart</code> a nécessité une table intermédiaire <code>CartProduct</code>.
+            Cela permet de gérer les produits dans plusieurs paniers, et vice versa.
+        </p>
+    </div>
+
+    <!-- Partie Interface -->
+    <div class="card bg-dark text-light mb-4 p-4 shadow">
+        <h4 class="text-info">Création de l’interface web</h4>
+        <p>
+            J’ai ensuite développé la partie web du site restaurant avec le modèle MVC (Model – View – Controller).
+        </p>
+
+        <h5>Explication du modèle MVC</h5>
+        <ul>
+            <li><strong>Model :</strong> Classes représentant les données de l'interface' (ex : Produit, Commande…)</li>
+            <li><strong>View :</strong> Fichiers Razor affichant le HTML avec les données côté client</li>
+            <li><strong>Controller :</strong> Gère les requêtes et fait le lien entre le modèle et la vue</li>
+        </ul>
+
+        <div class="text-center my-3">
+            <img src="~/images/interface-site.png" class="img-fluid rounded shadow" alt="Interface du site" />
+        </div>
+
+        <p>
+            Le résultat final est un <strong>site de restaurant complet</strong>, permettant de consulter les produits, créer un panier et passer commande.
+        </p>
+    </div>
+
+    <!-- Compétences acquises -->
+    <div class="card bg-dark text-light mb-4 p-4 shadow">
+        <h4 class="text-info">Compétences acquises</h4>
+        <ul>
+            <li>Architecture N-Tiers & MVC</li>
+            <li>Développement en C# et .NET</li>
+            <li>Modélisation de base de données</li>
+            <li>Expressions régulières</li>
+            <li>Requêtes SQL et manipulation de données</li>
+            <li>Utilisation de GitHub en équipe</li>
+            <li>Création d’un site web professionnel</li>
+        </ul>
+    </div>
+
+    <!-- Lien Git + site -->
+    <div class="card bg-dark text-light mb-4 p-4 shadow">
+        <h4 class="text-info">Liens utiles</h4>
+        <p>
+            🔗 <a href="https://github.com/alimakri/DanCookStage" class="link-primary" target="_blank">Voir le projet GitHub</a><br />
+            🌐 <a href="https://dancooks.fr/" class="link-primary" target="_blank">Voir le site du restaurant</a>
+        </p>
+    </div>
+</div>

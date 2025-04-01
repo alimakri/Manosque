@@ -11,6 +11,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
 using System.Security.Claims;
 using System.Text;
+using System.Data;
 
 namespace MktCore8.Controllers
 {
@@ -36,7 +37,7 @@ namespace MktCore8.Controllers
             _log.LogInformation("ComlineController.ComlineController");
 
             // Init WorkingDirectories
-            Global.WorkingDirectory_ServiceData = 
+            Global.WorkingDirectory_ServiceData =
                 Global.WorkingDirectory_ServiceSystem = $@"{_env.WebRootPath.Replace("wwwroot", "documents")}\";
             // Default service is System
             if (!ServiceSystem.Options.TryAdd("Service", "System")) ServiceSystem.Options["Service"] = "System";
@@ -50,8 +51,8 @@ namespace MktCore8.Controllers
             _log.LogInformation("ComlineController.Get");
             return new ContentResult() { Content = "Comline Get -> Ok !" };
         }
-        
-        
+
+
         [HttpPost]
         public ActionResult Post([FromBody] Data data)
         {
@@ -78,9 +79,9 @@ namespace MktCore8.Controllers
                         count++;
                     }
                     comline.Command.Results.AddInfo($"Nombre de requête comline : {count}", "Info");
-                    ResultList ds = comline.Command.Results;
-                    string json = JsonConvert.SerializeObject(ds, Newtonsoft.Json.Formatting.None);
-                    var result = new JsonResult(json) { ContentType = "application/json" };
+                    var ds = ConvertDataSetToDictionary(comline.Command.Results);
+                    //string json = JsonConvert.SerializeObject(ds, Newtonsoft.Json.Formatting.None);
+                    var result = new JsonResult(ds) { ContentType = "application/json" };
                     return result;
                 }
                 catch (Exception ex)
@@ -90,8 +91,27 @@ namespace MktCore8.Controllers
             }
             return StatusCode(500, "Une erreur s'est produite lors du traitement de la demande.");
         }
-        
-        
+        static Dictionary<string, List<Dictionary<string, string>>> ConvertDataSetToDictionary(DataSet dataSet)
+        {
+            Dictionary<string, List<Dictionary<string, string>>> dico = [];
+
+            foreach (DataTable table in dataSet.Tables)
+            {
+                List<Dictionary<string, string>> dicoTable = [];
+                foreach (DataRow row in table.Rows)
+                {
+                    Dictionary<string, string> dicoRow = [];
+                    foreach (DataColumn column in table.Columns)
+                    {
+                        dicoRow.Add(column.ColumnName, row[column].ToString() ?? "");
+                    }
+                    dicoTable.Add( dicoRow);
+                }
+                dico.Add(table.TableName, dicoTable);
+            }
+            return dico;
+        }
+
         [AllowAnonymous]
         [HttpPost]
         [Route("login")]

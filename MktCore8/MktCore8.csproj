@@ -21,4 +21,8 @@
     <ProjectReference Include="..\ComlineServiceSystem\ComlineServices.ServiceSystem.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Shared\thierno\" />
+  </ItemGroup>
+
 </Project>

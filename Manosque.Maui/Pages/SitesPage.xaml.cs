@@ -23,7 +23,7 @@ namespace Manosque.Maui.Pages
         private void NavButtonsRefresh()
         {
             SwipeMenu1.NavButtons.Clear();
-            var b = new Button { BindingContext = new Nav { Id = null }, Text = "Home", BackgroundColor = Colors.Transparent, BorderColor = Colors.Transparent };
+            var b = new Button { BindingContext = new Nav { Id = null }, Text = "Home", Style= (Style)Application.Current.Resources["MenuButton"] };
             b.Clicked += NavButtonClick;
             SwipeMenu1.NavButtons.Children.Add(b);
 

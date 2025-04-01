@@ -5,7 +5,7 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:Manosque.Maui.Pages"
-    Shell.FlyoutBehavior="Disabled" BackgroundColor="Transparent"
+    Shell.FlyoutBehavior="Flyout" BackgroundColor="Transparent"
     Title="Manosque">
     <FlyoutItem Title="Login" FlyoutIcon="{StaticResource IconOne}">
         <ShellContent
@@ -21,7 +21,7 @@
     </FlyoutItem>
     <FlyoutItem Title="Tâches" FlyoutIcon="{StaticResource IconThree}">
         <ShellContent
-            Title="Liste des tâches"
+            Title="&lt;"
             ContentTemplate="{DataTemplate local:TachePage}"
             Route="tache" />
     </FlyoutItem>

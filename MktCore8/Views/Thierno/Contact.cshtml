@@ -1,0 +1,43 @@
+﻿@{
+    Layout = "thierno/_Layout";
+}
+
+<div class="container py-4">
+    <h1 class="text-center text-primary fw-bold mb-4">Contactez-moi</h1>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card bg-dark text-light p-4 shadow">
+
+                <p class="text-light mb-4">
+                    Vous pouvez me contacter via les informations ci-dessous ou m’envoyer un message directement à l’aide du formulaire.
+                </p>
+
+                <!-- Informations de contact -->
+                <ul class="list-unstyled mb-4">
+                    <li><strong>📍 Adresse :</strong> 47 avenue valioud, St Foy Les- Laval, 69110</li>
+                    <li><strong>📞 Téléphone :</strong> 07.51.25.89.75</li>
+                    <li><strong>📧 Email :</strong> <a href="mailto:tibarry622@gmail.com" class="link-info">tibarry622@gmail.com</a></li>
+                </ul>
+
+                <!-- Formulaire de contact -->
+                <form>
+                    <div class="mb-3">
+                        <label class="form-label text-light">Nom</label>
+                        <input type="text" class="form-control bg-secondary text-light border-0" placeholder="Votre nom" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-light">Email</label>
+                        <input type="email" class="form-control bg-secondary text-light border-0" placeholder="votre@email.com" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-light">Message</label>
+                        <textarea class="form-control bg-secondary text-light border-0" rows="5" placeholder="Votre message..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Envoyer</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>

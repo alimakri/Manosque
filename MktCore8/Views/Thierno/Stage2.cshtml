@@ -1,0 +1,109 @@
+﻿@{
+    Layout = "thierno/_Layout";
+}
+<div class="container py-4">
+    <h1 class="text-center text-primary fw-bold mb-4">Stage de 2ème année – Application pour un chantier</h1>
+
+    <!-- Présentation entreprise -->
+    <div class="card bg-dark text-light mb-4 p-4 shadow">
+        <h4 class="text-info">Présentation de l'entreprise</h4>
+        <p>
+            Ce deuxième stage s’est également déroulé chez <strong>makrisoft</strong>, à Vénissieux, sous la supervision de <strong>Monsieur Ali MAKRI</strong>.
+        </p>
+    </div>
+
+    <!-- Introduction -->
+    <div class="card bg-dark text-light mb-4 p-4 shadow">
+        <h4 class="text-info">Introduction au stage</h4>
+        <p>
+            J’ai commencé ce stage par l’apprentissage de <strong>WPF</strong> (Windows Presentation Foundation), en utilisant <strong>XAML</strong> et <strong>C#</strong>.
+            J’ai notamment réalisé un petit projet sur le jeu <strong>Chifoumi</strong> pour découvrir la programmation d’interfaces en WPF.
+        </p>
+        <a href="https://github.com/tibarry10/SIO/tree/main/SIO_Stage/Chifoumi" target="_blank" class="btn btn-outline-primary mt-2">🔗 Voir le projet Chifoumi sur GitHub</a>
+    </div>
+
+    <!-- Objectif du projet -->
+    <div class="card bg-dark text-light mb-4 p-4 shadow">
+        <h4 class="text-info">Objectif du projet principal</h4>
+        <p>
+            L’objectif était de créer une <strong>application mobile et desktop pour la gestion d'un chantier</strong>, permettant de :
+        </p>
+        <ul>
+            <li>Voir les tâches à accomplir</li>
+            <li>Suivre leur statut</li>
+            <li>Géolocaliser les emplacements des interventions</li>
+        </ul>
+        <p>
+            Cette application devait fonctionner sur Android, Windows, macOS et iOS.
+        </p>
+    </div>
+
+    <!-- Technologies et frameworks -->
+    <div class="card bg-dark text-light mb-4 p-4 shadow">
+        <h4 class="text-info">Technologies utilisées</h4>
+        <p>
+            Le projet a d’abord été développé avec <strong>.NET MAUI</strong>, une technologie multi-plateforme de Microsoft basée sur Razor, XAML et C#.
+            Elle permet de créer des interfaces communes pour Android, iOS, Windows et Mac.
+        </p>
+        <p>
+            Cependant, MAUI étant encore récent, nous avons rencontré des problèmes de compatibilité, de stabilité et de rendu.
+            Cela nous a poussés à changer de stratégie et à adopter un nouveau framework.
+        </p>
+    </div>
+
+    <!-- Changement vers Flutter -->
+    <div class="card bg-dark text-light mb-4 p-4 shadow">
+        <h4 class="text-info">Changement de framework : Flutter</h4>
+        <p>
+            Nous avons décidé de reprendre le projet avec <strong>Flutter</strong>, un framework open-source de Google,
+            qui permet de développer des applications performantes avec une seule base de code pour toutes les plateformes.
+        </p>
+        <p>
+            Flutter utilise le langage <strong>Dart</strong>, que personne ne maîtrisait. J’ai donc dû apprendre en même temps que je développais.
+            Malgré cela, j’ai pu contribuer à la refonte de l’application dans ce nouveau langage.
+        </p>
+    </div>
+
+    <!-- IA dans le projet -->
+    <div class="card bg-dark text-light mb-4 p-4 shadow">
+        <h4 class="text-info">Utilisation de l'intelligence artificielle</h4>
+        <p>
+            À ce stade du projet, <strong>mon tuteur a souhaité se faire assister par l’IA</strong> pour se faire aider,
+            notamment la génération de code ou de suggestions d’interface. Cette initiative était expérimentale, mais très enrichissante.
+        </p>
+    </div>
+
+    <!-- Base de données -->
+    <div class="card bg-dark text-light mb-4 p-4 shadow">
+        <h4 class="text-info">Base de données</h4>
+        <p>
+            Une <strong>base de données Microsoft SQL Server</strong> a été utilisée pour gérer les utilisateurs, les tâches, les statuts, et les lieux d’intervention.
+        </p>
+
+        <div class="text-center my-3">
+            <img src="~/images/schema-bdd-stage2.png" class="img-fluid rounded shadow" alt="Modèle de données Stage 2" />
+        </div>
+    </div>
+
+    <!-- Compétences acquises -->
+    <div class="card bg-dark text-light mb-4 p-4 shadow">
+        <h4 class="text-info">Compétences acquises</h4>
+        <ul>
+            <li>Utilisation de .NET MAUI et Razor Pages XAML</li>
+            <li>Développement d’interface avec Flutter</li>
+            <li>Apprentissage du langage Dart</li>
+            <li>Utilisation d’intelligence artificielle dans un projet réel</li>
+            <li>Travail multi-plateforme (mobile + desktop)</li>
+            <li>Requêtes SQL et gestion de base de données</li>
+            <li>Utilisation de GitHub en collaboration</li>
+        </ul>
+    </div>
+
+    <!-- Lien Git + site -->
+    <div class="card bg-dark text-light mb-4 p-4 shadow">
+        <h4 class="text-info">Liens utiles</h4>
+        <p>
+            🔗 <a href="https://github.com/alimakri/manosque" class="link-primary" target="_blank">Voir le projet GitHub (Application travailleurs)</a>
+        </p>
+    </div>
+</div>

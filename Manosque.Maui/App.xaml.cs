@@ -1,5 +1,4 @@
-﻿using ComLineCommon;
-using ComLineData;
+﻿using ComLineData;
 using ComlineServices;
 
 namespace Manosque.Maui
@@ -14,7 +13,7 @@ namespace Manosque.Maui
             InitializeComponent();
 
             // ServiceApi
-            ServiceApi.Url = "https://makrisoft.net/"; // localhost:7298 - makrisoft.net
+            ServiceApi.Url = "https://localhost:7298/"; // localhost:7298 - makrisoft.net
 
             MainPage = new AppShell();
         }

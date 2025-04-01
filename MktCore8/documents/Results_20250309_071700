@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ResultList>
+  <xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true">
+      <xs:complexType>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="Debug">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Index" msdata:AutoIncrement="true" msdata:AutoIncrementSeed="1" type="xs:int" minOccurs="0" />
+                <xs:element name="Libelle" type="xs:string" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="Action">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Id" msdata:DataType="System.Guid, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e" type="xs:string" minOccurs="0" />
+                <xs:element name="Question" type="xs:string" minOccurs="0" />
+                <xs:element name="Tache" msdata:DataType="System.Guid, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e" type="xs:string" minOccurs="0" />
+                <xs:element name="Type" type="xs:unsignedByte" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:choice>
+      </xs:complexType>
+    </xs:element>
+  </xs:schema>
+  <diffgr:diffgram xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:diffgr="urn:schemas-microsoft-com:xml-diffgram-v1">
+    <NewDataSet>
+      <Debug diffgr:id="Debug1" msdata:rowOrder="0" diffgr:hasChanges="inserted">
+        <Index>1</Index>
+        <Libelle>Declare @id_Tache nvarchar(50);select @id_Tache='89a16088-0355-4602-b777-0e49b7b0013a';
+DECLARE @id uniqueidentifier;
+select @id=id from Action  where Tache=@id_Tache;
+if @@ROWCOUNT=1
+BEGIN
+Update TableId set id=@id where Reference= 'Action';
+if @@ROWCOUNT = 0 
+insert TableId (Reference, id) values('Action', @id);
+END
+else
+delete TableId where Reference='Action';
+
+select * from Action x  where Tache=@id_Tache</Libelle>
+      </Debug>
+      <Debug diffgr:id="Debug2" msdata:rowOrder="1" diffgr:hasChanges="inserted">
+        <Index>2</Index>
+        <Libelle>Get-Action -Tache "89a16088-0355-4602-b777-0e49b7b0013a" -Mode Debug</Libelle>
+      </Debug>
+      <Action diffgr:id="Action1" msdata:rowOrder="0">
+        <Id>003663bb-287b-484e-9e1a-ecd8a0c70001</Id>
+        <Question>Tache 1.3.A Action 1</Question>
+        <Tache>89a16088-0355-4602-b777-0e49b7b0013a</Tache>
+        <Type>2</Type>
+      </Action>
+      <Action diffgr:id="Action2" msdata:rowOrder="1">
+        <Id>003663bb-287b-484e-9e1a-ecd8a0c70002</Id>
+        <Question>Tache 1.3.A Action 2</Question>
+        <Tache>89a16088-0355-4602-b777-0e49b7b0013a</Tache>
+        <Type>2</Type>
+      </Action>
+      <Action diffgr:id="Action3" msdata:rowOrder="2">
+        <Id>003663bb-287b-484e-9e1a-ecd8a0c70003</Id>
+        <Question>Tache 1.3.A Action 3</Question>
+        <Tache>89a16088-0355-4602-b777-0e49b7b0013a</Tache>
+        <Type>2</Type>
+      </Action>
+    </NewDataSet>
+  </diffgr:diffgram>
+</ResultList>

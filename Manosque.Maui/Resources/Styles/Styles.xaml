@@ -44,8 +44,10 @@
     <Style TargetType="BoxView">
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Gray950}, Dark={StaticResource Gray200}}" />
     </Style>
-    <Style TargetType="Button" x:Key="ButtonWithId">
+    <Style TargetType="Button" x:Key="MenuButton">
         <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="TextColor" Value="Gray" />
+        <Setter Property="BorderColor" Value="Transparent" />
     </Style>
 
         <Style TargetType="Button">
