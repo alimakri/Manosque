@@ -28,5 +28,9 @@ namespace MktCore8.Controllers
         {
             return View();
         }
+        public IActionResult Projets()
+        {
+            return View();
+        }
     }
 }

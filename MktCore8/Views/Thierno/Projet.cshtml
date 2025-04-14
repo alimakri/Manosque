@@ -1,0 +1,107 @@
+﻿@{
+    Layout = "thierno/_Layout";
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] - MyWebSite</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- ✅ CSS et Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top py-2 custom-navbar">
+            <div class="container d-flex justify-content-between align-items-center">
+                <a class="navbar-brand fw-bold" href="/">MyWebSite</a>
+                <div class="d-flex">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0 gap-3">
+                        <li class="nav-item">
+                            <a class="nav-link nav-animated" href="/thierno/CV"><i class="bi bi-file-person me-1"></i> CV</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-animated" href="/thierno/Stages"><i class="bi bi-journal-code me-1"></i> Stages</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-animated" href="/thierno/Projet"><i class="bi bi-kanban me-1"></i> Projets</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-animated" href="/thierno/Contact"><i class="bi bi-envelope me-1"></i> Contact</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container py-4">
+        <h1 class="text-center text-primary fw-bold mb-4">Mes projets réalisés</h1>
+
+        <div class="card bg-dark text-light mb-4 p-4 shadow">
+            <h4 class="text-info">Présentation</h4>
+            <p>Voici une sélection de projets réalisés au cours de l'année, mettant en œuvre différentes technologies (Laravel, PHP, WPF, XAML, SQL...).</p>
+        </div>
+
+        <div class="card bg-dark text-light mb-4 p-4 shadow">
+            <h4 class="text-info">📚 Projet Manga (Laravel / PHP)</h4>
+            <p>Développement d'une application web de gestion de mangas : ajout, modification, suppression, et affichage depuis une base de données MySQL (phpMyAdmin).</p>
+            <p><strong>Outils :</strong> Laravel, PHPStorm, XAMPP</p>
+            <p><strong>Compétences acquises :</strong></p>
+            <ul>
+                <li>Recenser et identifier les ressources numériques</li>
+                <li>Exploiter des référentiels, normes et standards adoptés</li>
+                <li>Participer à l’évolution d’un site Web exploitant les données</li>
+            </ul>
+            <a href="https://projet-manga-en-ligne.com" target="_blank" class="btn btn-primary">Voir le projet en ligne</a>
+        </div>
+
+        <div class="card bg-dark text-light mb-4 p-4 shadow">
+            <h4 class="text-info">🏥 Projet GSB (Laravel / PHP)</h4>
+            <p>Application web de gestion de frais et de praticiens. Fonctionnalités : ajout, modification, suppression, et recherche par nom ou spécialité. Utilisation de Laravel et PHPStorm.</p>
+            <p><strong>Outils :</strong> Laravel, PHPStorm, phpMyAdmin</p>
+            <p><strong>Compétences acquises :</strong></p>
+            <ul>
+                <li>Mettre en place et vérifier les niveaux d’habilitation associés</li>
+                <li>Référencer les services en ligne et mesurer leur visibilité</li>
+                <li>Vérifier le respect des règles d’utilisation des ressources</li>
+            </ul>
+        </div>
+
+        <div class="card bg-dark text-light mb-4 p-4 shadow">
+            <h4 class="text-info">🎮 Projet Chifoumi (WPF / XAML / C#)</h4>
+            <p>Mini-jeu Chifoumi développé avec WPF et XAML pour découvrir les interfaces graphiques. L'utilisateur joue contre l'ordinateur et les scores sont affichés en temps réel.</p>
+            <p><strong>Outils :</strong> Visual Studio, .NET, XAML</p>
+            <p><strong>Compétences acquises :</strong></p>
+            <ul>
+                <li>Gérer des sauvegardes et la persistance locale</li>
+                <li>Participer à la valorisation de l’image de l’organisation</li>
+                <li>Recenser et identifier les ressources logicielles</li>
+            </ul>
+            <a href="https://github.com/tibarry10/SIO/tree/main/SIO_Stage/Chifoumi" target="_blank" class="btn btn-outline-light">Voir le projet sur GitHub</a>
+        </div>
+
+        <div class="card bg-dark text-light mb-4 p-4 shadow">
+            <h4 class="text-info">🌐 Projet Web Manga (ASP.NET Core MVC)</h4>
+            <p>Ce projet a été développé en ASP.NET Core MVC. Il permet d'afficher une liste de mangas, de rechercher un manga par nom, d'en ajouter un nouveau, ou encore de modifier et supprimer un manga existant.</p>
+            <p><strong>Outils :</strong> Visual Studio, .NET Core, Entity Framework</p>
+            <p><strong>Compétences acquises :</strong></p>
+            <ul>
+                <li>Participer à l’évolution d’un site Web exploitant les données</li>
+                <li>Recenser et identifier les ressources numériques</li>
+                <li>Exploiter un framework MVC avec C#</li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html>
+
